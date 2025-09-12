@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagamentos - Veredas 2025</title>
+    <title>Pagamentos - FR 2025</title>
     <link rel="shortcut icon" href="../assets/3.ico" type="image/x-icon">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -14,8 +14,35 @@
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
-            color: #333;
+            background-color: #f8f9fa;
+            color: #1d1d1d;
             padding-top: 80px;
+            min-height: 100vh;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #7a2c6c 0%, #a92f85 100%);
+            color: white;
+            padding: 15px;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-title {
+            text-align: center;
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: 1.2rem;
+            }
         }
 
         .dashboard-card {
@@ -69,33 +96,33 @@
         }
 
         .total-card .icon {
-            color: #007bff;
+            color: #7a2c6c;
         }
 
         .pago-card .icon {
-            color: #28a745;
+            color: #a92f85;
         }
 
         .pendente-card .icon {
-            color: #ffc107;
+            color: #cf919e;
         }
 
         .total-card {
             background-color: white;
             color: #333;
-            border-left: 5px solid #007bff;
+            border-left: 5px solid #7a2c6c;
         }
 
         .pago-card {
             background-color: white;
             color: #333;
-            border-left: 5px solid #28a745;
+            border-left: 5px solid #a92f85;
         }
 
         .pendente-card {
             background-color: white;
             color: #333;
-            border-left: 5px solid #ffc107;
+            border-left: 5px solid #cf919e;
         }
 
         .chart-container {
@@ -118,11 +145,11 @@
         }
 
         .badge-pago {
-            background-color: #28a745;
+            background-color: #a92f85;
         }
 
         .badge-pendente {
-            background-color: #ffc107;
+            background-color: #cf919e;
         }
 
         .btn-voltar {
@@ -163,12 +190,29 @@
         }
 
         .btn-info {
-            background-color: #17a2b8;
+            background-color: #7a2c6c;
             color: white;
         }
 
         .btn-info:hover {
-            background-color: #138496;
+            background-color: #a92f85;
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #7a2c6c, #a92f85);
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(122, 44, 108, 0.3);
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(45deg, #a92f85, #7a2c6c);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(122, 44, 108, 0.4);
         }
 
         .sort-btn {
@@ -199,7 +243,7 @@
         <a href="gestao.html" class="btn-voltar">
             <i class="material-icons">arrow_back</i>
         </a>
-        <h2 class="header-title">PAGAMENTOS - VEREDAS 2025</h2>
+        <h2 class="header-title">PAGAMENTOS - FR 2025</h2>
     </div>
 
     <div class="container mt-5">
@@ -243,7 +287,7 @@
         <!-- Gráficos -->
         <div class="row mt-4">
             <!-- Status de Pagamento -->
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="card dashboard-card">
                     <div class="card-header">
                         Status de Pagamentos
@@ -251,20 +295,6 @@
                     <div class="card-body">
                         <div class="chart-container">
                             <canvas id="graficoStatus"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Gráfico de Formas de pagamento -->
-            <div class="col-md-6">
-                <div class="card dashboard-card">
-                    <div class="card-header">
-                        Formas de Pagamento
-                    </div>
-                    <div class="card-body">
-                        <div class="chart-container">
-                            <canvas id="graficoFormas"></canvas>
                         </div>
                     </div>
                 </div>
@@ -435,7 +465,6 @@
 
         // Variáveis para gráficos
         let graficoStatus;
-        let graficoFormas;
 
         $(document).ready(function () {
             // Definir valor padrão de R$ 0,00
@@ -501,7 +530,7 @@
 
                 // Atualizar participante com informações de pagamento
                 console.log("Atualizando status do participante para 'pago'...");
-                db.collection("Eventos").doc("Veredas2025").collection("inscricoes").doc(participanteId)
+                db.collection("Eventos").doc("filhasdoRei2025").collection("inscricoes").doc(participanteId)
                     .update({
                         statusPagamento: 'pago',
                         formaPagamento: formaPagamento,
@@ -513,7 +542,7 @@
                         console.log("Registrando pagamento na coleção de pagamentos...");
 
                         // Registrar pagamento na coleção de pagamentos
-                        return db.collection("Eventos").doc("Veredas2025").collection("pagamentos").add({
+                        return db.collection("Eventos").doc("filhasdoRei2025").collection("pagamentos").add({
                             participanteId: participanteId,
                             participanteNome: $('#participante option:selected').text(),
                             valor: valorPagamento,
@@ -732,8 +761,7 @@
                         }
                     });
 
-                    // Atualizar gráfico de formas de pagamento
-                    atualizarGraficoFormas(formasPagamento);
+
                 })
                 .catch((error) => {
                     console.error("Erro ao buscar formas de pagamento: ", error);
@@ -919,41 +947,7 @@
                 }
             });
 
-            // Inicializar gráfico de formas de pagamento
-            const ctxFormas = document.getElementById('graficoFormas').getContext('2d');
-            graficoFormas = new Chart(ctxFormas, {
-                type: 'bar',
-                data: {
-                    labels: ['PIX', 'Cartão', 'Dinheiro'],
-                    datasets: [{
-                        label: 'Quantidade',
-                        data: [0, 0, 0],
-                        backgroundColor: [
-                            'rgba(75, 192, 192, 0.7)',
-                            'rgba(54, 162, 235, 0.7)',
-                            'rgba(153, 102, 255, 0.7)'
-                        ],
-                        borderColor: [
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(153, 102, 255, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1
-                            }
-                        }
-                    }
-                }
-            });
+
         }
 
         function atualizarGraficoStatus(totalPagos, totalPendentes) {
@@ -966,19 +960,7 @@
             }
         }
 
-        function atualizarGraficoFormas(formasPagamento) {
-            // Verificar se o gráfico foi inicializado
-            if (graficoFormas && graficoFormas.data) {
-                graficoFormas.data.datasets[0].data = [
-                    formasPagamento.pix,
-                    formasPagamento.cartao,
-                    formasPagamento.dinheiro
-                ];
-                graficoFormas.update();
-            } else {
-                console.warn("Gráfico de formas não está inicializado ainda");
-            }
-        }
+
 
         function formatarData(dataString) {
             if (!dataString) return '';

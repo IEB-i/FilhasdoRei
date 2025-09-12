@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Participantes - Veredas 2025</title>
+    <title>Participantes - FR 2025</title>
     <link rel="shortcut icon" href="../assets/3.ico" type="image/x-icon">
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -14,8 +14,35 @@
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
-            color: #333;
+            background: linear-gradient(135deg, #f4ebda 0%, #e8d5c4 100%);
+            color: #1d1d1d;
             padding-top: 80px;
+            min-height: 100vh;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #7a2c6c 0%, #a92f85 100%);
+            color: white;
+            padding: 15px;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-title {
+            text-align: center;
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: 1.2rem;
+            }
         }
 
         .filter-card {
@@ -27,9 +54,22 @@
         }
 
         .btn-export {
-            background: linear-gradient(45deg, #3d7517, #3d7517);
+            background: linear-gradient(45deg, #7a2c6c, #a92f85);
             color: white;
             border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(122, 44, 108, 0.3);
+        }
+
+        .btn-export:hover {
+            background: linear-gradient(45deg, #a92f85, #7a2c6c);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(122, 44, 108, 0.4);
+            color: white;
         }
 
         .table-responsive {
@@ -41,11 +81,11 @@
         }
 
         .badge-pago {
-            background-color: #28a745;
+            background-color: #a92f85;
         }
 
         .badge-pendente {
-            background-color: #ffc107;
+            background-color: #cf919e;
         }
 
         .btn-voltar {
@@ -160,13 +200,13 @@
         <a href="gestao.html" class="btn-voltar">
             <i class="material-icons">arrow_back</i>
         </a>
-        <h2 class="header-title">PARTICIPANTES VEREDAS 2025</h2>
+        <h2 class="header-title">PARTICIPANTES - FR 2025</h2>
     </div>
 
     <div class="container mt-5">
         <div class="row mb-4">
             <div class="col-md-8">
-                <h3>Lista de Participantes - Veredas 2025</h3>
+                <h3>Lista de Participantes - Filhas do Rei 2025</h3>
             </div>
             <div class="col-md-4 text-right">
                 <button class="btn btn-export mr-2">
@@ -426,7 +466,7 @@
                     dadosAtualizacao.formaPagamento = ''; // Limpa a forma de pagamento se status for pendente
                 }
 
-                db.collection("Eventos").doc("Veredas2025").collection("inscricoes").doc(participanteId)
+                db.collection("Eventos").doc("filhasdoRei2025").collection("inscricoes").doc(participanteId)
                     .update(dadosAtualizacao)
                     .then(() => {
                         alert('Status de pagamento atualizado com sucesso!');
@@ -466,7 +506,7 @@
 
         // Função para Carregar participante
         function carregarParticipantes() {
-            db.collection("Eventos").doc("Veredas2025").collection("inscricoes")
+            db.collection("Eventos").doc("filhasdoRei2025").collection("inscricoes")
                 .where("anoevento", "==", "2025")
                 .get()
                 .then((querySnapshot) => {

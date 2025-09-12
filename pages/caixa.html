@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle de Caixa - Veredas 2025</title>
+    <title>Caixa - FR 2025</title>
     <link rel="shortcut icon" href="../assets/3.ico" type="image/x-icon">
     
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -15,20 +15,25 @@
     
     <style>
         body {
+            background: linear-gradient(135deg, #f4ebda 0%, #e8d5c4 100%);
             font-family: 'Montserrat', sans-serif;
-            color: #333;
+            color: #1d1d1d;
             padding-top: 80px;
+            min-height: 100vh;
         }
 
         .dashboard-card {
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
             margin-bottom: 20px;
+            height: 100%;
+            border: none;
         }
 
         .dashboard-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
         }
 
         .card-header {
@@ -36,24 +41,48 @@
             font-weight: bold;
         }
 
-        .total-card {
-            background: linear-gradient(45deg, #3d7517, #4a8c20);
-            color: white;
+        .summary-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            border: 1px solid #e9ecef;
         }
 
-        .entrada-card {
-            background: linear-gradient(45deg, #28a745, #5cb85c);
-            color: white;
+        .summary-card.total {
+            border-left: 5px solid #7a2c6c;
         }
 
-        .saida-card {
-            background: linear-gradient(45deg, #dc3545, #e05d6f);
-            color: white;
+        .summary-card.entrada {
+            border-left: 5px solid #a92f85;
         }
 
-        .saldo-card {
-            background: linear-gradient(45deg, #17a2b8, #5bc0de);
-            color: white;
+        .summary-card.saida {
+            border-left: 5px solid #cf919e;
+        }
+
+        .summary-card.saldo {
+            border-left: 5px solid #e8d5c4;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .stats-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0;
+            line-height: 1;
+            color: #1d1d1d;
+        }
+
+        .stats-label {
+            color: #6c757d;
+            font-size: 0.8rem;
+            margin-bottom: 0;
+            font-weight: 500;
         }
 
         .chart-container {
@@ -123,7 +152,8 @@
         }
 
         .tab-content {
-            background-color: #f8f9fa;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             border-radius: 0 0 10px 10px;
             padding: 20px;
             border: 1px solid #dee2e6;
@@ -131,11 +161,17 @@
         }
 
         .badge-entrada {
-            background-color: #28a745;
+            background: linear-gradient(135deg, #7a2c6c 0%, #a92f85 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 5px 10px;
         }
 
         .badge-saida {
-            background-color: #dc3545;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 5px 10px;
         }
 
         .form-group label {
@@ -148,11 +184,79 @@
         }
 
         .filter-section {
-            background-color: #f8f9fa;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             border-radius: 10px;
             padding: 15px;
             margin-bottom: 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #7a2c6c 0%, #a92f85 100%);
+            color: white;
+            padding: 15px 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #7a2c6c, #a92f85);
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            transition: all 0.3s;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(122, 44, 108, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #a92f85, #7a2c6c);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(122, 44, 108, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #7a2c6c, #a92f85);
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            transition: all 0.3s;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(122, 44, 108, 0.3);
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(45deg, #a92f85, #7a2c6c);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(122, 44, 108, 0.4);
+        }
+
+        .btn-info {
+            background: linear-gradient(45deg, #cf919e, #a92f85);
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            transition: all 0.3s;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(207, 145, 158, 0.3);
+        }
+
+        .btn-info:hover {
+            background: linear-gradient(45deg, #a92f85, #cf919e);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(207, 145, 158, 0.4);
         }
     </style>
 </head>
@@ -162,48 +266,76 @@
         <a href="gestao.html" class="btn-voltar">
             <i class="material-icons">arrow_back</i>
         </a>
-        <h2 class="header-title">CAIXA VEREDAS 2025</h2>
+        <h2 class="header-title">CAIXA - FR 2025</h2>
     </div>
 
     <div class="container mt-5">
         <!-- Cards de Resumo -->
-        <div class="row">
-            <div class="col-md-3">
-                <div class="card dashboard-card">
-                    <div class="card-body total-card text-center">
-                        <h5 class="card-title">Total de Transações</h5>
-                        <h2 id="totalTransacoes">0</h2>
-                        <h6>Movimentações registradas</h6>
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <div class="card summary-card total">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0">
+                                <i class="material-icons" style="font-size: 3rem; color: #7a2c6c;">assessment</i>
+                            </div>
+                            <div class="flex-grow-1 ms-3 ml-3">
+                                <h5 class="card-title mb-0">Total de Transações</h5>
+                                <small class="text-muted">Movimentações registradas</small>
+                            </div>
+                        </div>
+                        <h3 class="stats-value" id="totalTransacoes">0</h3>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-3">
-                <div class="card dashboard-card">
-                    <div class="card-body entrada-card text-center">
-                        <h5 class="card-title">Entradas</h5>
-                        <h2 id="totalEntradas">R$ 0,00</h2>
-                        <h6>Valores recebidos</h6>
+            <div class="col-md-3 mb-3">
+                <div class="card summary-card entrada">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0">
+                                <i class="material-icons" style="font-size: 3rem; color: #a92f85;">trending_up</i>
+                            </div>
+                            <div class="flex-grow-1 ms-3 ml-3">
+                                <h5 class="card-title mb-0">Entradas</h5>
+                                <small class="text-muted">Valores recebidos</small>
+                            </div>
+                        </div>
+                        <h3 class="stats-value text-success" id="totalEntradas">R$ 0,00</h3>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-3">
-                <div class="card dashboard-card">
-                    <div class="card-body saida-card text-center">
-                        <h5 class="card-title">Saídas</h5>
-                        <h2 id="totalSaidas">R$ 0,00</h2>
-                        <h6>Valores pagos</h6>
+            <div class="col-md-3 mb-3">
+                <div class="card summary-card saida">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0">
+                                <i class="material-icons" style="font-size: 3rem; color: #cf919e;">trending_down</i>
+                            </div>
+                            <div class="flex-grow-1 ms-3 ml-3">
+                                <h5 class="card-title mb-0">Saídas</h5>
+                                <small class="text-muted">Valores pagos</small>
+                            </div>
+                        </div>
+                        <h3 class="stats-value text-danger" id="totalSaidas">R$ 0,00</h3>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-3">
-                <div class="card dashboard-card">
-                    <div class="card-body saldo-card text-center">
-                        <h5 class="card-title">Saldo Atual</h5>
-                        <h2 id="saldoAtual">R$ 0,00</h2>
-                        <h6>Entradas - Saídas</h6>
+            <div class="col-md-3 mb-3">
+                <div class="card summary-card saldo">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0">
+                                <i class="material-icons" style="font-size: 3rem; color: #e8d5c4;">account_balance_wallet</i>
+                            </div>
+                            <div class="flex-grow-1 ms-3 ml-3">
+                                <h5 class="card-title mb-0">Saldo Atual</h5>
+                                <small class="text-muted">Entradas - Saídas</small>
+                            </div>
+                        </div>
+                        <h3 class="stats-value text-primary" id="saldoAtual">R$ 0,00</h3>
                     </div>
                 </div>
             </div>
@@ -211,7 +343,7 @@
 
         <!-- Gráficos -->
         <div class="row mt-4">
-            <div class="col-md-6">
+            <div class="col-md-6 mb-3">
                 <div class="card dashboard-card">
                     <div class="card-header">
                         Fluxo de Caixa
@@ -224,7 +356,7 @@
                 </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-6 mb-3">
                 <div class="card dashboard-card">
                     <div class="card-header">
                         Distribuição por Categorias
@@ -755,7 +887,7 @@ function sincronizarPagamentos() {
                 const pagamento = doc.data();
                 
                 // Verificar se já existe no caixa
-                db.collection("Eventos").doc("Veredas2025").collection("caixa")
+                db.collection("Eventos").doc("filhasdoRei2025").collection("caixa")
                     .where("pagamentoId", "==", doc.id)
                     .get()
                     .then((caixaSnapshot) => {
@@ -992,7 +1124,7 @@ $(document).ready(function () {
 
         // Função para carregar transações
         function carregarTransacoes() {
-            db.collection("Eventos").doc("Veredas2025").collection("caixa")
+            db.collection("Eventos").doc("filhasdoRei2025").collection("caixa")
                 .orderBy("data", "desc")
                 .get()
                 .then((querySnapshot) => {
@@ -1075,7 +1207,7 @@ $(document).ready(function () {
             }
             
             // Adicionar transação ao Firestore
-            db.collection("Eventos").doc("Veredas2025").collection("caixa").add({
+            db.collection("Eventos").doc("filhasdoRei2025").collection("caixa").add({
                 descricao: descricao,
                 data: data,
                 valor: valor,
@@ -1113,7 +1245,7 @@ $(document).ready(function () {
         function excluirTransacao() {
             const id = $('#confirmarExclusao').data('id');
             
-            db.collection("Eventos").doc("Veredas2025").collection("caixa").doc(id)
+            db.collection("Eventos").doc("filhasdoRei2025").collection("caixa").doc(id)
                 .delete()
                 .then(() => {
                     alert('Transação excluída com sucesso!');
@@ -1170,7 +1302,7 @@ $(document).ready(function () {
             }
             
             // Atualizar transação no Firestore
-            db.collection("Eventos").doc("Veredas2025").collection("caixa").doc(id)
+            db.collection("Eventos").doc("filhasdoRei2025").collection("caixa").doc(id)
                 .update({
                     descricao: descricao,
                     data: data,
@@ -1845,7 +1977,7 @@ $(document).ready(function () {
                 }
                 
                 // Criar referência para novo documento
-                const novaRef = db.collection("Eventos").doc("Veredas2025").collection("caixa").doc();
+                const novaRef = db.collection("Eventos").doc("filhasdoRei2025").collection("caixa").doc();
                 
                 // Adicionar ao batch
                 batch.set(novaRef, {
