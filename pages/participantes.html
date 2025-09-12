@@ -267,7 +267,6 @@
                         <th>Celular</th>
                         <!-- <th>Responsável</th> -->
                         <!-- <th>Cel. Responsável</th> -->
-                        <th>Célula</th>
                         <th>Igreja</th>
                         <th>Pagamento</th>
                         <th>Ações</th>
@@ -386,6 +385,7 @@
     dom: 'Bfrti', // Removido 'p' (paginação)
     paging: false, // Desativa a paginação
     scrollY: '350px', // Altura fixa para a área de rolagem
+    scrollX: true, // Permite scroll horizontal com cabeçalhos fixos
     scrollCollapse: true, // Mantém o colapso da altura
     fixedHeader: true, // Mantém o cabeçalho fixo durante a rolagem
     buttons: [
@@ -394,7 +394,7 @@
             text: 'Exportar Excel',
             className: 'btn btn-export d-none',
             exportOptions: {
-                columns: [0, 1, 2, 3, 4, 5, 6]
+                columns: [0, 1, 2, 3, 4, 5]
             }
         },
     ]
@@ -526,8 +526,6 @@
                             participante.idade,
                             participante.genero || 'N/A',
                             participante.celular,
-
-                            participante.celula,
                             participante.igreja === 'Outra' ? participante.outraIgreja : participante.igreja,
                             `<span class="badge ${participante.statusPagamento === 'pago' ? 'badge-pago' : 'badge-pendente'}">${participante.statusPagamento === 'pago' ? 'Pago' : 'Pendente'}</span>`,
                             `<button class="btn btn-info btn-sm" onclick="verDetalhes('${doc.id}')">Ver</button>`
@@ -689,6 +687,12 @@ function formatarDataHora(dataString) {
             if (!dataString) return '';
 
             try {
+                // Se a data já está no formato dd/mm/aaaa, retorna como está
+                if (dataString.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+                    return dataString;
+                }
+                
+                // Se a data está em outro formato, tenta converter
                 const data = new Date(dataString);
                 return data.toLocaleDateString('pt-BR');
             } catch (e) {

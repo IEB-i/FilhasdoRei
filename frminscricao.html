@@ -54,14 +54,6 @@
             transform: translate(-50%, -50%);
         }
 
-        .header {
-            background: url('../assets/cabecalho.png') center/cover no-repeat !important;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-        }
-
         .header-title {
             color: white;
             position: absolute;
@@ -181,7 +173,7 @@
             }
 
             .header {
-                background: url('../assets/cabecalho.png') center/cover no-repeat !important;
+                background: url('./assets/cabecalho.png') center/cover no-repeat !important;
                 position: fixed;
                 top: 0;
                 width: 100%;
@@ -378,7 +370,16 @@
 
         // Calcular idade automaticamente
         document.getElementById('dtnasc').addEventListener('change', function () {
-            const birthDate = new Date(this.value);
+            const dateValue = this.value;
+            if (!dateValue || dateValue.length !== 10) return;
+            
+            // Converter formato dd/mm/aaaa para mm/dd/aaaa para o objeto Date
+            const dateParts = dateValue.split('/');
+            const day = dateParts[0];
+            const month = dateParts[1];
+            const year = dateParts[2];
+            
+            const birthDate = new Date(year, month - 1, day); // month - 1 porque Date usa índice 0-11
             const today = new Date();
             let age = today.getFullYear() - birthDate.getFullYear();
             const m = today.getMonth() - birthDate.getMonth();
