@@ -366,6 +366,7 @@
                                         <th>Data de Pagamento</th>
                                         <th>Valor</th>
                                         <th>Forma</th>
+                                        <th>Tamanho da Blusa</th>
                                         <th>Status</th>
                                         <th>Ações</th>
                                     </tr>
@@ -393,8 +394,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Você tem certeza que deseja estornar o pagamento de <strong id="estornoNome"></strong>?</p>
-                    <p>Esta ação irá marcar o pagamento como pendente.</p>
+                    <p>Você tem certeza que deseja estornar <strong>TODOS OS PAGAMENTOS</strong> de <strong id="estornoNome"></strong>?</p>
+                    <p>Esta ação irá estornar todo o valor já pago pelo participante e marcar o status como pendente.</p>
+                    <p><strong>Atenção:</strong> Todos os pagamentos confirmados deste participante serão estornados.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -586,86 +588,111 @@
 
             // Confirmar estorno de pagamento
             $('#confirmarEstorno').on('click', function () {
-                const pagamentoId = $(this).data('pagamento');
                 const participanteId = $(this).data('participante');
 
-                console.log("Iniciando estorno do pagamento:", pagamentoId);
+                console.log("Iniciando estorno de todos os pagamentos do participante:", participanteId);
 
-                // Atualizar status do pagamento
-                db.collection("Eventos").doc("filhasdoRei2025").collection("pagamentos").doc(pagamentoId)
-                    .update({
-                        status: 'estornado',
-                        dataEstorno: new Date().toISOString()
-                    })
-                    .then(() => {
-                        console.log("Status do pagamento atualizado para 'estornado'");
+                // Buscar todos os pagamentos confirmados do participante
+                db.collection("Eventos").doc("filhasdoRei2025").collection("pagamentos")
+                    .where("participanteId", "==", participanteId)
+                    .where("status", "==", "confirmado")
+                    .get()
+                    .then((pagamentosSnapshot) => {
+                        if (pagamentosSnapshot.empty) {
+                            alert('Nenhum pagamento confirmado encontrado para este participante.');
+                            return;
+                        }
+
+                        console.log(`Encontrados ${pagamentosSnapshot.size} pagamento(s) confirmado(s) para estornar`);
+
+                        const batch = db.batch();
+                        const pagamentosIds = [];
+
+                        // Estornar todos os pagamentos confirmados
+                        pagamentosSnapshot.forEach((doc) => {
+                            const pagamentoId = doc.id;
+                            pagamentosIds.push(pagamentoId);
+
+                            batch.update(doc.ref, {
+                                status: 'estornado',
+                                dataEstorno: new Date().toISOString()
+                            });
+                        });
 
                         // Atualizar status do participante
-                        return db.collection("Eventos").doc("filhasdoRei2025").collection("inscricoes").doc(participanteId)
-                            .update({
-                                statusPagamento: 'pendente',
-                                dataPagamento: null,
-                                formaPagamento: null,
-                                valorPago: null
-                            });
+                        const participanteRef = db.collection("Eventos").doc("filhasdoRei2025").collection("inscricoes").doc(participanteId);
+                        batch.update(participanteRef, {
+                            statusPagamento: 'pendente',
+                            dataPagamento: null,
+                            formaPagamento: null,
+                            valorPago: null
+                        });
+
+                        return batch.commit().then(() => {
+                            console.log("Todos os pagamentos estornados com sucesso");
+                            return pagamentosIds;
+                        });
                     })
-                    .then(() => {
-                        console.log("Status do participante atualizado para 'pendente'");
-                        console.log("Buscando entrada correspondente no caixa...");
-
-                        // Buscar e tratar entrada correspondente no caixa
-                        return db.collection("Eventos").doc("filhasdoRei2025").collection("caixa")
-                            .where("pagamentoId", "==", pagamentoId)
-                            .where("referenciaOrigem", "==", "pagamento")
-                            .get();
-                    })
-                    .then((caixaSnapshot) => {
-                        if (!caixaSnapshot.empty) {
-                            console.log(`Encontradas ${caixaSnapshot.size} entrada(s) no caixa para estornar`);
-
-                            const batch = db.batch();
-
-                            caixaSnapshot.forEach((doc) => {
-                                const transacaoCaixa = doc.data();
-
-                                // Opção 1: Criar transação de estorno (RECOMENDADO para auditoria)
-                                const novaRefEstorno = db.collection("Eventos").doc("filhasdoRei2025").collection("caixa").doc();
-
-                                batch.set(novaRefEstorno, {
-                                    descricao: `ESTORNO - ${transacaoCaixa.descricao}`,
-                                    data: new Date().toISOString().substring(0, 10),
-                                    valor: transacaoCaixa.valor,
-                                    tipo: 'saida', // Estorno é uma saída
-                                    categoria: transacaoCaixa.categoria,
-                                    metodo: transacaoCaixa.metodo,
-                                    observacao: `Estorno do pagamento - Ref Original: ${pagamentoId}`,
-                                    referenciaOrigem: 'estorno_pagamento',
-                                    pagamentoId: pagamentoId,
-                                    participanteId: participanteId,
-                                    transacaoOriginalId: doc.id, // Referência à transação original
-                                    dataCriacao: new Date().toISOString()
-                                });
-
-                                // Opção 2: Marcar transação original como estornada (para histórico)
-                                batch.update(doc.ref, {
-                                    status: 'estornado',
-                                    dataEstorno: new Date().toISOString(),
-                                    observacao: (transacaoCaixa.observacao || '') + ' [ESTORNADO]'
-                                });
-
-                                // Opção 3: Se preferir deletar completamente (NÃO RECOMENDADO)
-                                // batch.delete(doc.ref);
-                            });
-
-                            return batch.commit();
-                        } else {
-                            console.log("Nenhuma entrada encontrada no caixa para este pagamento");
-                            return Promise.resolve(); // Continua o fluxo mesmo sem encontrar
+                    .then((pagamentosIds) => {
+                        if (!pagamentosIds || pagamentosIds.length === 0) {
+                            return Promise.resolve();
                         }
+
+                        console.log("Buscando entradas correspondentes no caixa...");
+
+                        // Buscar todas as entradas no caixa relacionadas aos pagamentos estornados
+                        const promises = pagamentosIds.map(pagamentoId => {
+                            return db.collection("Eventos").doc("filhasdoRei2025").collection("caixa")
+                                .where("pagamentoId", "==", pagamentoId)
+                                .where("referenciaOrigem", "==", "pagamento")
+                                .get();
+                        });
+
+                        return Promise.all(promises).then((caixaSnapshots) => {
+                            const batch = db.batch();
+                            let totalEstornos = 0;
+
+                            caixaSnapshots.forEach((caixaSnapshot, index) => {
+                                const pagamentoId = pagamentosIds[index];
+
+                                caixaSnapshot.forEach((doc) => {
+                                    const transacaoCaixa = doc.data();
+                                    totalEstornos++;
+
+                                    // Criar transação de estorno
+                                    const novaRefEstorno = db.collection("Eventos").doc("filhasdoRei2025").collection("caixa").doc();
+
+                                    batch.set(novaRefEstorno, {
+                                        descricao: `ESTORNO TOTAL - ${transacaoCaixa.descricao}`,
+                                        data: new Date().toISOString().substring(0, 10),
+                                        valor: transacaoCaixa.valor,
+                                        tipo: 'saida',
+                                        categoria: transacaoCaixa.categoria,
+                                        metodo: transacaoCaixa.metodo,
+                                        observacao: `Estorno total do participante - Ref Original: ${pagamentoId}`,
+                                        referenciaOrigem: 'estorno_pagamento',
+                                        pagamentoId: pagamentoId,
+                                        participanteId: participanteId,
+                                        transacaoOriginalId: doc.id,
+                                        dataCriacao: new Date().toISOString()
+                                    });
+
+                                    // Marcar transação original como estornada
+                                    batch.update(doc.ref, {
+                                        status: 'estornado',
+                                        dataEstorno: new Date().toISOString(),
+                                        observacao: (transacaoCaixa.observacao || '') + ' [ESTORNADO TOTAL]'
+                                    });
+                                });
+                            });
+
+                            console.log(`Processando ${totalEstornos} entrada(s) no caixa`);
+                            return batch.commit();
+                        });
                     })
                     .then(() => {
-                        console.log("Estorno processado com sucesso em todas as coleções");
-                        alert('Pagamento estornado com sucesso!\nO estorno foi registrado no controle de caixa.');
+                        console.log("Estorno total processado com sucesso em todas as coleções");
+                        alert('Todos os pagamentos do participante foram estornados com sucesso!\nOs estornos foram registrados no controle de caixa.');
                         $('#estornoModal').modal('hide');
 
                         // Recarregar dados
@@ -674,8 +701,8 @@
                         carregarUltimosPagamentos();
                     })
                     .catch((error) => {
-                        console.error("Erro ao estornar pagamento: ", error);
-                        alert("Erro ao estornar pagamento. Tente novamente.");
+                        console.error("Erro ao estornar pagamentos: ", error);
+                        alert("Erro ao estornar pagamentos. Tente novamente.");
                     });
             });
 
@@ -687,19 +714,34 @@
                 .where("status", "==", "confirmado")
                 .get()
                 .then((pagamentosSnapshot) => {
-                    // Quantidade de pagamentos confirmados
-                    const totalPagamentosConfirmados = pagamentosSnapshot.size;
-
-                    // Calcular o valor total pago
-                    let valorTotalPago = 0;
-
+                    // Agrupar pagamentos por participante (mesma lógica da tabela)
+                    const pagamentosAgrupados = {};
+                    
                     pagamentosSnapshot.forEach((doc) => {
                         const pagamento = doc.data();
-                        valorTotalPago += pagamento.valor || 0;
+                        const participanteId = pagamento.participanteId;
+                        
+                        if (!pagamentosAgrupados[participanteId]) {
+                            pagamentosAgrupados[participanteId] = {
+                                valorTotal: 0
+                            };
+                        }
+                        
+                        // Somar o valor do pagamento
+                        pagamentosAgrupados[participanteId].valorTotal += pagamento.valor || 0;
+                    });
+
+                    // Contar participantes únicos com pagamentos confirmados
+                    const totalParticipantesComPagamento = Object.keys(pagamentosAgrupados).length;
+                    
+                    // Calcular o valor total pago (soma de todos os valores agrupados)
+                    let valorTotalPago = 0;
+                    Object.values(pagamentosAgrupados).forEach(participante => {
+                        valorTotalPago += participante.valorTotal;
                     });
 
                     // Atualizar o card de pagamentos confirmados
-                    $('#totalPagos').text(totalPagamentosConfirmados);
+                    $('#totalPagos').text(totalParticipantesComPagamento);
                     $('#valorPago').text(valorTotalPago.toFixed(2).replace('.', ','));
 
                     // Agora vamos buscar os dados de inscrições para os outros cards
@@ -710,7 +752,7 @@
                 .then((querySnapshot) => {
                     let totalInscritos = querySnapshot.size;
                     let totalPendentes = 0;
-                    const valorInscricao = 130.00;
+                    const valorInscricao = 50.00;
 
                     querySnapshot.forEach((doc) => {
                         const participante = doc.data();
@@ -786,7 +828,12 @@
                         const participante = doc.data();
                         const nomeCompleto = participante.nome;
                         const participanteId = doc.id;
-                        const limiteValor = 130.00; // Valor padrão para Veredas 2025
+                        const limiteValor = 50.00; // Valor padrão para Veredas 2025
+
+                        // Filtrar apenas participantes que optaram por adquirir a blusa
+                        if (participante.adquirirBlusa !== 'sim') {
+                            return; // Pular este participante se não optou pela blusa
+                        }
 
                         // Criar uma promessa para buscar os pagamentos desse participante
                         const promise = db.collection("Eventos").doc("filhasdoRei2025").collection("pagamentos")
@@ -855,18 +902,41 @@
                 .get()
                 .then((querySnapshot) => {
                     todosPagamentos = [];
+                    const promises = [];
 
                     querySnapshot.forEach((doc) => {
                         const pagamento = doc.data();
                         pagamento.id = doc.id; // Armazenar o ID do documento
-                        todosPagamentos.push(pagamento);
+                        
+                        // Buscar dados do participante para obter o tamanho da blusa
+                        const promise = db.collection("Eventos").doc("filhasdoRei2025").collection("inscricoes")
+                            .doc(pagamento.participanteId)
+                            .get()
+                            .then((participanteDoc) => {
+                                if (participanteDoc.exists) {
+                                    const participanteData = participanteDoc.data();
+                                    pagamento.tamanhoBlusa = participanteData.tamanhoBlusa || 'N/A';
+                                } else {
+                                    pagamento.tamanhoBlusa = 'N/A';
+                                }
+                                todosPagamentos.push(pagamento);
+                            });
+                        
+                        promises.push(promise);
                     });
 
-                    // Inicializar a ordenação
-                    updateSortIcon();
+                    // Aguardar todas as consultas de participantes
+                    Promise.all(promises)
+                        .then(() => {
+                            // Inicializar a ordenação
+                            updateSortIcon();
 
-                    // Aplicar filtros e ordenação
-                    aplicarOrdenacao();
+                            // Aplicar filtros e ordenação
+                            aplicarOrdenacao();
+                        })
+                        .catch((error) => {
+                            console.error("Erro ao carregar dados dos participantes: ", error);
+                        });
                 })
                 .catch((error) => {
                     console.error("Erro ao carregar pagamentos: ", error);
@@ -878,13 +948,53 @@
             tabelaPagamentos.html('');
 
             if (pagamentos.length === 0) {
-                tabelaPagamentos.html('<tr><td colspan="6" class="text-center">Nenhum pagamento encontrado</td></tr>');
+                tabelaPagamentos.html('<tr><td colspan="7" class="text-center">Nenhum pagamento encontrado</td></tr>');
                 return;
             }
 
+            // Agrupar pagamentos por participante e somar valores
+            const pagamentosAgrupados = {};
+            
             pagamentos.forEach(pagamento => {
+                const participanteId = pagamento.participanteId;
+                
+                if (!pagamentosAgrupados[participanteId]) {
+                    pagamentosAgrupados[participanteId] = {
+                        ...pagamento,
+                        valorTotal: 0,
+                        temPagamentoConfirmado: false
+                    };
+                }
+                
+                // Verificar se tem pelo menos um pagamento confirmado
+                if (pagamento.status === 'confirmado') {
+                    pagamentosAgrupados[participanteId].temPagamentoConfirmado = true;
+                    // Somar apenas valores confirmados
+                    pagamentosAgrupados[participanteId].valorTotal += pagamento.valor;
+                }
+                
+                // Manter a data do último pagamento confirmado
+                if (pagamento.status === 'confirmado' && 
+                    (new Date(pagamento.dataPagamento) > new Date(pagamentosAgrupados[participanteId].dataPagamento) || 
+                     !pagamentosAgrupados[participanteId].temPagamentoConfirmado)) {
+                    pagamentosAgrupados[participanteId].dataPagamento = pagamento.dataPagamento;
+                    pagamentosAgrupados[participanteId].formaPagamento = pagamento.formaPagamento;
+                    pagamentosAgrupados[participanteId].status = pagamento.status;
+                    pagamentosAgrupados[participanteId].id = pagamento.id;
+                }
+            });
+
+            // Filtrar apenas participantes com pelo menos um pagamento confirmado
+            const participantesComPagamentoConfirmado = Object.values(pagamentosAgrupados)
+                .filter(participante => participante.temPagamentoConfirmado);
+
+            // Ordenar por nome
+            const pagamentosUnicos = participantesComPagamentoConfirmado
+                .sort((a, b) => a.participanteNome.localeCompare(b.participanteNome));
+
+            pagamentosUnicos.forEach(pagamento => {
                 const dataPagamento = formatarData(pagamento.dataPagamento);
-                const valor = (pagamento.valor).toFixed(2).replace('.', ',');
+                const valor = (pagamento.valorTotal).toFixed(2).replace('.', ',');
 
                 const linha = `
             <tr>
@@ -892,6 +1002,7 @@
                 <td>${dataPagamento}</td>
                 <td>R$ ${valor}</td>
                 <td>${formatarFormaPagamento(pagamento.formaPagamento)}</td>
+                <td>${pagamento.tamanhoBlusa || 'N/A'}</td>
                 <td>
                     <span class="badge ${pagamento.status === 'confirmado' ? 'badge-pago' : 'badge-pendente'}">
                         ${pagamento.status === 'confirmado' ? 'Confirmado' : 'Estornado'}
