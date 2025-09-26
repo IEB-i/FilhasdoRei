@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.bootstrap4.min.css">
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
@@ -93,6 +95,25 @@
         .card-body .icon {
             font-size: 3rem;
             margin-bottom: 15px;
+        }
+
+        .btn-export {
+            background: linear-gradient(45deg, #7a2c6c, #a92f85);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(122, 44, 108, 0.3);
+        }
+
+        .btn-export:hover {
+            background: linear-gradient(45deg, #a92f85, #7a2c6c);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(122, 44, 108, 0.4);
+            color: white;
         }
 
         .total-card .icon {
@@ -364,7 +385,18 @@
             </div>
         </div>
 
-        <div class="row mt-3">
+        <div class="row mt-3 mb-3">
+            <div class="col-md-8">
+                <h4>Lista de Participantes com Blusas</h4>
+            </div>
+            <div class="col-md-4 text-right">
+                <button class="btn btn-export" id="exportarExcel">
+                    <i class="material-icons align-middle">file_download</i> Exportar Excel
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
             <div class="col-md-12">
                 <div class="card dashboard-card">
                     <div class="card-header">
@@ -480,13 +512,51 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="../firebase/firebaseConfig.js"></script>
 
     <script>
 
+        // Variável global para o DataTable
+        let dataTableBlusas;
+
         $(document).ready(function () {
+            // Inicializar DataTable
+            dataTableBlusas = $('#pagamentosTable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/pt-BR.json'
+                },
+                responsive: true,
+                dom: 'Bfrti',
+                paging: false,
+                scrollY: '350px',
+                scrollX: true,
+                scrollCollapse: true,
+                fixedHeader: true,
+                buttons: [
+                    {
+                        extend: 'excel',
+                        text: 'Exportar Excel',
+                        className: 'btn btn-export d-none',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6] // Colunas: Participante, Data, Valor, Forma, Tamanho, Blusa, Status
+                        },
+                        filename: 'Blusas_FilhasdoRei_2025'
+                    }
+                ]
+            });
+
+            // Conectar o botão personalizado ao botão do DataTable
+            $('#exportarExcel').on('click', function() {
+                dataTableBlusas.button(0).trigger();
+            });
+
             // Definir valor padrão de R$ 0,00
             $('#valorPagamento').val('0,00');
             $('#valorPagamento, #editValorPagamento').on('input', function () {
@@ -668,10 +738,11 @@
                         
                         // Contar tamanhos
                         const tamanho = participante.tamanhoBlusa;
-                        if (tamanhos.hasOwnProperty(tamanho)) {
+                        if (tamanho && tamanhos.hasOwnProperty(tamanho)) {
                             tamanhos[tamanho]++;
-                            totalBlusas++;
                         }
+                        // Sempre contar o total de blusas para participantes que querem blusa
+                        totalBlusas++;
 
                         // Buscar pagamentos para cada participante
                         const promise = db.collection("Eventos").doc("filhasdoRei2025").collection("pagamentos")
@@ -847,11 +918,15 @@
         }
 
         function atualizarTabelaPagamentos(participantes) {
-            const tabelaPagamentos = $('#pagamentosList');
-            tabelaPagamentos.html('');
+            // Limpar DataTable
+            if (dataTableBlusas) {
+                dataTableBlusas.clear();
+            }
 
             if (participantes.length === 0) {
-                tabelaPagamentos.html('<tr><td colspan="8" class="text-center">Nenhum participante encontrado</td></tr>');
+                if (dataTableBlusas) {
+                    dataTableBlusas.draw();
+                }
                 return;
             }
 
@@ -882,42 +957,38 @@
                         statusTexto = 'Pendente';
                 }
 
-                const linha = `
-            <tr>
-                <td>${participante.participanteNome}</td>
-                <td>${dataPagamento}</td>
-                <td>R$ ${valor}</td>
-                <td>${formaPagamento}</td>
-                <td>${participante.tamanhoBlusa || 'N/A'}</td>
-                <td>
-                    <span class="badge badge-success">
-                        ${participante.adquirirBlusa === 'sim' ? 'Sim' : 'Não'}
-                    </span>
-                </td>
-                <td>
-                    <span class="badge ${badgeClass}">
-                        ${statusTexto}
-                    </span>
-                </td>
-                <td>
-                    ${participante.statusPagamento === 'pago' || participante.statusPagamento === 'parcial' ? `
+                // Preparar dados para o DataTable
+                const acoesBotoes = participante.statusPagamento === 'pago' || participante.statusPagamento === 'parcial' ? 
+                    (participante.id ? `
                         <div class="btn-group" role="group">
-                            ${participante.id ? `
-                                <button class="btn btn-info btn-sm" onclick="prepararEdicao('${participante.id}')">
-                                    <i class="material-icons">edit</i>
-                                </button>
-                                <button class="btn btn-danger btn-sm" onclick="prepararEstorno('${participante.id}', '${participante.participanteId}', '${participante.participanteNome}')">
-                                    <i class="material-icons">cancel</i>
-                                </button>
-                            ` : ''}
+                            <button class="btn btn-info btn-sm" onclick="prepararEdicao('${participante.id}')">
+                                <i class="material-icons">edit</i>
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="prepararEstorno('${participante.id}', '${participante.participanteId}', '${participante.participanteNome}')">
+                                <i class="material-icons">cancel</i>
+                            </button>
                         </div>
-                    ` : '-'}
-                </td>
-            </tr>
-            `;
+                    ` : '') : '-';
 
-                tabelaPagamentos.append(linha);
+                // Adicionar linha ao DataTable
+                if (dataTableBlusas) {
+                    dataTableBlusas.row.add([
+                        participante.participanteNome,
+                        dataPagamento,
+                        `R$ ${valor}`,
+                        formaPagamento,
+                        participante.tamanhoBlusa || 'N/A',
+                        `<span class="badge badge-success">${participante.adquirirBlusa === 'sim' ? 'Sim' : 'Não'}</span>`,
+                        `<span class="badge ${badgeClass}">${statusTexto}</span>`,
+                        acoesBotoes
+                    ]);
+                }
             });
+
+            // Redesenhar a tabela
+            if (dataTableBlusas) {
+                dataTableBlusas.draw();
+            }
         }
 
         function prepararEstorno(pagamentoId, participanteId, participanteNome) {

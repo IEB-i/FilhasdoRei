@@ -155,7 +155,6 @@
 .container h3 {
     position: sticky;
     top: 0;
-    background-color: #fff;
     z-index: 30;
     padding: 10px 0;
     margin-bottom: 15px;
@@ -268,6 +267,8 @@
                         <!-- <th>Responsável</th> -->
                         <!-- <th>Cel. Responsável</th> -->
                         <th>Igreja</th>
+                        <th>Quer Blusa</th>
+                        <th>Tamanho</th>
                         <th>Pagamento</th>
                         <th>Ações</th>
                     </tr>
@@ -394,7 +395,7 @@
             text: 'Exportar Excel',
             className: 'btn btn-export d-none',
             exportOptions: {
-                columns: [0, 1, 2, 3, 4, 5]
+                columns: [0, 1, 2, 3, 4, 5, 6, 7]
             }
         },
     ]
@@ -527,6 +528,8 @@
                             participante.genero || 'N/A',
                             participante.celular,
                             participante.igreja === 'Outra' ? participante.outraIgreja : participante.igreja,
+                            participante.adquirirBlusa === 'sim' ? 'Sim' : 'Não',
+                            participante.adquirirBlusa === 'sim' ? (participante.tamanhoBlusa || 'N/A') : '-',
                             `<span class="badge ${participante.statusPagamento === 'pago' ? 'badge-pago' : 'badge-pendente'}">${participante.statusPagamento === 'pago' ? 'Pago' : 'Pendente'}</span>`,
                             `<button class="btn btn-info btn-sm" onclick="verDetalhes('${doc.id}')">Ver</button>`
                         ]);

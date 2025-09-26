@@ -223,15 +223,19 @@
 
                         <!-- Estatísticas -->
                         <div class="row text-center">
-                            <div class="col-4">
+                            <div class="col-3">
                                 <h3 class="stats-value text-primary" id="totalEncontristas">0</h3>
                                 <p class="stats-label">Inscritos</p>
                             </div>
-                            <div class="col-4">
+                            <div class="col-3">
                                 <h3 class="stats-value text-success" id="pagosEncontristas">0</h3>
                                 <p class="stats-label">Pagos</p>
                             </div>
-                            <div class="col-4">
+                            <div class="col-3">
+                                <h3 class="stats-value text-info" id="totalBlusas">0</h3>
+                                <p class="stats-label">Querem Blusa</p>
+                            </div>
+                            <div class="col-3">
                                 <h3 class="stats-value text-warning" id="percentualEncontristas">0%</h3>
                                 <p class="stats-label">% Pagantes</p>
                             </div>
@@ -443,6 +447,7 @@
                 
                 let totalParticipantes = 0;
                 let pagosParticipantes = 0;
+                let totalBlusas = 0;
                 
                 querySnapshot.forEach((doc) => {
                     const participante = doc.data();
@@ -450,13 +455,17 @@
                         id: doc.id,
                         nome: participante.nome,
                         tipoInsc: participante.tipoInsc || 'encontrista',
-                        statusPagamento: participante.statusPagamento
+                        statusPagamento: participante.statusPagamento,
+                        adquirirBlusa: participante.adquirirBlusa
                     });
                     
                     // Para o evento Veredas, todos são considerados encontristas
                     totalParticipantes++;
                     if (participante.statusPagamento === 'pago') {
                         pagosParticipantes++;
+                    }
+                    if (participante.adquirirBlusa === 'sim') {
+                        totalBlusas++;
                     }
                 });
                 
@@ -466,6 +475,7 @@
                 console.log('📊 Resultados calculados:', {
                     totalParticipantes,
                     pagosParticipantes,
+                    totalBlusas,
                     percentualParticipantes,
                     pendentesParticipantes
                 });
@@ -473,6 +483,7 @@
                 // Atualizar elementos do DOM
                 document.getElementById('totalEncontristas').textContent = totalParticipantes;
                 document.getElementById('pagosEncontristas').textContent = pagosParticipantes;
+                document.getElementById('totalBlusas').textContent = totalBlusas;
                 document.getElementById('percentualEncontristas').textContent = percentualParticipantes + '%';
                 document.getElementById('pendentesEncontristas').textContent = pendentesParticipantes;
                 
@@ -487,6 +498,7 @@
                 localStorage.setItem('estatisticasCache', JSON.stringify({
                     totalParticipantes,
                     pagosParticipantes,
+                    totalBlusas,
                     percentualParticipantes,
                     pendentesParticipantes,
                     timestamp: Date.now()
@@ -506,6 +518,7 @@
                             console.log('📦 Carregando dados do cache...');
                             document.getElementById('totalEncontristas').textContent = dadosCache.totalParticipantes + ' (cache)';
                             document.getElementById('pagosEncontristas').textContent = dadosCache.pagosParticipantes + ' (cache)';
+                            document.getElementById('totalBlusas').textContent = (dadosCache.totalBlusas || 0) + ' (cache)';
                             document.getElementById('percentualEncontristas').textContent = dadosCache.percentualParticipantes + '% (cache)';
                             document.getElementById('pendentesEncontristas').textContent = dadosCache.pendentesParticipantes + ' (cache)';
                             
@@ -523,6 +536,7 @@
                 // Valores padrão em caso de erro
                 document.getElementById('totalEncontristas').textContent = 'Erro de conexão';
                 document.getElementById('pagosEncontristas').textContent = 'Erro de conexão';
+                document.getElementById('totalBlusas').textContent = 'Erro de conexão';
                 document.getElementById('percentualEncontristas').textContent = 'Erro de conexão';
                 document.getElementById('pendentesEncontristas').textContent = 'Erro de conexão';
             }
