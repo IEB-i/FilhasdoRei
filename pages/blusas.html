@@ -248,7 +248,7 @@
         <a href="gestao.html" class="btn-voltar">
             <i class="material-icons">arrow_back</i>
         </a>
-        <h2 class="header-title">PAGAMENTOS - FR 2025</h2>
+        <h2 class="header-title">BLUSAS - FR 2025</h2>
     </div>
 
     <div class="container mt-5">
@@ -667,7 +667,7 @@
                         const participanteId = doc.id;
                         
                         // Contar tamanhos
-                        const tamanho = participante.tamanhoblusa;
+                        const tamanho = participante.tamanhoBlusa;
                         if (tamanhos.hasOwnProperty(tamanho)) {
                             tamanhos[tamanho]++;
                             totalBlusas++;
@@ -698,7 +698,7 @@
                                 participantes.push({
                                     id: participanteId,
                                     nome: participante.nome,
-                                    tamanho: participante.tamanhoblusa,
+                                    tamanho: participante.tamanhoBlusa,
                                     totalPago: totalPago,
                                     statusPagamento: statusPagamento
                                 });
