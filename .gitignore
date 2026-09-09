@@ -2,3 +2,5 @@ node_modules/
 .env
 *.log
 
+
+qrcode_local.png
