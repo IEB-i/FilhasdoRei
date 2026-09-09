@@ -4,95 +4,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Obrigado pela Inscrição</title>
+    <title>Obrigado pela Inscrição - Filhas do Rei 2026</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="./assets/3.ico">
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: #f4ebda;
-            padding-top: 50px;
+            padding: 30px 15px;
             color: #1f2916;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 650px;
             margin: 0 auto;
             text-align: center;
         }
 
         h1 {
             color: #00490e;
-            margin-bottom: 30px;
+            margin-bottom: 5px;
             font-weight: 700;
+            font-size: 2rem;
         }
 
         h2 {
             color: #4e752c;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 20px;
         }
 
-        a {
+        .card-box {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px auto;
+            border: 1px solid rgba(78, 117, 44, 0.2);
+            box-shadow: 0 3px 12px rgba(11, 45, 0, 0.06);
+            text-align: left;
+        }
+
+        .card-box-title {
+            font-size: 1.05rem;
+            font-weight: 700;
             color: #00490e;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
         }
 
-        a:hover {
+        .card-box-title i {
+            margin-right: 8px;
             color: #4e752c;
         }
 
-        img {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 30px;
+        .contact-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .desktop-image {
-            margin-top: 0px;
-            width: 100%;
-            /* 100% da largura disponível */
-            height: auto;
-            max-height: 120vh;
-            /* Limita a altura a 90% da altura da viewport */
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            object-fit: contain;
-            /* Garante que a imagem inteira seja exibida */
+        .btn-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #25D366;
+            color: #ffffff !important;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 8px 18px;
+            border-radius: 20px;
+            text-decoration: none !important;
+            box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
+            transition: all 0.2s ease;
         }
 
-        .mobile-image {
-            margin-top: 0;
-            /* Posiciona no topo vertical */
-            max-width: 100%;
-            display: none;
-            margin-left: auto;
-            margin-right: auto;
+        .btn-whatsapp:hover {
+            background-color: #1ebc57;
+            transform: translateY(-1px);
+        }
+
+        .btn-whatsapp i {
+            font-size: 1.15rem;
+            margin-right: 6px;
+        }
+
+        .pix-grid {
+            background: #faf7f0;
+            border: 1px dashed #4e752c;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-top: 10px;
+            font-size: 0.95rem;
+        }
+
+        .pix-key-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #ffffff;
+            border: 1px solid #ddd2be;
+            border-radius: 6px;
+            padding: 6px 10px;
+            margin-top: 6px;
+            font-family: monospace;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #00490e;
+        }
+
+        .btn-copy-pix {
+            background-color: #00490e;
+            color: #ffffff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-copy-pix:hover {
+            background-color: #4e752c;
+        }
+
+        .notice-badge {
+            background-color: #fbf6ec;
+            border-left: 3px solid #4e752c;
+            padding: 8px 12px;
+            font-size: 0.88rem;
+            border-radius: 4px;
+            margin-top: 10px;
         }
 
         .btn-nova-inscricao {
             background: linear-gradient(to right, #00490e, #4e752c);
             border: none;
-            color: white;
-            padding: 12px 30px;
-            font-size: 16px;
+            color: white !important;
+            padding: 10px 24px;
+            font-size: 15px;
             font-weight: 600;
             border-radius: 25px;
-            margin: 20px 0;
+            margin: 15px 0;
             transition: all 0.3s ease;
-            text-decoration: none;
+            text-decoration: none !important;
             display: inline-block;
-            box-shadow: 0 4px 15px rgba(11, 45, 0, 0.3);
+            box-shadow: 0 3px 12px rgba(11, 45, 0, 0.25);
         }
 
         .btn-nova-inscricao:hover {
             background: linear-gradient(to right, #4e752c, #00490e);
-            color: white;
-            text-decoration: none;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(11, 45, 0, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .desktop-image {
+            width: 100%;
+            height: auto;
+            max-height: 120vh;
+            display: block;
+            margin: 15px auto 0 auto;
+            object-fit: contain;
+        }
+
+        .mobile-image {
+            max-width: 100%;
+            display: none;
+            margin: 15px auto 0 auto;
         }
 
         @media screen and (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+
             .mobile-image {
                 display: block;
             }
@@ -101,9 +193,14 @@
                 display: none;
             }
 
-            .btn-nova-inscricao {
-                padding: 10px 25px;
-                font-size: 14px;
+            .pix-key-row {
+                flex-direction: column;
+                gap: 6px;
+                text-align: center;
+            }
+
+            .btn-copy-pix {
+                width: 100%;
             }
         }
     </style>
@@ -112,31 +209,102 @@
 <body>
     <div class="container">
         <h1>Obrigado!</h1>
-        <h2>Dados Coletados com Sucesso!</h2>
-        <p>Olá! Você se inscreveu com sucesso no Evento <strong>Filhas do Rei 2026.</strong></p>
-        <p><strong>Para pagamento e confirmação da blusa</strong>, entrar em contato com:</p>
-        <p><b>Jaqueline: </b><a href="https://wa.me/5583998371334" target="_blank">83
-                99837-1334</a></p>
+        <h2>Inscrição Realizada com Sucesso!</h2>
+        <p style="font-size: 1rem; margin-bottom: 15px;">Você está inscrita no Evento <strong>Filhas do Rei
+                2026.</strong></p>
 
-        <p><strong>🆓 INSCRIÇÕES GRATUITAS!</strong></p>
-        <p><strong>❤️ COLHEITA DO AMOR:</strong> Solicitamos a colaboração voluntária de 1kg de alimento não
-            perecível por participante no dia do evento, destinado a famílias em situação de vulnerabilidade social.
-        </p>
+        <!-- Card Informações e Contato Jacqueline -->
+        <div class="card-box">
+            <div class="card-box-title">
+                <i class="fas fa-info-circle"></i> Informações do Evento e Blusa
+            </div>
+            <div class="contact-row">
+                <span>Dúvidas e confirmação da blusa com <strong>Jacqueline</strong>:</span>
+                <a href="https://wa.me/5583998371334" target="_blank" class="btn-whatsapp">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+            </div>
+        </div>
 
-        <!-- Botão para fazer nova inscrição -->
-        <div style="margin: 30px 0;">
+        <!-- Card Pagamento PIX -->
+        <div class="card-box">
+            <div class="card-box-title">
+                <i class="fas fa-qrcode"></i> Pix para Pagamento da BLUSA
+            </div>
+
+            <div class="pix-grid">
+                <div><strong>Favorecido:</strong> Alda Lúcia da Silva</div>
+                <div style="margin-top: 4px;"><strong>Tipo de Chave:</strong> CPF</div>
+                <div class="pix-key-row">
+                    <span id="pixKeyText">14130807404</span>
+                    <button type="button" class="btn-copy-pix" id="btnCopyPix" onclick="copiarPix()">
+                        <i class="far fa-copy"></i> Copiar Pix
+                    </button>
+                </div>
+            </div>
+            <div class="notice-badge">
+                Após o pagamento, envie o comprovante para <strong>Jacqueline</strong> no WhatsApp.
+            </div>
+        </div>
+
+        <!-- Avisos do Evento -->
+        <div class="card-box" style="font-size: 0.9rem; padding: 14px 18px;">
+            <p style="margin-bottom: 4px;"><strong>🆓 Inscrições Gratuitas!</strong></p>
+            <p style="margin-bottom: 0;"><strong>❤️ Colheita do Amor:</strong> 1kg de alimento não perecível no dia do
+                evento.</p>
+        </div>
+
+        <!-- Botão Nova Inscrição -->
+        <div>
             <a href="frminscricao.html" class="btn-nova-inscricao">
-                <i class="fas fa-plus-circle" style="margin-right: 8px;"></i>
-                Fazer Nova Inscrição
+                <i class="fas fa-plus-circle" style="margin-right: 6px;"></i> Fazer Nova Inscrição
             </a>
         </div>
 
-        <img src="./assets/obrigado.png" alt="Texto" class="img-fluid mb-4 desktop-image">
-        <img src="./assets/obrigado.png" alt="Texto" class="img-fluid mb-4 mobile-image">
+        <img src="./assets/obrigado.png" alt="Filhas do Rei 2026" class="img-fluid mb-3 desktop-image">
+        <img src="./assets/obrigado.png" alt="Filhas do Rei 2026" class="img-fluid mb-3 mobile-image">
     </div>
 
-    <!-- Font Awesome para o ícone -->
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script>
+        function copiarPix() {
+            const pixKey = "14130807404";
+            const btn = document.getElementById("btnCopyPix");
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(pixKey).then(() => {
+                    mostrarCopiado(btn);
+                }).catch(() => {
+                    fallbackCopiar(pixKey, btn);
+                });
+            } else {
+                fallbackCopiar(pixKey, btn);
+            }
+        }
+
+        function fallbackCopiar(text, btn) {
+            const tempInput = document.createElement("input");
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            try {
+                document.execCommand("copy");
+                mostrarCopiado(btn);
+            } catch (err) {
+                alert("Chave Pix: " + text);
+            }
+            document.body.removeChild(tempInput);
+        }
+
+        function mostrarCopiado(btn) {
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> Copiado!';
+            btn.style.backgroundColor = '#28a745';
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.style.backgroundColor = '#00490e';
+            }, 2200);
+        }
+    </script>
 </body>
 
 </html>
