@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagamentos - FR 2025</title>
+    <title>Pagamentos - FR 2026</title>
     <link rel="shortcut icon" href="../assets/3.ico" type="image/x-icon">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -243,7 +243,7 @@
         <a href="gestao.html" class="btn-voltar">
             <i class="material-icons">arrow_back</i>
         </a>
-        <h2 class="header-title">PAGAMENTOS - FR 2025</h2>
+        <h2 class="header-title">PAGAMENTOS - FR 2026</h2>
     </div>
 
     <div class="container mt-5">
@@ -394,9 +394,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Você tem certeza que deseja estornar <strong>TODOS OS PAGAMENTOS</strong> de <strong id="estornoNome"></strong>?</p>
-                    <p>Esta ação irá estornar todo o valor já pago pelo participante e marcar o status como pendente.</p>
-                    <p><strong>Atenção:</strong> Todos os pagamentos confirmados deste participante serão estornados.</p>
+                    <p>Você tem certeza que deseja estornar <strong>TODOS OS PAGAMENTOS</strong> de <strong
+                            id="estornoNome"></strong>?</p>
+                    <p>Esta ação irá estornar todo o valor já pago pelo participante e marcar o status como pendente.
+                    </p>
+                    <p><strong>Atenção:</strong> Todos os pagamentos confirmados deste participante serão estornados.
+                    </p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -532,7 +535,7 @@
 
                 // Atualizar participante com informações de pagamento
                 console.log("Atualizando status do participante para 'pago'...");
-                db.collection("Eventos").doc("filhasdoRei2025").collection("inscricoes").doc(participanteId)
+                db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes").doc(participanteId)
                     .update({
                         statusPagamento: 'pago',
                         formaPagamento: formaPagamento,
@@ -544,7 +547,7 @@
                         console.log("Registrando pagamento na coleção de pagamentos...");
 
                         // Registrar pagamento na coleção de pagamentos
-                        return db.collection("Eventos").doc("filhasdoRei2025").collection("pagamentos").add({
+                        return db.collection("Eventos").doc("filhasdoRei2026").collection("pagamentos").add({
                             participanteId: participanteId,
                             participanteNome: $('#participante option:selected').text(),
                             valor: valorPagamento,
@@ -557,7 +560,7 @@
                         console.log("Pagamento registrado com sucesso, ID:", docRef.id);
 
                         // ADICIONAR: Registrar automaticamente no caixa
-                        return db.collection("Eventos").doc("filhasdoRei2025").collection("caixa").add({
+                        return db.collection("Eventos").doc("filhasdoRei2026").collection("caixa").add({
                             descricao: `Inscrição - ${$('#participante option:selected').text()}`,
                             data: new Date().toISOString().substring(0, 10),
                             valor: valorPagamento,
@@ -593,7 +596,7 @@
                 console.log("Iniciando estorno de todos os pagamentos do participante:", participanteId);
 
                 // Buscar todos os pagamentos confirmados do participante
-                db.collection("Eventos").doc("filhasdoRei2025").collection("pagamentos")
+                db.collection("Eventos").doc("filhasdoRei2026").collection("pagamentos")
                     .where("participanteId", "==", participanteId)
                     .where("status", "==", "confirmado")
                     .get()
@@ -620,7 +623,7 @@
                         });
 
                         // Atualizar status do participante
-                        const participanteRef = db.collection("Eventos").doc("filhasdoRei2025").collection("inscricoes").doc(participanteId);
+                        const participanteRef = db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes").doc(participanteId);
                         batch.update(participanteRef, {
                             statusPagamento: 'pendente',
                             dataPagamento: null,
@@ -642,7 +645,7 @@
 
                         // Buscar todas as entradas no caixa relacionadas aos pagamentos estornados
                         const promises = pagamentosIds.map(pagamentoId => {
-                            return db.collection("Eventos").doc("filhasdoRei2025").collection("caixa")
+                            return db.collection("Eventos").doc("filhasdoRei2026").collection("caixa")
                                 .where("pagamentoId", "==", pagamentoId)
                                 .where("referenciaOrigem", "==", "pagamento")
                                 .get();
@@ -660,7 +663,7 @@
                                     totalEstornos++;
 
                                     // Criar transação de estorno
-                                    const novaRefEstorno = db.collection("Eventos").doc("filhasdoRei2025").collection("caixa").doc();
+                                    const novaRefEstorno = db.collection("Eventos").doc("filhasdoRei2026").collection("caixa").doc();
 
                                     batch.set(novaRefEstorno, {
                                         descricao: `ESTORNO TOTAL - ${transacaoCaixa.descricao}`,
@@ -710,30 +713,30 @@
 
         function carregarDashboard() {
             // Primeiro, vamos buscar os pagamentos confirmados
-            db.collection("Eventos").doc("filhasdoRei2025").collection("pagamentos")
+            db.collection("Eventos").doc("filhasdoRei2026").collection("pagamentos")
                 .where("status", "==", "confirmado")
                 .get()
                 .then((pagamentosSnapshot) => {
                     // Agrupar pagamentos por participante (mesma lógica da tabela)
                     const pagamentosAgrupados = {};
-                    
+
                     pagamentosSnapshot.forEach((doc) => {
                         const pagamento = doc.data();
                         const participanteId = pagamento.participanteId;
-                        
+
                         if (!pagamentosAgrupados[participanteId]) {
                             pagamentosAgrupados[participanteId] = {
                                 valorTotal: 0
                             };
                         }
-                        
+
                         // Somar o valor do pagamento
                         pagamentosAgrupados[participanteId].valorTotal += pagamento.valor || 0;
                     });
 
                     // Contar participantes únicos com pagamentos confirmados
                     const totalParticipantesComPagamento = Object.keys(pagamentosAgrupados).length;
-                    
+
                     // Calcular o valor total pago (soma de todos os valores agrupados)
                     let valorTotalPago = 0;
                     Object.values(pagamentosAgrupados).forEach(participante => {
@@ -745,8 +748,8 @@
                     $('#valorPago').text(valorTotalPago.toFixed(2).replace('.', ','));
 
                     // Agora vamos buscar os dados de inscrições para os outros cards
-                    return db.collection("Eventos").doc("filhasdoRei2025").collection("inscricoes")
-                        .where("anoevento", "==", "2025")
+                    return db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes")
+                        .where("anoevento", "==", "2026")
                         .get();
                 })
                 .then((querySnapshot) => {
@@ -786,7 +789,7 @@
 
         function buscarFormasPagamento() {
             // Buscar pagamentos confirmados
-            db.collection("Eventos").doc("filhasdoRei2025").collection("pagamentos")
+            db.collection("Eventos").doc("filhasdoRei2026").collection("pagamentos")
                 .where("status", "==", "confirmado")
                 .get()
                 .then((querySnapshot) => {
@@ -816,9 +819,9 @@
 
             console.log("Iniciando o carregamento de participantes pendentes...");
 
-            // Buscar todos os participantes do evento 2025
-            db.collection("Eventos").doc("filhasdoRei2025").collection("inscricoes")
-                .where("anoevento", "==", "2025")
+            // Buscar todos os participantes do evento 2026
+            db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes")
+                .where("anoevento", "==", "2026")
                 .get()
                 .then((querySnapshot) => {
                     const participantesPendentes = [];
@@ -828,7 +831,7 @@
                         const participante = doc.data();
                         const nomeCompleto = participante.nome;
                         const participanteId = doc.id;
-                        const limiteValor = 50.00; // Valor padrão para Veredas 2025
+                        const limiteValor = 50.00; // Valor padrão para Veredas 2026
 
                         // Filtrar apenas participantes que optaram por adquirir a blusa
                         if (participante.adquirirBlusa !== 'sim') {
@@ -836,7 +839,7 @@
                         }
 
                         // Criar uma promessa para buscar os pagamentos desse participante
-                        const promise = db.collection("Eventos").doc("filhasdoRei2025").collection("pagamentos")
+                        const promise = db.collection("Eventos").doc("filhasdoRei2026").collection("pagamentos")
                             .where("participanteId", "==", participanteId)
                             .where("status", "==", "confirmado")
                             .get()
@@ -897,7 +900,7 @@
             tabelaPagamentos.html('');
 
             // Buscar pagamentos
-            db.collection("Eventos").doc("filhasdoRei2025").collection("pagamentos")
+            db.collection("Eventos").doc("filhasdoRei2026").collection("pagamentos")
                 .orderBy("dataPagamento", "desc")
                 .get()
                 .then((querySnapshot) => {
@@ -907,9 +910,9 @@
                     querySnapshot.forEach((doc) => {
                         const pagamento = doc.data();
                         pagamento.id = doc.id; // Armazenar o ID do documento
-                        
+
                         // Buscar dados do participante para obter o tamanho da blusa
-                        const promise = db.collection("Eventos").doc("filhasdoRei2025").collection("inscricoes")
+                        const promise = db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes")
                             .doc(pagamento.participanteId)
                             .get()
                             .then((participanteDoc) => {
@@ -921,7 +924,7 @@
                                 }
                                 todosPagamentos.push(pagamento);
                             });
-                        
+
                         promises.push(promise);
                     });
 
@@ -954,10 +957,10 @@
 
             // Agrupar pagamentos por participante e somar valores
             const pagamentosAgrupados = {};
-            
+
             pagamentos.forEach(pagamento => {
                 const participanteId = pagamento.participanteId;
-                
+
                 if (!pagamentosAgrupados[participanteId]) {
                     pagamentosAgrupados[participanteId] = {
                         ...pagamento,
@@ -965,18 +968,18 @@
                         temPagamentoConfirmado: false
                     };
                 }
-                
+
                 // Verificar se tem pelo menos um pagamento confirmado
                 if (pagamento.status === 'confirmado') {
                     pagamentosAgrupados[participanteId].temPagamentoConfirmado = true;
                     // Somar apenas valores confirmados
                     pagamentosAgrupados[participanteId].valorTotal += pagamento.valor;
                 }
-                
+
                 // Manter a data do último pagamento confirmado
-                if (pagamento.status === 'confirmado' && 
-                    (new Date(pagamento.dataPagamento) > new Date(pagamentosAgrupados[participanteId].dataPagamento) || 
-                     !pagamentosAgrupados[participanteId].temPagamentoConfirmado)) {
+                if (pagamento.status === 'confirmado' &&
+                    (new Date(pagamento.dataPagamento) > new Date(pagamentosAgrupados[participanteId].dataPagamento) ||
+                        !pagamentosAgrupados[participanteId].temPagamentoConfirmado)) {
                     pagamentosAgrupados[participanteId].dataPagamento = pagamento.dataPagamento;
                     pagamentosAgrupados[participanteId].formaPagamento = pagamento.formaPagamento;
                     pagamentosAgrupados[participanteId].status = pagamento.status;
@@ -1132,7 +1135,7 @@
                 }
 
                 // Atualizar o pagamento no Firestore
-                db.collection("Eventos").doc("filhasdoRei2025").collection("pagamentos").doc(pagamentoId)
+                db.collection("Eventos").doc("filhasdoRei2026").collection("pagamentos").doc(pagamentoId)
                     .update({
                         valor: valorPagamento,
                         formaPagamento: formaPagamento,
@@ -1140,7 +1143,7 @@
                     })
                     .then(() => {
                         // Atualizar o participante com as novas informações
-                        return db.collection("Eventos").doc("filhasdoRei2025").collection("inscricoes").doc(participanteId)
+                        return db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes").doc(participanteId)
                             .update({
                                 formaPagamento: formaPagamento,
                                 valorPago: valorPagamento

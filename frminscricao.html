@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INSCRIÇÕES FILHAS DO REI 2025</title>
+    <title>INSCRIÇÕES FILHAS DO REI 2026</title>
     <link rel="shortcut icon" href="./assets/3.ico" type="image/x-icon">
     <link rel="stylesheet" href="./css/common.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
         body {
+            background-color: #f4ebda;
             background-size: cover;
             background-attachment: fixed;
             background-position: center;
@@ -20,13 +21,18 @@
             padding-top: 80px;
         }
 
+        .header {
+            background: linear-gradient(to right, #00490e, #4e752c);
+        }
+
         .container {
             max-width: 900px;
             margin-top: 20px;
-            background-color: rgba(207, 145, 158, 0.2);
+            background-color: #ffffff;
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(78, 117, 44, 0.15);
+            box-shadow: 0 4px 20px rgba(11, 45, 0, 0.08);
         }
 
         .logo-circle {
@@ -73,31 +79,35 @@
         .divider {
             width: 75%;
             height: 2px;
-            background-color: #000;
+            background-color: #4e752c;
             margin: 30px auto;
         }
 
         .btn-primary {
-            background: linear-gradient(45deg, #6108a1, #9900CC);
+            background: linear-gradient(to right, #00490e, #4e752c);
             border: none;
+            box-shadow: 0 4px 15px rgba(11, 45, 0, 0.3);
+            transition: all 0.3s ease;
         }
 
         .btn-primary:hover {
-            background: linear-gradient(45deg, #200020, #9900CC);
+            background: linear-gradient(to right, #4e752c, #00490e);
+            box-shadow: 0 6px 20px rgba(11, 45, 0, 0.4);
+            transform: translateY(-1px);
         }
 
         .form-control:focus {
-            border-color: #3d7517;
-            box-shadow: 0 0 0 0.2rem rgba(128, 0, 128, 0.15);
+            border-color: #4e752c;
+            box-shadow: 0 0 0 0.2rem rgba(78, 117, 44, 0.25);
         }
 
         /* Estilo personalizado para campos readonly */
         #idade[readonly],
         #genero[readonly],
         #dataPreenchimento[readonly] {
-            background-color: rgba(207, 145, 158, 0.3);
-            border-color: #cf919e;
-            color: #6108a1;
+            background-color: #eaf1e7;
+            border-color: #c2d6b8;
+            color: #00490e;
             font-weight: 500;
         }
 
@@ -140,15 +150,20 @@
         }
 
         .info-box {
-            background-color: transparent;
-            border: 2px solid #dee2e6;
+            background-color: rgba(78, 117, 44, 0.05);
+            border: 2px solid #c2d6b8;
             border-radius: 5px;
             padding: 15px;
             margin-bottom: 20px;
         }
 
+        .info-box a {
+            color: #00490e;
+            font-weight: bold;
+        }
+
         input:checked+.slider {
-            background: linear-gradient(45deg, #3d7517, #3d7517);
+            background: linear-gradient(to right, #00490e, #4e752c);
         }
 
         input:checked+.slider:before {
@@ -188,10 +203,10 @@
         <div class="logo-circle">
             <img src="./assets/LogoBranco.png" alt="Logo IEBI">
         </div>
-        <h2 class="header-title">CONFERÊNCIA FILHAS DO REI 2025</h2>
+        <h2 class="header-title">CONFERÊNCIA FILHAS DO REI 2026</h2>
     </div>
     <div class="container">
-        <h2 class="text-center mb-4 font-weight-bold">CONFERÊNCIA FILHAS DO REI 2025</h2>
+        <h2 class="text-center mb-4 font-weight-bold">CONFERÊNCIA FILHAS DO REI 2026</h2>
         <div class="divider"></div>
 
         <div class="info-box">
@@ -298,9 +313,9 @@
 
         // Função para verificar se o nome já existe
         function verificarNomeExistente(nome) {
-            return db.collection("Eventos").doc("filhasdoRei2025").collection("inscricoes")
+            return db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes")
                 .where("nome", "==", nome)
-                .where("anoevento", "==", "2025")
+                .where("anoevento", "==", "2026")
                 .get()
                 .then((querySnapshot) => {
                     return !querySnapshot.empty;
@@ -342,8 +357,10 @@
         // Função para atualizar o texto de autorização com os nomes
         function atualizarTextoAutorizacao() {
             const nomeParticipante = document.getElementById('nome').value.trim();
-
-            document.getElementById('nomeParticipanteSpan').textContent = nomeParticipante;
+            const nomeSpan = document.getElementById('nomeParticipanteSpan');
+            if (nomeSpan) {
+                nomeSpan.textContent = nomeParticipante;
+            }
         }
 
         // Máscaras
@@ -372,13 +389,13 @@
         document.getElementById('dtnasc').addEventListener('change', function () {
             const dateValue = this.value;
             if (!dateValue || dateValue.length !== 10) return;
-            
+
             // Converter formato dd/mm/aaaa para mm/dd/aaaa para o objeto Date
             const dateParts = dateValue.split('/');
             const day = dateParts[0];
             const month = dateParts[1];
             const year = dateParts[2];
-            
+
             const birthDate = new Date(year, month - 1, day); // month - 1 porque Date usa índice 0-11
             const today = new Date();
             let age = today.getFullYear() - birthDate.getFullYear();
@@ -388,27 +405,28 @@
             }
             document.getElementById('idade').value = age + " anos";
 
-            // Controlar a exibição da autorização
+            // Controlar a exibição da autorização caso existam os campos
             const responsavelDiv = document.getElementById('responsavelDiv');
             const autorizacaoDiv = document.getElementById('autorizacaoDiv');
             const signatureContainer = document.querySelector('.signature-container')?.parentElement;
+            const contatoField = document.getElementById('contato');
+            const fonecontatoField = document.getElementById('fonecontato');
+            const cpfResponsavelField = document.getElementById('cpfResponsavel');
 
             if (age < 18) {
                 // Mostrar campos para menores de 18
-                responsavelDiv.style.display = 'block';
-                autorizacaoDiv.style.display = 'block';
+                if (responsavelDiv) responsavelDiv.style.display = 'block';
+                if (autorizacaoDiv) autorizacaoDiv.style.display = 'block';
                 if (signatureContainer) signatureContainer.style.display = 'block';
             } else {
                 // Ocultar campos para maiores de 18
-                responsavelDiv.style.display = 'none';
-                autorizacaoDiv.style.display = 'none';
+                if (responsavelDiv) responsavelDiv.style.display = 'none';
+                if (autorizacaoDiv) autorizacaoDiv.style.display = 'none';
                 if (signatureContainer) signatureContainer.style.display = 'none';
 
-
-
-                contatoField.parentElement.querySelector('label').innerHTML = 'Nome do Responsável';
-                fonecontatoField.parentElement.querySelector('label').innerHTML = 'Celular do Responsável';
-                cpfResponsavelField.parentElement.querySelector('label').innerHTML = 'CPF do Responsável';
+                if (contatoField) contatoField.parentElement.querySelector('label').innerHTML = 'Nome do Responsável';
+                if (fonecontatoField) fonecontatoField.parentElement.querySelector('label').innerHTML = 'Celular do Responsável';
+                if (cpfResponsavelField) cpfResponsavelField.parentElement.querySelector('label').innerHTML = 'CPF do Responsável';
             }
 
             // Atualizar o texto de autorização
@@ -504,7 +522,7 @@
                     igreja: document.getElementById('igreja').value,
                     outraIgreja: document.getElementById('outraIgreja').value,
                     dataPreenchimento: document.getElementById('dataPreenchimento').value,
-                    anoevento: '2025',
+                    anoevento: '2026',
                     statusPagamento: 'pendente',
                     dtRegistro: new Date().toISOString()
                 };
@@ -512,15 +530,17 @@
                 // Log para visualizar o objeto formData completo (sem a assinatura para não sobrecarregar o console)
                 console.log('Dados completos a serem enviados:', { ...formData, assinaturaResponsavel: formData.assinaturaResponsavel ? 'ASSINATURA_BASE64_REMOVIDA_DO_LOG' : null });
 
-                db.collection("Eventos").doc("filhasdoRei2025").collection("inscricoes").add(formData)
+                db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes").add(formData)
                     .then((docRef) => {
                         console.log("Documento escrito com ID: ", docRef.id);
 
-                        // ✅ ADICIONE ESTA PARTE - Incrementar contador
-                        return db.collection("Eventos").doc("filhasdoRei2025").update({
-                            "contador.totalInscricoes": firebase.firestore.FieldValue.increment(1),
-                            "contador.ultimaAtualizacao": firebase.firestore.FieldValue.serverTimestamp()
-                        });
+                        // ✅ Incrementar contador (usando set com merge: true para criar o documento caso ainda não exista)
+                        return db.collection("Eventos").doc("filhasdoRei2026").set({
+                            contador: {
+                                totalInscricoes: firebase.firestore.FieldValue.increment(1),
+                                ultimaAtualizacao: firebase.firestore.FieldValue.serverTimestamp()
+                            }
+                        }, { merge: true });
                     })
                     .then(() => {
                         console.log("Contador atualizado!");

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagamentos - FR 2025</title>
+    <title>Pagamentos - FR 2026</title>
     <link rel="shortcut icon" href="../assets/3.ico" type="image/x-icon">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -268,7 +268,7 @@
         <a href="gestao.html" class="btn-voltar">
             <i class="material-icons">arrow_back</i>
         </a>
-        <h2 class="header-title">BLUSAS - FR 2025</h2>
+        <h2 class="header-title">BLUSAS - FR 2026</h2>
     </div>
 
     <div class="container mt-5">
@@ -350,7 +350,8 @@
                         <!-- Filtro por Nome -->
                         <div class="form-group col-md-4">
                             <label for="filtroNome">Nome do Participante</label>
-                            <input type="text" class="form-control" id="filtroNome" placeholder="Digite o nome para filtrar...">
+                            <input type="text" class="form-control" id="filtroNome"
+                                placeholder="Digite o nome para filtrar...">
                         </div>
                         <!-- Filtro por Tamanho da Blusa -->
                         <div class="form-group col-md-3">
@@ -377,7 +378,8 @@
                         </div>
                         <!-- Botão de Limpar Filtros -->
                         <div class="form-group col-md-2 d-flex align-items-end">
-                            <button type="button" class="btn btn-secondary w-100" onclick="limparFiltros()">Limpar Filtros</button>
+                            <button type="button" class="btn btn-secondary w-100" onclick="limparFiltros()">Limpar
+                                Filtros</button>
                         </div>
                     </div>
                 </div>
@@ -446,9 +448,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Você tem certeza que deseja estornar <strong>TODOS OS PAGAMENTOS</strong> de <strong id="estornoNome"></strong>?</p>
-                    <p>Esta ação irá estornar todo o valor já pago pelo participante e marcar o status como pendente.</p>
-                    <p><strong>Atenção:</strong> Todos os pagamentos confirmados deste participante serão estornados.</p>
+                    <p>Você tem certeza que deseja estornar <strong>TODOS OS PAGAMENTOS</strong> de <strong
+                            id="estornoNome"></strong>?</p>
+                    <p>Esta ação irá estornar todo o valor já pago pelo participante e marcar o status como pendente.
+                    </p>
+                    <p><strong>Atenção:</strong> Todos os pagamentos confirmados deste participante serão estornados.
+                    </p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -556,11 +561,11 @@
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4, 5, 6] // Colunas: Participante, Telefone, Data, Valor, Tamanho, Blusa, Status
                         },
-                        filename: 'Blusas_FilhasdoRei_2025',
-                        title: 'Relatório de Blusas - Filhas do Rei 2025',
+                        filename: 'Blusas_FilhasdoRei_2026',
+                        title: 'Relatório de Blusas - Filhas do Rei 2026',
                         orientation: 'landscape',
                         pageSize: 'A4',
-                        customize: function(doc) {
+                        customize: function (doc) {
                             doc.defaultStyle.fontSize = 8;
                             doc.styles.tableHeader.fontSize = 9;
                             doc.styles.title.fontSize = 14;
@@ -571,7 +576,7 @@
             });
 
             // Conectar o botão personalizado ao botão do DataTable
-            $('#exportarPDF').on('click', function() {
+            $('#exportarPDF').on('click', function () {
                 dataTableBlusas.button(0).trigger();
             });
 
@@ -622,7 +627,7 @@
                 console.log("Iniciando estorno de todos os pagamentos do participante:", participanteId);
 
                 // Buscar todos os pagamentos confirmados do participante
-                db.collection("Eventos").doc("filhasdoRei2025").collection("pagamentos")
+                db.collection("Eventos").doc("filhasdoRei2026").collection("pagamentos")
                     .where("participanteId", "==", participanteId)
                     .where("status", "==", "confirmado")
                     .get()
@@ -649,7 +654,7 @@
                         });
 
                         // Atualizar status do participante
-                        const participanteRef = db.collection("Eventos").doc("filhasdoRei2025").collection("inscricoes").doc(participanteId);
+                        const participanteRef = db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes").doc(participanteId);
                         batch.update(participanteRef, {
                             statusPagamento: 'pendente',
                             dataPagamento: null,
@@ -671,7 +676,7 @@
 
                         // Buscar todas as entradas no caixa relacionadas aos pagamentos estornados
                         const promises = pagamentosIds.map(pagamentoId => {
-                            return db.collection("Eventos").doc("filhasdoRei2025").collection("caixa")
+                            return db.collection("Eventos").doc("filhasdoRei2026").collection("caixa")
                                 .where("pagamentoId", "==", pagamentoId)
                                 .where("referenciaOrigem", "==", "pagamento")
                                 .get();
@@ -689,7 +694,7 @@
                                     totalEstornos++;
 
                                     // Criar transação de estorno
-                                    const novaRefEstorno = db.collection("Eventos").doc("filhasdoRei2025").collection("caixa").doc();
+                                    const novaRefEstorno = db.collection("Eventos").doc("filhasdoRei2026").collection("caixa").doc();
 
                                     batch.set(novaRefEstorno, {
                                         descricao: `ESTORNO TOTAL - ${transacaoCaixa.descricao}`,
@@ -738,14 +743,14 @@
 
         function carregarDashboard() {
             // Buscar todos os participantes que querem blusa
-            db.collection("Eventos").doc("filhasdoRei2025").collection("inscricoes")
-                .where("anoevento", "==", "2025")
+            db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes")
+                .where("anoevento", "==", "2026")
                 .where("adquirirBlusa", "==", "sim")
                 .get()
                 .then((querySnapshot) => {
                     const participantes = [];
                     const promises = [];
-                    
+
                     // Contadores para tamanhos
                     const tamanhos = { PP: 0, P: 0, M: 0, G: 0, GG: 0, XG: 0 };
                     let totalBlusas = 0;
@@ -753,7 +758,7 @@
                     querySnapshot.forEach((doc) => {
                         const participante = doc.data();
                         const participanteId = doc.id;
-                        
+
                         // Contar tamanhos
                         const tamanho = participante.tamanhoBlusa;
                         if (tamanho && tamanhos.hasOwnProperty(tamanho)) {
@@ -763,7 +768,7 @@
                         totalBlusas++;
 
                         // Buscar pagamentos para cada participante
-                        const promise = db.collection("Eventos").doc("filhasdoRei2025").collection("pagamentos")
+                        const promise = db.collection("Eventos").doc("filhasdoRei2026").collection("pagamentos")
                             .where("participanteId", "==", participanteId)
                             .where("status", "==", "confirmado")
                             .get()
@@ -851,8 +856,8 @@
             tabelaPagamentos.html('');
 
             // Buscar todos os participantes que querem blusa
-            db.collection("Eventos").doc("filhasdoRei2025").collection("inscricoes")
-                .where("anoevento", "==", "2025")
+            db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes")
+                .where("anoevento", "==", "2026")
                 .where("adquirirBlusa", "==", "sim")
                 .get()
                 .then((querySnapshot) => {
@@ -862,16 +867,16 @@
                     querySnapshot.forEach((doc) => {
                         const participante = doc.data();
                         const participanteId = doc.id;
-                        
+
                         // Buscar pagamentos deste participante
-                        const promise = db.collection("Eventos").doc("filhasdoRei2025").collection("pagamentos")
+                        const promise = db.collection("Eventos").doc("filhasdoRei2026").collection("pagamentos")
                             .where("participanteId", "==", participanteId)
                             .get()
                             .then((pagamentosSnapshot) => {
                                 let totalPago = 0;
                                 let ultimoPagamento = null;
                                 let statusPagamento = 'pendente';
-                                
+
                                 // Calcular total pago e encontrar último pagamento confirmado
                                 pagamentosSnapshot.forEach((pagamentoDoc) => {
                                     const pagamento = pagamentoDoc.data();
@@ -885,7 +890,7 @@
                                         }
                                     }
                                 });
-                                
+
                                 // Determinar status de pagamento
                                 if (totalPago >= 50) {
                                     statusPagamento = 'pago';
@@ -894,7 +899,7 @@
                                 } else {
                                     statusPagamento = 'pendente';
                                 }
-                                
+
                                 // Criar objeto para a tabela
                                 const itemTabela = {
                                     participanteId: participanteId,
@@ -908,10 +913,10 @@
                                     formaPagamento: ultimoPagamento ? ultimoPagamento.formaPagamento : null,
                                     id: ultimoPagamento ? ultimoPagamento.id : null
                                 };
-                                
+
                                 todosPagamentos.push(itemTabela);
                             });
-                        
+
                         promises.push(promise);
                     });
 
@@ -920,7 +925,7 @@
                         .then(() => {
                             // Armazenar dados originais para filtros
                             participantesOriginais = [...todosPagamentos];
-                            
+
                             // Inicializar a ordenação
                             updateSortIcon();
 
@@ -957,12 +962,12 @@
                 const dataPagamento = participante.dataPagamento ? formatarData(participante.dataPagamento) : '-';
                 const valor = (participante.valorTotal || 0).toFixed(2).replace('.', ',');
                 const formaPagamento = participante.formaPagamento ? formatarFormaPagamento(participante.formaPagamento) : '-';
-                
+
                 // Determinar classe do badge baseado no status
                 let badgeClass = 'badge-pendente';
                 let statusTexto = 'Pendente';
-                
-                switch(participante.statusPagamento) {
+
+                switch (participante.statusPagamento) {
                     case 'pago':
                         badgeClass = 'badge-pago';
                         statusTexto = 'Pago';
@@ -977,7 +982,7 @@
                 }
 
                 // Preparar dados para o DataTable
-                const acoesBotoes = participante.statusPagamento === 'pago' || participante.statusPagamento === 'parcial' ? 
+                const acoesBotoes = participante.statusPagamento === 'pago' || participante.statusPagamento === 'parcial' ?
                     (participante.id ? `
                         <div class="btn-group" role="group">
                             <button class="btn btn-info btn-sm" onclick="prepararEdicao('${participante.id}')">
@@ -1079,7 +1084,7 @@
                 }
 
                 // Atualizar o pagamento no Firestore
-                db.collection("Eventos").doc("filhasdoRei2025").collection("pagamentos").doc(pagamentoId)
+                db.collection("Eventos").doc("filhasdoRei2026").collection("pagamentos").doc(pagamentoId)
                     .update({
                         valor: valorPagamento,
                         formaPagamento: formaPagamento,
@@ -1087,7 +1092,7 @@
                     })
                     .then(() => {
                         // Atualizar o participante com as novas informações
-                        return db.collection("Eventos").doc("filhasdoRei2025").collection("inscricoes").doc(participanteId)
+                        return db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes").doc(participanteId)
                             .update({
                                 formaPagamento: formaPagamento,
                                 valorPago: valorPagamento
@@ -1216,10 +1221,10 @@
             let participantesFiltrados = participantesOriginais.filter(participante => {
                 // Filtro por nome
                 const nomeMatch = !filtroNome || participante.participanteNome.toLowerCase().includes(filtroNome);
-                
+
                 // Filtro por tamanho da blusa
                 const tamanhoMatch = !filtroTamanho || participante.tamanhoBlusa === filtroTamanho;
-                
+
                 // Filtro por status de pagamento
                 const statusMatch = !filtroStatus || participante.statusPagamento === filtroStatus;
 

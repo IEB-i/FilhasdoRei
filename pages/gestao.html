@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GESTÃO - FILHAS DO REI 2025</title>
+    <title>GESTÃO - FILHAS DO REI 2026</title>
     <link rel="shortcut icon" href="../assets/3.ico" type="image/x-icon">
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -13,69 +13,74 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
         body {
-            background: linear-gradient(135deg, #f4ebda 0%, #e8d5c4 100%);
+            background: linear-gradient(135deg, #f4ebda 0%, #ecdcc7 100%);
             font-family: 'Montserrat', sans-serif;
-            color: #1d1d1d;
+            color: #1f2916;
             padding-top: 80px;
             min-height: 100vh;
         }
-        
+
         .btn-sair {
-            padding: 15px;
+            padding: 12px 30px;
             margin-bottom: 50px !important;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s;
         }
 
         .dashboard-card {
+            background: white;
             border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(11, 45, 0, 0.08);
+            border: 1px solid rgba(78, 117, 44, 0.15);
             transition: transform 0.3s, box-shadow 0.3s;
             margin-bottom: 20px;
             height: 100%;
-            border: none;
         }
 
         .dashboard-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 25px rgba(11, 45, 0, 0.15);
         }
 
         .card-icon {
             font-size: 3rem;
             margin-bottom: 15px;
-            color: #7a2c6c;
+            color: #00490e;
         }
 
         .summary-card {
+            background: white;
             border-radius: 15px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(11, 45, 0, 0.08);
+            border: 1px solid rgba(78, 117, 44, 0.15);
             transition: transform 0.3s ease;
         }
 
+        .summary-card.participantes {
+            border-left: 5px solid #00490e;
+        }
+
         .summary-card.tarefas {
-            border-left: 5px solid #7a2c6c;
+            border-left: 5px solid #4e752c;
         }
 
         .summary-card.financeiro {
-            border-left: 5px solid #a92f85;
-        }
-
-        .summary-card.participantes {
-            border-left: 5px solid #cf919e;
+            border-left: 5px solid #3d7517;
         }
 
         .summary-card.Encontreiros {
-            border-left: 5px solid #7a2c6c;
+            border-left: 5px solid #00490e;
         }
-
 
         .summary-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 6px 20px rgba(11, 45, 0, 0.12);
         }
 
         .btn-acamp {
-            background: linear-gradient(45deg, #7a2c6c, #a92f85);
+            background: linear-gradient(to right, #00490e, #4e752c);
             color: white;
             border: none;
             border-radius: 25px;
@@ -83,14 +88,15 @@
             transition: all 0.3s;
             font-weight: 600;
             text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(122, 44, 108, 0.3);
+            box-shadow: 0 4px 15px rgba(11, 45, 0, 0.3);
         }
 
         .btn-acamp:hover {
-            background: linear-gradient(45deg, #a92f85, #7a2c6c);
+            background: linear-gradient(to right, #4e752c, #00490e);
             color: white;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(122, 44, 108, 0.4);
+            box-shadow: 0 6px 20px rgba(11, 45, 0, 0.4);
+            text-decoration: none;
         }
 
         .stats-value {
@@ -118,44 +124,9 @@
             transition: width 0.6s ease;
         }
 
-
-        .task-item {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .task-item:last-child {
-            border-bottom: none;
-        }
-
-        .badge-high {
-            background-color: #dc3545;
-        }
-
-        .badge-medium {
-            background-color: #ffc107;
-        }
-
-        .badge-low {
-            background-color: #17a2b8;
-        }
-
-        .user-avatar {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            background-color: #e9ecef;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 10px;
-            color: #495057;
-            font-weight: bold;
-        }
-
         .card-title {
-            color: #333;
-            font-weight: 600;
+            color: #00490e;
+            font-weight: 700;
         }
 
         .header {
@@ -163,7 +134,7 @@
             top: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(135deg, #7a2c6c 0%, #a92f85 100%);
+            background: linear-gradient(to right, #00490e, #4e752c);
             color: white;
             padding: 15px 0;
             z-index: 1000;
@@ -200,20 +171,20 @@
 <body>
     <!-- Título -->
     <div class="header">
-        <h2 class="header-title">GESTÃO - FR 2025</h2>
+        <h2 class="header-title">GESTÃO - FR 2026</h2>
     </div>
 
     <!-- Conteiner Principal -->
     <div class="container mt-5">
         <!-- Cards Superiores -->
-        <div class="row mb-4">
-            <!-- Estatísticas Encontristas -->
-            <div class="col-md-6">
+        <div class="row mb-4 justify-content-center">
+            <!-- Estatísticas Participantes -->
+            <div class="col-lg-8 col-md-10">
                 <div class="card summary-card participantes">
-                    <div class="card-body">
+                    <div class="card-body p-4">
                         <div class="d-flex align-items-center mb-3">
                             <div class="flex-shrink-0">
-                                <i class="material-icons" style="font-size: 3rem; color: #a92f85;">people</i>
+                                <i class="material-icons" style="font-size: 3rem; color: #00490e;">people</i>
                             </div>
                             <div class="flex-grow-1 ms-3 ml-3">
                                 <h5 class="card-title mb-0">Participantes</h5>
@@ -224,147 +195,94 @@
                         <!-- Estatísticas -->
                         <div class="row text-center">
                             <div class="col-3">
-                                <h3 class="stats-value text-primary" id="totalEncontristas">0</h3>
+                                <h3 class="stats-value" style="color: #00490e;" id="totalEncontristas">0</h3>
                                 <p class="stats-label">Inscritos</p>
                             </div>
                             <div class="col-3">
-                                <h3 class="stats-value text-success" id="pagosEncontristas">0</h3>
+                                <h3 class="stats-value" style="color: #4e752c;" id="pagosEncontristas">0</h3>
                                 <p class="stats-label">Pagos</p>
                             </div>
                             <div class="col-3">
-                                <h3 class="stats-value text-info" id="totalBlusas">0</h3>
+                                <h3 class="stats-value" style="color: #2b571e;" id="totalBlusas">0</h3>
                                 <p class="stats-label">Querem Blusa</p>
                             </div>
                             <div class="col-3">
-                                <h3 class="stats-value text-warning" id="percentualEncontristas">0%</h3>
+                                <h3 class="stats-value" style="color: #637820;" id="percentualEncontristas">0%</h3>
                                 <p class="stats-label">% Pagantes</p>
                             </div>
                         </div>
 
                         <!-- Barra de Progresso -->
                         <div class="progress mt-3" style="height: 8px;">
-                            <div class="progress-bar bg-warning" id="progressoEncontristas" role="progressbar"
-                                style="width: 0%"></div>
+                            <div class="progress-bar" style="background-color: #4e752c; width: 0%;" id="progressoEncontristas" role="progressbar"></div>
                         </div>
-                        <small class="text-muted mt-1 d-block">
-                            <span id="pendentesEncontristas">0</span> pendentes
+                        <small class="text-muted mt-2 d-block text-center">
+                            <span id="pendentesEncontristas" class="font-weight-bold">0</span> pendentes
                         </small>
                     </div>
                 </div>
             </div>
-
-
         </div>
 
-
         <!-- Divisão -->
-        <h4 class="mb-3">Módulos de Gestão</h4>
+        <h4 class="mb-3" style="color: #1f2916; font-weight: 700;">Módulos de Gestão</h4>
 
         <!-- Cards das Páginas -->
         <div class="row mb-5">
             <!-- Link Pagamentos -->
-            <div class="col-md-4 mb-4">
+            <div class="col-md-6 col-lg-3 mb-4">
                 <div class="card dashboard-card">
                     <div class="card-body text-center p-4">
                         <i class="bi bi-currency-dollar card-icon"></i>
                         <h5 class="card-title">Pagamentos</h5>
                         <p class="card-text">Controlar pagamentos, confirmações e relatórios financeiros do evento.
                         </p>
-                        <a href="pagamentos.html" class="btn btn-acamp">Acessar</a>
+                        <a href="pagamentos.html" class="btn btn-acamp w-100">Acessar</a>
                     </div>
                 </div>
             </div>
 
-            <!-- Link Participantes Veredas -->
-            <div class="col-md-4 mb-4">
+            <!-- Link Participantes -->
+            <div class="col-md-6 col-lg-3 mb-4">
                 <div class="card dashboard-card">
                     <div class="card-body text-center p-4">
-                        <i class="bi bi-person-hearts card-icon"></i>
-                        <h5 class="card-title">Participantes Filhas do Rei</h5>
-                        <p class="card-text">Gerenciar inscrições, dados e informações dos participantes do evento.
+                        <i class="bi bi-person-heart card-icon"></i>
+                        <h5 class="card-title">Participantes</h5>
+                        <p class="card-text">Gerenciar inscrições, dados e informações das participantes do evento.
                         </p>
-                        <a href="participantes.html" class="btn btn-acamp">Acessar</a>
+                        <a href="participantes.html" class="btn btn-acamp w-100">Acessar</a>
                     </div>
                 </div>
             </div>
 
             <!-- Link Gestão de Blusas -->
-            <div class="col-md-4 mb-4">
+            <div class="col-md-6 col-lg-3 mb-4">
                 <div class="card dashboard-card">
                     <div class="card-body text-center p-4">
-                        <i class="bi bi-bag card-icon"></i>
+                        <i class="bi bi-bag-heart card-icon"></i>
                         <h5 class="card-title">Gestão de Blusas</h5>
-                        <p class="card-text">Gerenciar pedidos de blusas, tamanhos e controle de pagamentos das camisetas.
+                        <p class="card-text">Gerenciar pedidos de blusas, tamanhos e controle de entrega/pagamentos.
                         </p>
-                        <a href="blusas.html" class="btn btn-acamp">Acessar</a>
+                        <a href="blusas.html" class="btn btn-acamp w-100">Acessar</a>
                     </div>
                 </div>
             </div>
 
-            <!-- Link Direcionar Quartos -->
-            <!-- <div class="col-md-4 mb-4">
-                <div class="card dashboard-card">
-                    <div class="card-body text-center p-4">
-                        <i class="bi bi-house-door card-icon"></i>
-                        <h5 class="card-title">Gerenciar Quartos</h5>
-                        <p class="card-text">Gerenciar e direcionar participantes para os quartos disponíveis.
-                        </p>
-                        <a href="gerenciarQuartos.html" class="btn btn-acamp">Acessar</a>
-                    </div>
-                </div>
-            </div> -->
-
-
-
-            <!-- Link Checkins -->
-            <!-- <div class="col-md-4 mb-4">
-                <div class="card dashboard-card">
-                    <div class="card-body text-center p-4">
-                        <i class="bi bi-clipboard2-check card-icon"></i>
-                        <h5 class="card-title">Checkins</h5>
-                        <p class="card-text">Realizar checkins dos Encontristas.
-                        </p>
-                        <a href="frmcheckin.html" class="btn btn-acamp">Acessar</a>
-                    </div>
-                </div>
-            </div> -->
-
-            <!-- Link Gerenciar Checkins -->
-            <!-- <div class="col-md-4 mb-4">
-                <div class="card dashboard-card">
-                    <div class="card-body text-center p-4">
-                        <i class="bi bi-kanban card-icon"></i>
-                        <h5 class="card-title">Gerenciar Checkins</h5>
-                        <p class="card-text">Gerenciar Checkins dos Encontristas.
-                        </p>
-                        <a href="gerenciar_checkins.html" class="btn btn-acamp">Acessar</a>
-                    </div>
-                </div>
-            </div> -->
-
             <!--Card Movimentação do Caixa -->
-            <div class="col-md-4 mb-4">
+            <div class="col-md-6 col-lg-3 mb-4">
                 <div class="card dashboard-card">
                     <div class="card-body text-center p-4">
                         <i class="bi bi-safe card-icon"></i>
-                        <h5 class="card-title">Movimentação do Caixa</h5>
-                        <p class="card-text">Controle de Caixa do Evento</p>
-                        <a href="caixa.html" class="btn btn-acamp">Acessar</a>
+                        <h5 class="card-title">Movimentação Caixa</h5>
+                        <p class="card-text">Controle de entradas, saídas e saldo geral do caixa do evento.</p>
+                        <a href="caixa.html" class="btn btn-acamp w-100">Acessar</a>
                     </div>
                 </div>
             </div>
-
-
-
-
-
-
-                </div>
-            </div>
         </div>
-        
+
         <!-- Botão Sair -->
-        <div class="row mt-5">
+        <div class="row mt-4 mb-5">
             <div class="col-12 text-center">
                 <button onclick="logout()" class="btn btn-outline-danger btn-lg btn-sair">
                     <i class="bi bi-box-arrow-right"></i> Sair
@@ -385,16 +303,16 @@
         function verificarAutenticacao() {
             const isAuthenticated = localStorage.getItem('adminAuthenticated');
             const authTimestamp = localStorage.getItem('authTimestamp');
-            
+
             if (isAuthenticated !== 'true' || !authTimestamp) {
                 window.location.href = '../login.html';
                 return false;
             }
-            
+
             const now = Date.now();
             const authTime = parseInt(authTimestamp);
             const hoursPassed = (now - authTime) / (1000 * 60 * 60);
-            
+
             // Autenticação válida por 24 horas
             if (hoursPassed >= 24) {
                 localStorage.removeItem('adminAuthenticated');
@@ -402,7 +320,7 @@
                 window.location.href = '../login.html';
                 return false;
             }
-            
+
             return true;
         }
 
@@ -420,132 +338,63 @@
             }
         });
 
-        // Função para carregar estatísticas gerais
-        async function carregarEstatisticas() {
-            console.log('🔄 Iniciando carregamento de estatísticas...');
-            
-            // Primeiro, testar conectividade com Firebase
-            try {
-                console.log('🔥 Testando conectividade Firebase...');
-                await firebase.firestore().enableNetwork();
-                console.log('✅ Firebase conectado!');
-            } catch (networkError) {
-                console.warn('⚠️ Problema de rede com Firebase:', networkError);
-            }
-            
-            try {
-                // Usar a estrutura confirmada pelos outros arquivos
-                console.log('📡 Buscando dados do Firestore...');
-                const querySnapshot = await db.collection("Eventos").doc("filhasdoRei2025").collection("inscricoes").get();
-                
-                console.log(`📋 Total de documentos encontrados: ${querySnapshot.size}`);
-                
-                if (querySnapshot.empty) {
-                    console.log('⚠️ Nenhum documento encontrado na coleção');
-                    throw new Error('Coleção vazia');
-                }
-                
-                let totalParticipantes = 0;
-                let pagosParticipantes = 0;
-                let totalBlusas = 0;
-                
-                querySnapshot.forEach((doc) => {
-                    const participante = doc.data();
-                    console.log('👤 Participante:', {
-                        id: doc.id,
-                        nome: participante.nome,
-                        tipoInsc: participante.tipoInsc || 'encontrista',
-                        statusPagamento: participante.statusPagamento,
-                        adquirirBlusa: participante.adquirirBlusa
-                    });
-                    
-                    // Para o evento Veredas, todos são considerados encontristas
-                    totalParticipantes++;
-                    if (participante.statusPagamento === 'pago') {
-                        pagosParticipantes++;
-                    }
-                    if (participante.adquirirBlusa === 'sim') {
-                        totalBlusas++;
-                    }
-                });
-                
-                const percentualParticipantes = totalParticipantes > 0 ? Math.round((pagosParticipantes / totalParticipantes) * 100) : 0;
-                const pendentesParticipantes = totalParticipantes - pagosParticipantes;
-                
-                console.log('📊 Resultados calculados:', {
-                    totalParticipantes,
-                    pagosParticipantes,
-                    totalBlusas,
-                    percentualParticipantes,
-                    pendentesParticipantes
-                });
-                
-                // Atualizar elementos do DOM
-                document.getElementById('totalEncontristas').textContent = totalParticipantes;
-                document.getElementById('pagosEncontristas').textContent = pagosParticipantes;
-                document.getElementById('totalBlusas').textContent = totalBlusas;
-                document.getElementById('percentualEncontristas').textContent = percentualParticipantes + '%';
-                document.getElementById('pendentesEncontristas').textContent = pendentesParticipantes;
-                
-                const progressoElemento = document.getElementById('progressoEncontristas');
-                if (progressoElemento) {
-                    progressoElemento.style.width = percentualParticipantes + '%';
-                }
-                
-                console.log('✅ Estatísticas atualizadas com sucesso!');
-                
-                // Salvar dados no localStorage para cache
-                localStorage.setItem('estatisticasCache', JSON.stringify({
-                    totalParticipantes,
-                    pagosParticipantes,
-                    totalBlusas,
-                    percentualParticipantes,
-                    pendentesParticipantes,
-                    timestamp: Date.now()
-                }));
-                
-            } catch (error) {
-                console.error('❌ Erro ao carregar estatísticas:', error);
-                
-                // Tentar carregar dados do cache
-                const cache = localStorage.getItem('estatisticasCache');
-                if (cache) {
-                    try {
-                        const dadosCache = JSON.parse(cache);
-                        const tempoCache = Date.now() - dadosCache.timestamp;
-                        
-                        if (tempoCache < 3600000) { // Cache válido por 1 hora
-                            console.log('📦 Carregando dados do cache...');
-                            document.getElementById('totalEncontristas').textContent = dadosCache.totalParticipantes + ' (cache)';
-                            document.getElementById('pagosEncontristas').textContent = dadosCache.pagosParticipantes + ' (cache)';
-                            document.getElementById('totalBlusas').textContent = (dadosCache.totalBlusas || 0) + ' (cache)';
-                            document.getElementById('percentualEncontristas').textContent = dadosCache.percentualParticipantes + '% (cache)';
-                            document.getElementById('pendentesEncontristas').textContent = dadosCache.pendentesParticipantes + ' (cache)';
-                            
-                            const progressoElemento = document.getElementById('progressoEncontristas');
-                            if (progressoElemento) {
-                                progressoElemento.style.width = dadosCache.percentualParticipantes + '%';
-                            }
-                            return;
-                        }
-                    } catch (cacheError) {
-                        console.error('Erro ao ler cache:', cacheError);
-                    }
-                }
-                
-                // Valores padrão em caso de erro
-                document.getElementById('totalEncontristas').textContent = 'Erro de conexão';
-                document.getElementById('pagosEncontristas').textContent = 'Erro de conexão';
-                document.getElementById('totalBlusas').textContent = 'Erro de conexão';
-                document.getElementById('percentualEncontristas').textContent = 'Erro de conexão';
-                document.getElementById('pendentesEncontristas').textContent = 'Erro de conexão';
-            }
-        }
+        // Função para carregar estatísticas reais em tempo real
+        function carregarEstatisticas() {
+            console.log('🔄 Iniciando carregamento de estatísticas reais...');
 
-        // Função para atualizar todos os dados a cada 5 minutos
-        setInterval(function () {
-            carregarEstatisticas();
-        }, 300000); // 5 minutos em milissegundos
+            db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes")
+                .onSnapshot((querySnapshot) => {
+                    let totalParticipantes = 0;
+                    let pagosParticipantes = 0;
+                    let totalBlusas = 0;
+
+                    querySnapshot.forEach((doc) => {
+                        const participante = doc.data();
+                        totalParticipantes++;
+
+                        const status = (participante.statusPagamento || '').toString().toLowerCase();
+                        if (status === 'pago' || participante.pago === true) {
+                            pagosParticipantes++;
+                        }
+
+                        const blusa = (participante.adquirirBlusa || participante.blusa || '').toString().toLowerCase();
+                        if (blusa === 'sim') {
+                            totalBlusas++;
+                        }
+                    });
+
+                    const percentualParticipantes = totalParticipantes > 0 ? Math.round((pagosParticipantes / totalParticipantes) * 100) : 0;
+                    const pendentesParticipantes = Math.max(0, totalParticipantes - pagosParticipantes);
+
+                    // Atualizar elementos do DOM com valores reais e limpos
+                    const elTotal = document.getElementById('totalEncontristas');
+                    const elPagos = document.getElementById('pagosEncontristas');
+                    const elBlusas = document.getElementById('totalBlusas');
+                    const elPercentual = document.getElementById('percentualEncontristas');
+                    const elPendentes = document.getElementById('pendentesEncontristas');
+                    const elProgresso = document.getElementById('progressoEncontristas');
+
+                    if (elTotal) elTotal.textContent = totalParticipantes;
+                    if (elPagos) elPagos.textContent = pagosParticipantes;
+                    if (elBlusas) elBlusas.textContent = totalBlusas;
+                    if (elPercentual) elPercentual.textContent = percentualParticipantes + '%';
+                    if (elPendentes) elPendentes.textContent = pendentesParticipantes;
+
+                    if (elProgresso) {
+                        elProgresso.style.width = percentualParticipantes + '%';
+                    }
+
+                    console.log('✅ Estatísticas atualizadas com sucesso:', {
+                        totalParticipantes,
+                        pagosParticipantes,
+                        totalBlusas,
+                        percentualParticipantes,
+                        pendentesParticipantes
+                    });
+                }, (error) => {
+                    console.error('❌ Erro ao buscar estatísticas no Firestore:', error);
+                });
+        }
     </script>
 </body>
 
