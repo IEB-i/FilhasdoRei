@@ -1,155 +1,90 @@
 <!DOCTYPE html>
-<html lang="pt-br"> <!-- Cards -->
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pagamentos - FR 2026</title>
     <link rel="shortcut icon" href="../assets/3.ico" type="image/x-icon">
-
+    <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #f8f9fa;
-            color: #1d1d1d;
-            padding-top: 80px;
-            min-height: 100vh;
+        :root {
+            --primary: #7a2c6c;
+            --primary-dark: #5b184f;
+            --primary-light: #a92f85;
+            --primary-subtle: #f8edf4;
+            --secondary: #cf919e;
+            --bg-page: #fbf7f2;
+            --bg-card: #ffffff;
+            --text-main: #2b232a;
+            --text-muted: #72626e;
+            --border-color: rgba(122, 44, 108, 0.12);
+            --success-bg: #e8f5e9;
+            --success-text: #2e7d32;
+            --warning-bg: #fff4e5;
+            --warning-text: #b76e00;
+            --danger-bg: #ffebee;
+            --danger-text: #c62828;
+            --shadow-sm: 0 2px 8px rgba(91, 24, 79, 0.05);
+            --shadow-md: 0 8px 24px rgba(91, 24, 79, 0.08);
+            --shadow-lg: 0 16px 36px rgba(91, 24, 79, 0.12);
         }
 
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #fbf7f2 0%, #f4e9dd 100%);
+            color: var(--text-main);
+            padding-top: 88px;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1e7dd;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c59ab6;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* Header */
         .header {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(135deg, #7a2c6c 0%, #a92f85 100%);
+            background: linear-gradient(135deg, #5b184f 0%, #7a2c6c 50%, #a92f85 100%);
             color: white;
-            padding: 15px;
+            padding: 0 24px;
+            height: 72px;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(91, 24, 79, 0.25);
         }
 
         .header-title {
-            text-align: center;
             margin: 0;
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 700;
-        }
-
-        @media (max-width: 768px) {
-            .header-title {
-                font-size: 1.2rem;
-            }
-        }
-
-        .dashboard-card {
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            margin-bottom: 20px;
-            height: 100%;
-            border: none;
-            background-color: white;
-        }
-
-        .dashboard-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-        }
-
-        .card-header {
-            border-radius: 12px 12px 0 0;
-            font-weight: 700;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-
-        .card-body {
-            padding: 25px;
-            text-align: center;
-        }
-
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .card-body h2 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .card-body h6 {
-            font-size: 0.9rem;
-            color: #6c757d;
-            font-weight: 500;
-        }
-
-        .card-body .icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-        }
-
-        .total-card .icon {
-            color: #7a2c6c;
-        }
-
-        .pago-card .icon {
-            color: #a92f85;
-        }
-
-        .pendente-card .icon {
-            color: #cf919e;
-        }
-
-        .total-card {
-            background-color: white;
-            color: #333;
-            border-left: 5px solid #7a2c6c;
-        }
-
-        .pago-card {
-            background-color: white;
-            color: #333;
-            border-left: 5px solid #a92f85;
-        }
-
-        .pendente-card {
-            background-color: white;
-            color: #333;
-            border-left: 5px solid #cf919e;
-        }
-
-        .chart-container {
-            position: relative;
-            height: 300px;
-            width: 100%;
-        }
-
-        .payment-action {
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .table-responsive {
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .badge-pago {
-            background-color: #a92f85;
-        }
-
-        .badge-pendente {
-            background-color: #cf919e;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .btn-voltar {
@@ -157,267 +92,918 @@
             left: 20px;
             top: 50%;
             transform: translateY(-50%);
-            background-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
             color: white;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.25s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-decoration: none;
         }
 
         .btn-voltar:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transform: translateY(-50%) scale(1.05);
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-50%) scale(1.06);
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px 40px 20px;
+        }
+
+        /* Page Banner */
+        .page-banner {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            gap: 16px;
+        }
+
+        .page-banner-title h1 {
+            font-size: 1.65rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+
+        .page-banner-title p {
+            color: var(--text-muted);
+            margin: 4px 0 0 0;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .banner-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        /* Modern Buttons */
+        .btn-brand-gradient {
+            background: linear-gradient(135deg, #7a2c6c 0%, #a92f85 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 22px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            letter-spacing: 0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 14px rgba(122, 44, 108, 0.28);
+            cursor: pointer;
+        }
+
+        .btn-brand-gradient:hover {
+            background: linear-gradient(135deg, #5b184f 0%, #8c266e 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(122, 44, 108, 0.38);
             color: white;
             text-decoration: none;
         }
 
-        .btn-voltar .material-icons {
-            font-size: 24px;
+        .btn-brand-outline {
+            background: white;
+            color: var(--primary);
+            border: 1.5px solid rgba(122, 44, 108, 0.25);
+            border-radius: 50px;
+            padding: 9px 20px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+            cursor: pointer;
         }
 
-        .btn-group .btn {
-            margin-right: 2px;
+        .btn-brand-outline:hover {
+            background: var(--primary-subtle);
+            border-color: var(--primary);
+            color: var(--primary-dark);
+            transform: translateY(-1px);
+            text-decoration: none;
         }
 
-        .btn-group .btn:last-child {
-            margin-right: 0;
+        /* Metric Summary Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
         }
 
-        .btn-info {
-            background-color: #7a2c6c;
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: rgba(122, 44, 108, 0.3);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            border-radius: 4px 0 0 4px;
+        }
+
+        .stat-card.total::before { background: var(--primary); }
+        .stat-card.pagos::before { background: #2e7d32; }
+        .stat-card.pendentes::before { background: #e65100; }
+        .stat-card.arrecadado::before { background: #a92f85; }
+
+        .stat-info .stat-label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .stat-info .stat-value {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--text-main);
+            line-height: 1.1;
+        }
+
+        .stat-info .stat-sub {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .stat-icon-wrap {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+        }
+
+        .stat-card.total .stat-icon-wrap { background: var(--primary-subtle); color: var(--primary); }
+        .stat-card.pagos .stat-icon-wrap { background: var(--success-bg); color: var(--success-text); }
+        .stat-card.pendentes .stat-icon-wrap { background: var(--warning-bg); color: var(--warning-text); }
+        .stat-card.arrecadado .stat-icon-wrap { background: #fdf2f7; color: #a92f85; }
+
+        /* Form / Action Panel */
+        .action-panel {
+            background: white;
+            border-radius: 18px;
+            padding: 22px 24px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            margin-bottom: 24px;
+        }
+
+        .action-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f2e9ed;
+        }
+
+        .action-panel-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+        }
+
+        .form-group label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .custom-input-styled,
+        .custom-select-styled {
+            height: 44px;
+            border-radius: 10px;
+            border: 1.5px solid #e5dbe1;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text-main);
+            background-color: #faf7f8;
+            padding: 8px 14px;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .custom-input-styled:focus,
+        .custom-select-styled:focus {
+            background-color: #ffffff;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3.5px rgba(169, 47, 133, 0.15);
+            outline: none;
+        }
+
+        .custom-input-styled[readonly] {
+            background-color: #f3edf1;
+            color: var(--text-muted);
+            font-weight: 600;
+            cursor: not-allowed;
+        }
+
+        .btn-confirm-payment {
+            background: linear-gradient(135deg, #7a2c6c 0%, #a92f85 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            height: 44px;
+            padding: 0 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 14px rgba(122, 44, 108, 0.25);
+            cursor: pointer;
+        }
+
+        .btn-confirm-payment:hover {
+            background: linear-gradient(135deg, #5b184f 0%, #8c266e 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(122, 44, 108, 0.35);
             color: white;
         }
 
-        .btn-info:hover {
-            background-color: #a92f85;
+        /* Table Card & Container */
+        .table-card {
+            background: white;
+            border-radius: 18px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            margin-bottom: 24px;
         }
 
-        .btn-success {
-            background: linear-gradient(45deg, #7a2c6c, #a92f85);
-            border: none;
-            border-radius: 25px;
-            padding: 10px 20px;
-            font-weight: 600;
+        .table-card-header {
+            padding: 18px 24px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            background: #ffffff;
+            border-bottom: 1px solid #f2e9ed;
+        }
+
+        .table-card-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge-counter {
+            background: var(--primary-subtle);
+            color: var(--primary);
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(122, 44, 108, 0.15);
+        }
+
+        /* Custom Search Box */
+        .search-box-wrap {
+            position: relative;
+            min-width: 280px;
+        }
+
+        .search-box-wrap i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a4919d;
+            font-size: 0.95rem;
+            pointer-events: none;
+        }
+
+        .search-input-custom {
+            height: 40px;
+            width: 100%;
+            border-radius: 20px;
+            border: 1.5px solid #e5dbe1;
+            padding: 8px 16px 8px 38px;
+            font-size: 0.88rem;
+            background: #faf7f8;
+            transition: all 0.2s ease;
+        }
+
+        .search-input-custom:focus {
+            background: #ffffff;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(169, 47, 133, 0.12);
+            outline: none;
+        }
+
+        /* Table Styling */
+        .table-responsive-custom {
+            width: 100%;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        #pagamentosTable {
+            width: 100% !important;
+            min-width: 960px;
+            table-layout: fixed !important;
+            margin-bottom: 0 !important;
+            border-collapse: collapse;
+        }
+
+        /* Column Widths */
+        #pagamentosTable th:nth-child(1), #pagamentosTable td:nth-child(1) { width: 30%; }
+        #pagamentosTable th:nth-child(2), #pagamentosTable td:nth-child(2) { width: 17%; }
+        #pagamentosTable th:nth-child(3), #pagamentosTable td:nth-child(3) { width: 12%; }
+        #pagamentosTable th:nth-child(4), #pagamentosTable td:nth-child(4) { width: 11%; }
+        #pagamentosTable th:nth-child(5), #pagamentosTable td:nth-child(5) { width: 10%; }
+        #pagamentosTable th:nth-child(6), #pagamentosTable td:nth-child(6) { width: 10%; }
+        #pagamentosTable th:nth-child(7), #pagamentosTable td:nth-child(7) { width: 10%; }
+
+        /* Table Header */
+        #pagamentosTable thead th {
+            background: linear-gradient(135deg, #5b184f 0%, #7a2c6c 100%) !important;
+            color: #ffffff !important;
+            font-weight: 700;
+            font-size: 0.78rem;
             text-transform: uppercase;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(122, 44, 108, 0.3);
+            letter-spacing: 0.6px;
+            padding: 14px 16px;
+            border: none;
+            white-space: nowrap;
+            vertical-align: middle;
+            box-sizing: border-box;
         }
 
-        .btn-success:hover {
-            background: linear-gradient(45deg, #a92f85, #7a2c6c);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(122, 44, 108, 0.4);
+        #pagamentosTable thead th:first-child {
+            padding-left: 24px;
         }
 
-        .sort-btn {
+        /* Table Body */
+        #pagamentosTable tbody tr {
+            transition: background-color 0.15s ease;
+            background-color: #ffffff;
+        }
+
+        #pagamentosTable tbody tr:nth-child(even) {
+            background-color: #fdfafc;
+        }
+
+        #pagamentosTable tbody tr:hover {
+            background-color: #f9edf5 !important;
+        }
+
+        #pagamentosTable tbody td {
+            padding: 14px 16px;
+            vertical-align: middle;
+            font-size: 0.88rem;
+            color: var(--text-main);
+            border-top: 1px solid #f3e9ef;
+            border-bottom: none;
+            white-space: nowrap;
+        }
+
+        #pagamentosTable tbody td:first-child {
+            padding-left: 24px;
+        }
+
+        /* Column Alignments */
+        #pagamentosTable thead th.text-center,
+        #pagamentosTable thead th:nth-child(2),
+        #pagamentosTable thead th:nth-child(3),
+        #pagamentosTable thead th:nth-child(4),
+        #pagamentosTable thead th:nth-child(5),
+        #pagamentosTable thead th:nth-child(6),
+        #pagamentosTable thead th:nth-child(7) {
+            text-align: center !important;
+        }
+
+        #pagamentosTable tbody td.text-center,
+        #pagamentosTable tbody td:nth-child(2),
+        #pagamentosTable tbody td:nth-child(3),
+        #pagamentosTable tbody td:nth-child(4),
+        #pagamentosTable tbody td:nth-child(5),
+        #pagamentosTable tbody td:nth-child(6),
+        #pagamentosTable tbody td:nth-child(7) {
+            text-align: center !important;
+        }
+
+        .participant-name-text {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        /* Badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-status-pago {
+            background-color: var(--success-bg);
+            color: var(--success-text);
+            border: 1px solid rgba(46, 125, 50, 0.2);
+        }
+
+        .badge-status-estornado {
+            background-color: var(--danger-bg);
+            color: var(--danger-text);
+            border: 1px solid rgba(198, 40, 40, 0.2);
+        }
+
+        .method-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 9px;
+            border-radius: 6px;
+            font-size: 0.76rem;
+            font-weight: 600;
+            background: #f4ecf2;
+            color: var(--primary-dark);
+            border: 1px solid rgba(122, 44, 108, 0.15);
+        }
+
+        .badge-blusa {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--primary-subtle);
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.8rem;
+            border: 1px solid rgba(122, 44, 108, 0.15);
+        }
+
+        .badge-valor {
+            font-weight: 700;
+            color: var(--primary-dark);
+            font-size: 0.9rem;
+        }
+
+        /* Action Buttons */
+        .action-btns {
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-action-edit {
+            background: #f0f4f8;
+            color: #1976d2;
+            border: 1px solid rgba(25, 118, 210, 0.2);
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action-edit:hover {
+            background: #1976d2;
+            color: white;
+            border-color: #1976d2;
+            transform: scale(1.05);
+        }
+
+        .btn-action-delete {
+            background: #fdf0f0;
+            color: #d32f2f;
+            border: 1px solid rgba(211, 47, 47, 0.2);
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action-delete:hover {
+            background: #d32f2f;
+            color: white;
+            border-color: #d32f2f;
+            transform: scale(1.05);
+        }
+
+        .btn-sort-header {
             background: transparent;
             border: none;
-            padding: 0;
+            color: rgba(255, 255, 255, 0.8);
             cursor: pointer;
+            padding: 0 4px;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .btn-sort-header:hover {
+            color: #ffffff;
+            transform: scale(1.15);
+        }
+
+        /* Modals */
+        .modal-content {
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #5b184f 0%, #7a2c6c 100%);
+            color: white;
+            padding: 18px 24px;
+            border-bottom: none;
+        }
+
+        .modal-title {
+            font-weight: 700;
+            font-size: 1.15rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+        }
+
+        .modal-header .close {
+            color: white;
+            text-shadow: none;
+            opacity: 0.8;
+            font-size: 1.5rem;
+            transition: opacity 0.2s;
+        }
+
+        .modal-header .close:hover {
+            opacity: 1;
+        }
+
+        .modal-body {
+            padding: 24px;
+            color: var(--text-main);
+        }
+
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #f2e9ed;
+            background: #faf7f9;
+        }
+
+        .btn-modal-cancel {
+            background: #ede6eb;
+            color: var(--text-muted);
+            border: none;
+            border-radius: 10px;
+            padding: 9px 20px;
+            font-weight: 600;
+            font-size: 0.88rem;
             transition: all 0.2s;
         }
 
-        .sort-btn:hover {
-            transform: scale(1.2);
+        .btn-modal-cancel:hover {
+            background: #dfd5dc;
+            color: var(--text-main);
         }
 
-        .sort-btn:focus {
-            outline: none;
-            box-shadow: none;
+        .btn-modal-save {
+            background: linear-gradient(135deg, #7a2c6c 0%, #a92f85 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 9px 22px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            box-shadow: 0 4px 12px rgba(122, 44, 108, 0.25);
+            transition: all 0.2s;
         }
 
-        .sort-asc .material-icons {
-            transform: rotate(180deg);
+        .btn-modal-save:hover {
+            background: linear-gradient(135deg, #5b184f 0%, #8c266e 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(122, 44, 108, 0.35);
+            color: white;
+        }
+
+        .btn-modal-danger {
+            background: linear-gradient(135deg, #c62828 0%, #d32f2f 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 9px 22px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            box-shadow: 0 4px 12px rgba(198, 40, 40, 0.25);
+            transition: all 0.2s;
+        }
+
+        .btn-modal-danger:hover {
+            background: #b71c1c;
+            transform: translateY(-1px);
+            color: white;
         }
     </style>
 </head>
 
 <body>
-    <div class="header">
-        <a href="gestao.html" class="btn-voltar">
-            <i class="material-icons">arrow_back</i>
+    <!-- Top Header Bar -->
+    <header class="header">
+        <a href="gestao.html" class="btn-voltar" title="Voltar para a Gestão">
+            <i class="fa-solid fa-arrow-left"></i>
         </a>
-        <h2 class="header-title">PAGAMENTOS - FR 2026</h2>
-    </div>
+        <h1 class="header-title">
+            <i class="fa-solid fa-crown"></i>
+            Filhas do Rei 2026
+        </h1>
+    </header>
 
-    <div class="container mt-5">
-        <!-- Tabela de Pagamentos -->
-        <div class="row">
-            <!-- Card: Total de Inscrições -->
-            <div class="col-md-4">
-                <div class="card dashboard-card">
-                    <div class="card-body total-card">
-                        <i class="material-icons icon">group_add</i>
-                        <h5 class="card-title">Total de Inscrições</h5>
-                        <h2 id="totalInscritos">0</h2>
-                    </div>
+    <div class="main-container">
+        <!-- Page Banner -->
+        <div class="page-banner">
+            <div class="page-banner-title">
+                <h1>Gestão de Pagamentos</h1>
+                <p>Controle financeiro, confirmações de inscrições e estornos</p>
+            </div>
+        </div>
+
+        <!-- Metric Summary Cards -->
+        <div class="stats-grid">
+            <!-- Total de Inscrições -->
+            <div class="stat-card total">
+                <div class="stat-info">
+                    <div class="stat-label">Total Inscrições</div>
+                    <div class="stat-value" id="totalInscritos">0</div>
+                    <div class="stat-sub">Inscrições cadastradas</div>
+                </div>
+                <div class="stat-icon-wrap">
+                    <i class="fa-solid fa-users"></i>
                 </div>
             </div>
 
-            <!-- Card: Pagamentos Confirmados -->
-            <div class="col-md-4">
-                <div class="card dashboard-card">
-                    <div class="card-body pago-card">
-                        <i class="material-icons icon">check_circle</i>
-                        <h5 class="card-title">Pagamentos Confirmados</h5>
-                        <h2 id="totalPagos">0</h2>
-                        <h6>Valor Recebido: R$ <span id="valorPago">0,00</span></h6>
-                    </div>
+            <!-- Pagamentos Confirmados -->
+            <div class="stat-card pagos">
+                <div class="stat-info">
+                    <div class="stat-label">Confirmados</div>
+                    <div class="stat-value" id="totalPagos">0</div>
+                    <div class="stat-sub">Recebido: <strong>R$ <span id="valorPago">0,00</span></strong></div>
+                </div>
+                <div class="stat-icon-wrap">
+                    <i class="fa-solid fa-circle-check"></i>
                 </div>
             </div>
 
-            <!-- Card: Pagamentos Pendentes -->
-            <div class="col-md-4">
-                <div class="card dashboard-card">
-                    <div class="card-body pendente-card">
-                        <i class="material-icons icon">hourglass_empty</i>
-                        <h5 class="card-title">Pagamentos Pendentes</h5>
-                        <h2 id="totalPendentes">0</h2>
-                    </div>
+            <!-- Pagamentos Pendentes -->
+            <div class="stat-card pendentes">
+                <div class="stat-info">
+                    <div class="stat-label">Pendentes</div>
+                    <div class="stat-value" id="totalPendentes">0</div>
+                    <div class="stat-sub">Pendente: <strong>R$ <span id="valorPendente">0,00</span></strong></div>
+                </div>
+                <div class="stat-icon-wrap">
+                    <i class="fa-solid fa-clock"></i>
+                </div>
+            </div>
+
+            <!-- Previsão / Total Geral -->
+            <div class="stat-card arrecadado">
+                <div class="stat-info">
+                    <div class="stat-label">Previsão Total</div>
+                    <div class="stat-value">R$ <span id="valorTotal">0,00</span></div>
+                    <div class="stat-sub">Arrecadação esperada</div>
+                </div>
+                <div class="stat-icon-wrap">
+                    <i class="fa-solid fa-hand-holding-dollar"></i>
                 </div>
             </div>
         </div>
 
-        <!-- Gráficos -->
-        <div class="row mt-4">
-            <!-- Status de Pagamento -->
-            <div class="col-md-12">
-                <div class="card dashboard-card">
-                    <div class="card-header">
-                        Status de Pagamentos
+        <!-- Registrar Novo Pagamento Panel -->
+        <div class="action-panel">
+            <div class="action-panel-header">
+                <h2 class="action-panel-title">
+                    <i class="fa-solid fa-money-bill-wave text-primary"></i>
+                    Registrar Novo Pagamento
+                </h2>
+            </div>
+            <form id="paymentForm">
+                <div class="form-row">
+                    <!-- Participante -->
+                    <div class="form-group col-lg-4 col-md-6">
+                        <label for="participante">Participante Pendente</label>
+                        <select class="custom-select-styled" id="participante" required>
+                            <option value="">Selecione um participante</option>
+                        </select>
                     </div>
-                    <div class="card-body">
-                        <div class="chart-container">
-                            <canvas id="graficoStatus"></canvas>
-                        </div>
+
+                    <!-- Valor Pendente -->
+                    <div class="form-group col-lg-2 col-md-3">
+                        <label for="valorDevido">Valor Pendente</label>
+                        <input type="text" class="custom-input-styled" id="valorDevido" readonly placeholder="R$ 0,00">
+                    </div>
+
+                    <!-- Valor a Registrar -->
+                    <div class="form-group col-lg-2 col-md-3">
+                        <label for="valorPagamento">Valor a Pagar</label>
+                        <input type="text" class="custom-input-styled" id="valorPagamento" required placeholder="0,00">
+                    </div>
+
+                    <!-- Forma de Pagamento -->
+                    <div class="form-group col-lg-2 col-md-6">
+                        <label for="formaPagamento">Forma de Pgto.</label>
+                        <select class="custom-select-styled" id="formaPagamento" required>
+                            <option value="">Selecione</option>
+                            <option value="pix">PIX</option>
+                            <option value="cartao">Cartão</option>
+                            <option value="dinheiro">Dinheiro</option>
+                        </select>
+                    </div>
+
+                    <!-- Botão Confirmar -->
+                    <div class="form-group col-lg-2 col-md-6 d-flex align-items-end">
+                        <button type="submit" class="btn-confirm-payment">
+                            <i class="fa-solid fa-check"></i>
+                            <span>Confirmar</span>
+                        </button>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
 
-        <!-- Registrar Pagamentos -->
-        <div class="row mt-4">
-            <div class="col-md-12">
-                <div class="payment-action">
-                    <h5>Registrar Novo Pagamento</h5>
-                    <form id="paymentForm" class="row">
-                        <!-- Participantes -->
-                        <div class="form-group col-md-4">
-                            <label for="participante">Participante</label>
-                            <select class="form-control" id="participante" required>
-                                <option value="">Selecione um participante</option>
-                            </select>
-                        </div>
-                        <!-- Valor a Pagar -->
-                        <div class="form-group col-md-2">
-                            <label for="valorDevido">Valor Pendente</label>
-                            <input type="text" class="form-control" id="valorDevido" readonly>
-                        </div>
-                        <!-- Valor a Registrar -->
-                        <div class="form-group col-md-2">
-                            <label for="valorPagamento">Valor</label>
-                            <input type="text" class="form-control" id="valorPagamento">
-                        </div>
-                        <!-- Forma de Pagamento -->
-                        <div class="form-group col-md-2">
-                            <label for="formaPagamento">Forma de Pgto.</label>
-                            <select class="form-control" id="formaPagamento" required>
-                                <option value="">Selecione</option>
-                                <option value="pix">PIX</option>
-                                <option value="cartao">Cartão</option>
-                                <option value="dinheiro">Dinheiro</option>
-                            </select>
-                        </div>
-                        <!-- Botão de Confirmar -->
-                        <div class="form-group col-md-2 d-flex align-items-end">
-                            <button type="submit" class="btn btn-success w-100">Confirmar</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="row mt-3">
-            <div class="col-md-12">
-                <div class="card dashboard-card">
-                    <div class="card-header">
+        <!-- Table Card -->
+        <div class="table-card">
+            <div class="table-card-header">
+                <div class="d-flex align-items-center gap-3">
+                    <h2 class="table-card-title">
+                        <i class="fa-solid fa-receipt text-primary"></i>
                         Últimos Pagamentos
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped" id="pagamentosTable">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>
-                                            <div class="d-flex align-items-center">
-                                                Participante
-                                                <button class="btn btn-sm text-white ml-2 sort-btn"
-                                                    data-sort="participante">
-                                                    <i class="material-icons" id="sortIconParticipante">sort</i>
-                                                </button>
-                                            </div>
-                                        </th>
-                                        <th>Data de Pagamento</th>
-                                        <th>Valor</th>
-                                        <th>Forma</th>
-                                        <th>Tamanho da Blusa</th>
-                                        <th>Status</th>
-                                        <th>Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="pagamentosList">
-                                    <!-- Os dados serão carregados dinamicamente do Firebase -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    </h2>
+                    <span class="badge-counter ml-2" id="tabelaContador">0 registros</span>
                 </div>
+                <div class="search-box-wrap">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="customTableSearch" class="search-input-custom" placeholder="Buscar por participante...">
+                </div>
+            </div>
+
+            <div class="table-responsive-custom">
+                <table id="pagamentosTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <span>Participante</span>
+                                    <button type="button" class="btn-sort-header sort-btn" data-sort="participante" title="Ordenar por participante">
+                                        <i class="fa-solid fa-sort" id="sortIconParticipante"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th class="text-center">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <span>Data Pagamento</span>
+                                    <button type="button" class="btn-sort-header sort-btn ml-1" data-sort="data" title="Ordenar por data">
+                                        <i class="fa-solid fa-sort"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th class="text-center">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <span>Valor</span>
+                                    <button type="button" class="btn-sort-header sort-btn ml-1" data-sort="valor" title="Ordenar por valor">
+                                        <i class="fa-solid fa-sort"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th class="text-center">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <span>Forma</span>
+                                    <button type="button" class="btn-sort-header sort-btn ml-1" data-sort="forma" title="Ordenar por forma">
+                                        <i class="fa-solid fa-sort"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th class="text-center">Blusa</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pagamentosList">
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">
+                                <i class="fa-solid fa-spinner fa-spin mr-2"></i>Carregando pagamentos...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
     <!-- Modal de Confirmação de Estorno -->
-    <div class="modal fade" id="estornoModal" tabindex="-1" role="dialog" aria-labelledby="estornoModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="estornoModal" tabindex="-1" role="dialog" aria-labelledby="estornoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="estornoModalLabel">Confirmar Estorno</h5>
+                    <h5 class="modal-title" id="estornoModalLabel">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        Confirmar Estorno
+                    </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                        <span aria-hidden="true">×</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Você tem certeza que deseja estornar <strong>TODOS OS PAGAMENTOS</strong> de <strong
-                            id="estornoNome"></strong>?</p>
-                    <p>Esta ação irá estornar todo o valor já pago pelo participante e marcar o status como pendente.
-                    </p>
-                    <p><strong>Atenção:</strong> Todos os pagamentos confirmados deste participante serão estornados.
-                    </p>
+                    <p>Você tem certeza que deseja estornar <strong>TODOS OS PAGAMENTOS</strong> de <strong id="estornoNome" class="text-primary"></strong>?</p>
+                    <div class="alert alert-warning py-2 mb-3" style="font-size: 0.85rem; border-radius: 10px;">
+                        <i class="fa-solid fa-circle-info mr-1"></i>
+                        Esta ação irá estornar o valor total pago pelo participante, atualizar o status da inscrição para <strong>pendente</strong> e registrar a saída correspondente no controle de caixa.
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="confirmarEstorno">Confirmar Estorno</button>
+                    <button type="button" class="btn-modal-cancel" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn-modal-danger" id="confirmarEstorno">Confirmar Estorno</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Modal de Edição de Pagamento -->
-    <div class="modal fade" id="editarPagamentoModal" tabindex="-1" role="dialog"
-        aria-labelledby="editarPagamentoModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="editarPagamentoModal" tabindex="-1" role="dialog" aria-labelledby="editarPagamentoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editarPagamentoModalLabel">Editar Pagamento</h5>
+                    <h5 class="modal-title" id="editarPagamentoModalLabel">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        Editar Pagamento
+                    </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                        <span aria-hidden="true">×</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
@@ -427,49 +1013,53 @@
 
                         <div class="form-group">
                             <label for="editParticipanteNome">Participante</label>
-                            <input type="text" class="form-control" id="editParticipanteNome" readonly>
+                            <input type="text" class="custom-input-styled" id="editParticipanteNome" readonly>
                         </div>
 
                         <div class="form-group">
-                            <label for="editDataPagamento">Data de Pagamento</label>
-                            <input type="text" class="form-control" id="editDataPagamento" readonly>
+                            <label for="editDataPagamento">Data do Pagamento</label>
+                            <input type="text" class="custom-input-styled" id="editDataPagamento" readonly>
                         </div>
 
-                        <div class="form-group">
-                            <label for="editValorPagamento">Valor</label>
-                            <input type="text" class="form-control" id="editValorPagamento" required>
-                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="editValorPagamento">Valor (R$)</label>
+                                <input type="text" class="custom-input-styled" id="editValorPagamento" required>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="editFormaPagamento">Forma de Pagamento</label>
-                            <select class="form-control" id="editFormaPagamento" required>
-                                <option value="pix">PIX</option>
-                                <option value="cartao">Cartão</option>
-                                <option value="dinheiro">Dinheiro</option>
-                            </select>
+                            <div class="form-group col-md-6">
+                                <label for="editFormaPagamento">Forma de Pagamento</label>
+                                <select class="custom-select-styled" id="editFormaPagamento" required>
+                                    <option value="pix">PIX</option>
+                                    <option value="cartao">Cartão</option>
+                                    <option value="dinheiro">Dinheiro</option>
+                                </select>
+                            </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="salvarEdicaoPagamento">Salvar Alterações</button>
+                    <button type="button" class="btn-modal-cancel" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn-modal-save" id="salvarEdicaoPagamento">Salvar Alterações</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="../firebase/firebaseConfig.js"></script>
 
     <script>
-
-        // Variáveis para gráficos
-        let graficoStatus;
+        let todosPagamentos = [];
+        let sortConfig = {
+            field: 'data',
+            direction: 'desc'
+        };
 
         $(document).ready(function () {
             // Definir valor padrão de R$ 0,00
@@ -490,7 +1080,6 @@
                     valor = valor.replace(/(\d)(\d{3}),/g, '$1.$2,');
                 }
                 this.value = valor;
-
             });
 
             // Validar se o valor não está vazio ao sair do campo
@@ -500,13 +1089,43 @@
                 }
             });
 
-            // Inicializar gráficos primeiro
-            initGraficos();
+            // Evento ao mudar de participante no dropdown
+            $(document).on('change', '#participante', function () {
+                const participanteId = $(this).val();
+                if (!participanteId) {
+                    $('#valorDevido').val('');
+                    return;
+                }
+                const selectedOption = $('#participante option:selected');
+                const totalPago = parseFloat(selectedOption.data('pago') || 0);
+                const limiteValor = parseFloat(selectedOption.data('limite') || 0);
 
-            // Depois carregar dados
-            carregarDashboard();
-            carregarParticipantesPendentes();
-            carregarUltimosPagamentos();
+                const valorDevido = limiteValor - totalPago;
+                $('#valorDevido').val('R$ ' + valorDevido.toFixed(2).replace('.', ','));
+                $('#valorPagamento').val(valorDevido.toFixed(2).replace('.', ','));
+            });
+
+            // Busca rápida na tabela
+            $('#customTableSearch').on('input', function () {
+                aplicarOrdenacao();
+            });
+
+            // Clique nos botões de ordenação do cabeçalho
+            $(document).on('click', '.sort-btn', function () {
+                const sortField = $(this).data('sort');
+
+                if (sortField === sortConfig.field) {
+                    sortConfig.direction = sortConfig.direction === 'asc' ? 'desc' : 'asc';
+                } else {
+                    sortConfig.field = sortField;
+                    sortConfig.direction = 'asc';
+                }
+
+                aplicarOrdenacao();
+            });
+
+            // Carregar dados iniciais
+            recarregarTudo();
 
             // Registrar novo pagamento
             $('#paymentForm').on('submit', function (e) {
@@ -514,27 +1133,19 @@
 
                 const participanteId = $('#participante').val();
                 const formaPagamento = $('#formaPagamento').val();
-                const valorPagamento = parseFloat($('#valorPagamento').val().replace(',', '.'));
-
-                console.log("Tentando registrar novo pagamento:");
-                console.log("- Participante ID:", participanteId);
-                console.log("- Forma de Pagamento:", formaPagamento);
-                console.log("- Valor:", valorPagamento);
+                const valorPagamento = parseFloat($('#valorPagamento').val().replace(/\./g, '').replace(',', '.'));
 
                 if (!participanteId || !formaPagamento) {
                     alert('Por favor, preencha todos os campos.');
-                    console.log("Validação falhou: campos obrigatórios não preenchidos");
                     return;
                 }
 
                 if (!valorPagamento || isNaN(valorPagamento) || valorPagamento <= 0) {
                     alert('Por favor, informe um valor válido para o pagamento.');
-                    console.log("Validação falhou: valor inválido");
                     return;
                 }
 
                 // Atualizar participante com informações de pagamento
-                console.log("Atualizando status do participante para 'pago'...");
                 db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes").doc(participanteId)
                     .update({
                         statusPagamento: 'pago',
@@ -543,9 +1154,6 @@
                         valorPago: valorPagamento
                     })
                     .then(() => {
-                        console.log("Status do participante atualizado com sucesso");
-                        console.log("Registrando pagamento na coleção de pagamentos...");
-
                         // Registrar pagamento na coleção de pagamentos
                         return db.collection("Eventos").doc("filhasdoRei2026").collection("pagamentos").add({
                             participanteId: participanteId,
@@ -557,9 +1165,7 @@
                         });
                     })
                     .then((docRef) => {
-                        console.log("Pagamento registrado com sucesso, ID:", docRef.id);
-
-                        // ADICIONAR: Registrar automaticamente no caixa
+                        // Registrar automaticamente no caixa
                         return db.collection("Eventos").doc("filhasdoRei2026").collection("caixa").add({
                             descricao: `Inscrição - ${$('#participante option:selected').text()}`,
                             data: new Date().toISOString().substring(0, 10),
@@ -577,12 +1183,11 @@
                     .then(() => {
                         alert('Pagamento registrado com sucesso!');
                         $('#paymentForm')[0].reset();
+                        $('#valorDevido').val('');
+                        $('#valorPagamento').val('0,00');
 
                         // Recarregar dados
-                        console.log("Recarregando dados do dashboard após registro de pagamento...");
-                        carregarDashboard();
-                        carregarParticipantesPendentes();
-                        carregarUltimosPagamentos();
+                        recarregarTudo();
                     }).catch((error) => {
                         console.error("Erro ao registrar pagamento:", error);
                         alert("Erro ao registrar pagamento. Tente novamente.");
@@ -593,9 +1198,6 @@
             $('#confirmarEstorno').on('click', function () {
                 const participanteId = $(this).data('participante');
 
-                console.log("Iniciando estorno de todos os pagamentos do participante:", participanteId);
-
-                // Buscar todos os pagamentos confirmados do participante
                 db.collection("Eventos").doc("filhasdoRei2026").collection("pagamentos")
                     .where("participanteId", "==", participanteId)
                     .where("status", "==", "confirmado")
@@ -606,12 +1208,9 @@
                             return;
                         }
 
-                        console.log(`Encontrados ${pagamentosSnapshot.size} pagamento(s) confirmado(s) para estornar`);
-
                         const batch = db.batch();
                         const pagamentosIds = [];
 
-                        // Estornar todos os pagamentos confirmados
                         pagamentosSnapshot.forEach((doc) => {
                             const pagamentoId = doc.id;
                             pagamentosIds.push(pagamentoId);
@@ -622,7 +1221,6 @@
                             });
                         });
 
-                        // Atualizar status do participante
                         const participanteRef = db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes").doc(participanteId);
                         batch.update(participanteRef, {
                             statusPagamento: 'pendente',
@@ -632,7 +1230,6 @@
                         });
 
                         return batch.commit().then(() => {
-                            console.log("Todos os pagamentos estornados com sucesso");
                             return pagamentosIds;
                         });
                     })
@@ -641,9 +1238,6 @@
                             return Promise.resolve();
                         }
 
-                        console.log("Buscando entradas correspondentes no caixa...");
-
-                        // Buscar todas as entradas no caixa relacionadas aos pagamentos estornados
                         const promises = pagamentosIds.map(pagamentoId => {
                             return db.collection("Eventos").doc("filhasdoRei2026").collection("caixa")
                                 .where("pagamentoId", "==", pagamentoId)
@@ -653,16 +1247,13 @@
 
                         return Promise.all(promises).then((caixaSnapshots) => {
                             const batch = db.batch();
-                            let totalEstornos = 0;
 
                             caixaSnapshots.forEach((caixaSnapshot, index) => {
                                 const pagamentoId = pagamentosIds[index];
 
                                 caixaSnapshot.forEach((doc) => {
                                     const transacaoCaixa = doc.data();
-                                    totalEstornos++;
 
-                                    // Criar transação de estorno
                                     const novaRefEstorno = db.collection("Eventos").doc("filhasdoRei2026").collection("caixa").doc();
 
                                     batch.set(novaRefEstorno, {
@@ -680,7 +1271,6 @@
                                         dataCriacao: new Date().toISOString()
                                     });
 
-                                    // Marcar transação original como estornada
                                     batch.update(doc.ref, {
                                         status: 'estornado',
                                         dataEstorno: new Date().toISOString(),
@@ -689,19 +1279,13 @@
                                 });
                             });
 
-                            console.log(`Processando ${totalEstornos} entrada(s) no caixa`);
                             return batch.commit();
                         });
                     })
                     .then(() => {
-                        console.log("Estorno total processado com sucesso em todas as coleções");
                         alert('Todos os pagamentos do participante foram estornados com sucesso!\nOs estornos foram registrados no controle de caixa.');
                         $('#estornoModal').modal('hide');
-
-                        // Recarregar dados
-                        carregarDashboard();
-                        carregarParticipantesPendentes();
-                        carregarUltimosPagamentos();
+                        recarregarTudo();
                     })
                     .catch((error) => {
                         console.error("Erro ao estornar pagamentos: ", error);
@@ -709,15 +1293,54 @@
                     });
             });
 
+            // Salvar edição de pagamento
+            $('#salvarEdicaoPagamento').on('click', function () {
+                const pagamentoId = $('#editPagamentoId').val();
+                const participanteId = $('#editParticipanteId').val();
+                const valorPagamento = parseFloat($('#editValorPagamento').val().replace(/\./g, '').replace(',', '.'));
+                const formaPagamento = $('#editFormaPagamento').val();
+
+                if (!valorPagamento || isNaN(valorPagamento) || valorPagamento <= 0) {
+                    alert('Por favor, informe um valor válido para o pagamento.');
+                    return;
+                }
+
+                db.collection("Eventos").doc("filhasdoRei2026").collection("pagamentos").doc(pagamentoId)
+                    .update({
+                        valor: valorPagamento,
+                        formaPagamento: formaPagamento,
+                        dataEdicao: new Date().toISOString()
+                    })
+                    .then(() => {
+                        return db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes").doc(participanteId)
+                            .update({
+                                formaPagamento: formaPagamento,
+                                valorPago: valorPagamento
+                            });
+                    })
+                    .then(() => {
+                        alert('Pagamento atualizado com sucesso!');
+                        $('#editarPagamentoModal').modal('hide');
+                        recarregarTudo();
+                    })
+                    .catch((error) => {
+                        console.error("Erro ao atualizar pagamento: ", error);
+                        alert("Erro ao atualizar pagamento. Tente novamente.");
+                    });
+            });
         });
 
+        function recarregarTudo() {
+            carregarDashboard();
+            carregarParticipantesPendentes();
+            carregarUltimosPagamentos();
+        }
+
         function carregarDashboard() {
-            // Primeiro, vamos buscar os pagamentos confirmados
             db.collection("Eventos").doc("filhasdoRei2026").collection("pagamentos")
                 .where("status", "==", "confirmado")
                 .get()
                 .then((pagamentosSnapshot) => {
-                    // Agrupar pagamentos por participante (mesma lógica da tabela)
                     const pagamentosAgrupados = {};
 
                     pagamentosSnapshot.forEach((doc) => {
@@ -725,29 +1348,21 @@
                         const participanteId = pagamento.participanteId;
 
                         if (!pagamentosAgrupados[participanteId]) {
-                            pagamentosAgrupados[participanteId] = {
-                                valorTotal: 0
-                            };
+                            pagamentosAgrupados[participanteId] = { valorTotal: 0 };
                         }
-
-                        // Somar o valor do pagamento
                         pagamentosAgrupados[participanteId].valorTotal += pagamento.valor || 0;
                     });
 
-                    // Contar participantes únicos com pagamentos confirmados
                     const totalParticipantesComPagamento = Object.keys(pagamentosAgrupados).length;
 
-                    // Calcular o valor total pago (soma de todos os valores agrupados)
                     let valorTotalPago = 0;
                     Object.values(pagamentosAgrupados).forEach(participante => {
                         valorTotalPago += participante.valorTotal;
                     });
 
-                    // Atualizar o card de pagamentos confirmados
                     $('#totalPagos').text(totalParticipantesComPagamento);
                     $('#valorPago').text(valorTotalPago.toFixed(2).replace('.', ','));
 
-                    // Agora vamos buscar os dados de inscrições para os outros cards
                     return db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes")
                         .where("anoevento", "==", "2026")
                         .get();
@@ -764,62 +1379,24 @@
                         }
                     });
 
-                    // Atualizar contadores
                     $('#totalInscritos').text(totalInscritos);
                     $('#totalPendentes').text(totalPendentes);
 
-                    // Atualizar valores financeiros para total e pendente
                     const valorTotal = (totalInscritos * valorInscricao).toFixed(2).replace('.', ',');
                     const valorPendente = (totalPendentes * valorInscricao).toFixed(2).replace('.', ',');
 
                     $('#valorTotal').text(valorTotal);
                     $('#valorPendente').text(valorPendente);
-
-                    // Atualizar gráfico de status
-                    const totalPagos = parseInt($('#totalPagos').text());
-                    atualizarGraficoStatus(totalPagos, totalPendentes);
-
-                    // Contar formas de pagamento
-                    buscarFormasPagamento();
                 })
                 .catch((error) => {
                     console.error("Erro ao carregar dashboard:", error);
                 });
         }
 
-        function buscarFormasPagamento() {
-            // Buscar pagamentos confirmados
-            db.collection("Eventos").doc("filhasdoRei2026").collection("pagamentos")
-                .where("status", "==", "confirmado")
-                .get()
-                .then((querySnapshot) => {
-                    const formasPagamento = {
-                        pix: 0,
-                        cartao: 0,
-                        dinheiro: 0
-                    };
-
-                    querySnapshot.forEach((doc) => {
-                        const pagamento = doc.data();
-                        if (pagamento.formaPagamento) {
-                            formasPagamento[pagamento.formaPagamento]++;
-                        }
-                    });
-
-
-                })
-                .catch((error) => {
-                    console.error("Erro ao buscar formas de pagamento: ", error);
-                });
-        }
-
         function carregarParticipantesPendentes() {
             const selectParticipante = $('#participante');
-            selectParticipante.html('<option value="">Selecione um participante</option>');  // Limpar a dropdown
+            selectParticipante.html('<option value="">Carregando participantes...</option>');
 
-            console.log("Iniciando o carregamento de participantes pendentes...");
-
-            // Buscar todos os participantes do evento 2026
             db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes")
                 .where("anoevento", "==", "2026")
                 .get()
@@ -831,75 +1408,62 @@
                         const participante = doc.data();
                         const nomeCompleto = participante.nome;
                         const participanteId = doc.id;
-                        const limiteValor = 50.00; // Valor padrão para Veredas 2026
+                        const limiteValor = 50.00;
 
-                        // Filtrar apenas participantes que optaram por adquirir a blusa
                         if (participante.adquirirBlusa !== 'sim') {
-                            return; // Pular este participante se não optou pela blusa
+                            return;
                         }
 
-                        // Criar uma promessa para buscar os pagamentos desse participante
                         const promise = db.collection("Eventos").doc("filhasdoRei2026").collection("pagamentos")
                             .where("participanteId", "==", participanteId)
                             .where("status", "==", "confirmado")
                             .get()
                             .then((pagamentosSnapshot) => {
                                 let totalPago = 0;
-
                                 pagamentosSnapshot.forEach((pagamentoDoc) => {
                                     totalPago += pagamentoDoc.data().valor || 0;
                                 });
 
-                                // Se o total pago for menor ou igual ao limite, adicionar ao array
                                 if (totalPago < limiteValor) {
-                                    participantesPendentes.push({ nome: nomeCompleto, id: participanteId, totalPago: totalPago, limiteValor: limiteValor });
-                                    console.log(`Adicionando participante ${nomeCompleto} ao dropdown. Total pago: R$${totalPago}`);
+                                    participantesPendentes.push({
+                                        nome: nomeCompleto,
+                                        id: participanteId,
+                                        totalPago: totalPago,
+                                        limiteValor: limiteValor
+                                    });
                                 }
                             });
 
-                        // Adicionar a promessa ao array para ser aguardada
                         promises.push(promise);
                     });
 
-                    // Quando todas as promessas forem resolvidas, adicionar os participantes ao dropdown
                     Promise.all(promises)
                         .then(() => {
-                            console.log("Adicionando participantes ao dropdown...");
+                            participantesPendentes.sort((a, b) => a.nome.toLowerCase().localeCompare(b.nome.toLowerCase()));
 
-                            // Ordenar participantes por nome antes de adicionar ao dropdown
-                            participantesPendentes.sort((a, b) => {
-                                const nomeA = a.nome.toLowerCase();
-                                const nomeB = b.nome.toLowerCase();
-                                return nomeA.localeCompare(nomeB);  // Ordenar alfabeticamente
-                            });
-
-                            // Limpar e adicionar novos participantes ao dropdown
+                            selectParticipante.html('<option value="">Selecione um participante</option>');
                             participantesPendentes.forEach(participante => {
                                 selectParticipante.append(`<option value="${participante.id}" data-pago="${participante.totalPago}" data-limite="${participante.limiteValor}">${participante.nome}</option>`);
                             });
 
                             if (participantesPendentes.length === 0) {
-                                selectParticipante.append('<option value="" disabled>Nenhum participante encontrado</option>');
-                                console.log("Nenhum participante pendente encontrado.");
+                                selectParticipante.append('<option value="" disabled>Nenhum participante pendente</option>');
                             }
                         })
                         .catch((error) => {
-                            console.error("Erro ao carregar pagamentos para os participantes:", error);
+                            console.error("Erro ao carregar pagamentos dos participantes:", error);
                         });
                 })
                 .catch((error) => {
                     console.error("Erro ao carregar participantes pendentes: ", error);
-                    selectParticipante.append('<option value="" disabled>Erro ao carregar participantes</option>');
+                    selectParticipante.html('<option value="" disabled>Erro ao carregar</option>');
                 });
         }
 
-
         function carregarUltimosPagamentos() {
-            // Limpar tabela de pagamentos
             const tabelaPagamentos = $('#pagamentosList');
-            tabelaPagamentos.html('');
+            tabelaPagamentos.html('<tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Carregando pagamentos...</td></tr>');
 
-            // Buscar pagamentos
             db.collection("Eventos").doc("filhasdoRei2026").collection("pagamentos")
                 .orderBy("dataPagamento", "desc")
                 .get()
@@ -909,18 +1473,17 @@
 
                     querySnapshot.forEach((doc) => {
                         const pagamento = doc.data();
-                        pagamento.id = doc.id; // Armazenar o ID do documento
+                        pagamento.id = doc.id;
 
-                        // Buscar dados do participante para obter o tamanho da blusa
                         const promise = db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes")
                             .doc(pagamento.participanteId)
                             .get()
                             .then((participanteDoc) => {
                                 if (participanteDoc.exists) {
                                     const participanteData = participanteDoc.data();
-                                    pagamento.tamanhoBlusa = participanteData.tamanhoBlusa || 'N/A';
+                                    pagamento.tamanhoBlusa = participanteData.tamanhoBlusa || '-';
                                 } else {
-                                    pagamento.tamanhoBlusa = 'N/A';
+                                    pagamento.tamanhoBlusa = '-';
                                 }
                                 todosPagamentos.push(pagamento);
                             });
@@ -928,37 +1491,37 @@
                         promises.push(promise);
                     });
 
-                    // Aguardar todas as consultas de participantes
                     Promise.all(promises)
                         .then(() => {
-                            // Inicializar a ordenação
-                            updateSortIcon();
-
-                            // Aplicar filtros e ordenação
                             aplicarOrdenacao();
                         })
                         .catch((error) => {
-                            console.error("Erro ao carregar dados dos participantes: ", error);
+                            console.error("Erro ao carregar detalhes dos participantes: ", error);
                         });
                 })
                 .catch((error) => {
                     console.error("Erro ao carregar pagamentos: ", error);
+                    tabelaPagamentos.html('<tr><td colspan="7" class="text-center py-4 text-danger"><i class="fa-solid fa-circle-exclamation mr-2"></i>Erro ao carregar pagamentos</td></tr>');
                 });
         }
 
-        function atualizarTabelaPagamentos(pagamentos) {
-            const tabelaPagamentos = $('#pagamentosList');
-            tabelaPagamentos.html('');
+        function aplicarOrdenacao() {
+            let pagamentosFiltrados = [...todosPagamentos];
 
-            if (pagamentos.length === 0) {
-                tabelaPagamentos.html('<tr><td colspan="7" class="text-center">Nenhum pagamento encontrado</td></tr>');
-                return;
+            // Filtro por texto digitado na busca
+            const termoBusca = ($('#customTableSearch').val() || '').trim().toLowerCase();
+            if (termoBusca) {
+                pagamentosFiltrados = pagamentosFiltrados.filter(p => {
+                    return (p.participanteNome && p.participanteNome.toLowerCase().includes(termoBusca)) ||
+                           (p.formaPagamento && p.formaPagamento.toLowerCase().includes(termoBusca)) ||
+                           (p.tamanhoBlusa && p.tamanhoBlusa.toLowerCase().includes(termoBusca));
+                });
             }
 
-            // Agrupar pagamentos por participante e somar valores
+            // Agrupar por participante e somar valores confirmados
             const pagamentosAgrupados = {};
 
-            pagamentos.forEach(pagamento => {
+            pagamentosFiltrados.forEach(pagamento => {
                 const participanteId = pagamento.participanteId;
 
                 if (!pagamentosAgrupados[participanteId]) {
@@ -969,62 +1532,116 @@
                     };
                 }
 
-                // Verificar se tem pelo menos um pagamento confirmado
                 if (pagamento.status === 'confirmado') {
                     pagamentosAgrupados[participanteId].temPagamentoConfirmado = true;
-                    // Somar apenas valores confirmados
-                    pagamentosAgrupados[participanteId].valorTotal += pagamento.valor;
+                    pagamentosAgrupados[participanteId].valorTotal += pagamento.valor || 0;
                 }
 
-                // Manter a data do último pagamento confirmado
                 if (pagamento.status === 'confirmado' &&
-                    (new Date(pagamento.dataPagamento) > new Date(pagamentosAgrupados[participanteId].dataPagamento) ||
-                        !pagamentosAgrupados[participanteId].temPagamentoConfirmado)) {
+                    (!pagamentosAgrupados[participanteId].dataPagamento ||
+                     new Date(pagamento.dataPagamento) >= new Date(pagamentosAgrupados[participanteId].dataPagamento))) {
                     pagamentosAgrupados[participanteId].dataPagamento = pagamento.dataPagamento;
                     pagamentosAgrupados[participanteId].formaPagamento = pagamento.formaPagamento;
                     pagamentosAgrupados[participanteId].status = pagamento.status;
                     pagamentosAgrupados[participanteId].id = pagamento.id;
+                    pagamentosAgrupados[participanteId].tamanhoBlusa = pagamento.tamanhoBlusa;
                 }
             });
 
-            // Filtrar apenas participantes com pelo menos um pagamento confirmado
-            const participantesComPagamentoConfirmado = Object.values(pagamentosAgrupados)
-                .filter(participante => participante.temPagamentoConfirmado);
+            // Considerar participantes com pagamentos confirmados
+            let listaFinal = Object.values(pagamentosAgrupados).filter(p => p.temPagamentoConfirmado);
 
-            // Ordenar por nome
-            const pagamentosUnicos = participantesComPagamentoConfirmado
-                .sort((a, b) => a.participanteNome.localeCompare(b.participanteNome));
+            // Ordenação
+            listaFinal.sort((a, b) => {
+                let valorA, valorB;
 
-            pagamentosUnicos.forEach(pagamento => {
+                switch (sortConfig.field) {
+                    case 'participante':
+                        valorA = (a.participanteNome || '').toLowerCase();
+                        valorB = (b.participanteNome || '').toLowerCase();
+                        break;
+                    case 'data':
+                        valorA = new Date(a.dataPagamento || 0);
+                        valorB = new Date(b.dataPagamento || 0);
+                        break;
+                    case 'valor':
+                        valorA = a.valorTotal || 0;
+                        valorB = b.valorTotal || 0;
+                        break;
+                    case 'forma':
+                        valorA = (a.formaPagamento || '').toLowerCase();
+                        valorB = (b.formaPagamento || '').toLowerCase();
+                        break;
+                    default:
+                        valorA = new Date(a.dataPagamento || 0);
+                        valorB = new Date(b.dataPagamento || 0);
+                }
+
+                if (sortConfig.direction === 'asc') {
+                    return valorA > valorB ? 1 : -1;
+                } else {
+                    return valorA < valorB ? 1 : -1;
+                }
+            });
+
+            atualizarTabelaPagamentos(listaFinal);
+        }
+
+        function atualizarTabelaPagamentos(pagamentos) {
+            const tabelaPagamentos = $('#pagamentosList');
+            tabelaPagamentos.html('');
+
+            $('#tabelaContador').text(`${pagamentos.length} ${pagamentos.length === 1 ? 'registro' : 'registros'}`);
+
+            if (pagamentos.length === 0) {
+                tabelaPagamentos.html('<tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa-regular fa-folder-open mr-2"></i>Nenhum pagamento encontrado</td></tr>');
+                return;
+            }
+
+            pagamentos.forEach(pagamento => {
                 const dataPagamento = formatarData(pagamento.dataPagamento);
-                const valor = (pagamento.valorTotal).toFixed(2).replace('.', ',');
+                const valor = (pagamento.valorTotal || 0).toFixed(2).replace('.', ',');
 
                 const linha = `
-            <tr>
-                <td>${pagamento.participanteNome}</td>
-                <td>${dataPagamento}</td>
-                <td>R$ ${valor}</td>
-                <td>${formatarFormaPagamento(pagamento.formaPagamento)}</td>
-                <td>${pagamento.tamanhoBlusa || 'N/A'}</td>
-                <td>
-                    <span class="badge ${pagamento.status === 'confirmado' ? 'badge-pago' : 'badge-pendente'}">
-                        ${pagamento.status === 'confirmado' ? 'Confirmado' : 'Estornado'}
-                    </span>
-                </td>
-                <td>
-                    ${pagamento.status === 'confirmado' ? `
-                        <div class="btn-group" role="group">
-                            <button class="btn btn-info btn-sm" onclick="prepararEdicao('${pagamento.id}')">
-                                <i class="material-icons">edit</i>
-                            </button>
-                            <button class="btn btn-danger btn-sm" onclick="prepararEstorno('${pagamento.id}', '${pagamento.participanteId}', '${pagamento.participanteNome}')">
-                                <i class="material-icons">cancel</i>
-                            </button>
+                <tr>
+                    <td>
+                        <div class="participant-name-text">
+                            ${pagamento.participanteNome}
                         </div>
-                    ` : ''}
-                </td>
-            </tr>
-            `;
+                    </td>
+                    <td class="text-center">${dataPagamento}</td>
+                    <td class="text-center">
+                        <span class="badge-valor">R$ ${valor}</span>
+                    </td>
+                    <td class="text-center">
+                        <span class="method-badge">
+                            ${getIconeFormaPagamento(pagamento.formaPagamento)}
+                            ${formatarFormaPagamento(pagamento.formaPagamento)}
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <span class="badge-blusa">${pagamento.tamanhoBlusa || '-'}</span>
+                    </td>
+                    <td class="text-center">
+                        <span class="status-badge ${pagamento.status === 'confirmado' ? 'badge-status-pago' : 'badge-status-estornado'}">
+                            <i class="fa-solid ${pagamento.status === 'confirmado' ? 'fa-check' : 'fa-xmark'}"></i>
+                            ${pagamento.status === 'confirmado' ? 'Confirmado' : 'Estornado'}
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        ${pagamento.status === 'confirmado' ? `
+                            <div class="action-btns">
+                                <button type="button" class="btn-action-edit" title="Editar Pagamento" onclick="prepararEdicao('${pagamento.id}')">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <button type="button" class="btn-action-delete" title="Estornar Pagamento" onclick="prepararEstorno('${pagamento.id}', '${pagamento.participanteId}', '${pagamento.participanteNome.replace(/'/g, "\\'")}')">
+                                    <i class="fa-solid fa-rotate-left"></i>
+                                </button>
+                            </div>
+                        ` : ''}
+                    </td>
+                </tr>
+                `;
 
                 tabelaPagamentos.append(linha);
             });
@@ -1037,50 +1654,30 @@
             $('#estornoModal').modal('show');
         }
 
-        function initGraficos() {
-            // Inicializar gráfico de status
-            const ctxStatus = document.getElementById('graficoStatus').getContext('2d');
-            graficoStatus = new Chart(ctxStatus, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Pagos', 'Pendentes'],
-                    datasets: [{
-                        data: [0, 0],
-                        backgroundColor: ['#28a745', '#ffc107'],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
-                }
-            });
+        function prepararEdicao(pagamentoId) {
+            const pagamento = todosPagamentos.find(p => p.id === pagamentoId);
 
-
-        }
-
-        function atualizarGraficoStatus(totalPagos, totalPendentes) {
-            // Verificar se o gráfico foi inicializado
-            if (graficoStatus && graficoStatus.data) {
-                graficoStatus.data.datasets[0].data = [totalPagos, totalPendentes];
-                graficoStatus.update();
-            } else {
-                console.warn("Gráfico de status não está inicializado ainda");
+            if (!pagamento) {
+                alert('Pagamento não encontrado!');
+                return;
             }
+
+            $('#editPagamentoId').val(pagamentoId);
+            $('#editParticipanteId').val(pagamento.participanteId);
+            $('#editParticipanteNome').val(pagamento.participanteNome);
+            $('#editDataPagamento').val(formatarData(pagamento.dataPagamento));
+            $('#editValorPagamento').val((pagamento.valor || 0).toFixed(2).replace('.', ','));
+            $('#editFormaPagamento').val(pagamento.formaPagamento);
+
+            $('#editarPagamentoModal').modal('show');
         }
-
-
 
         function formatarData(dataString) {
-            if (!dataString) return '';
+            if (!dataString) return '-';
 
             try {
                 const data = new Date(dataString);
+                if (isNaN(data.getTime())) return dataString;
                 return data.toLocaleDateString('pt-BR') + ' ' + data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
             } catch (e) {
                 return dataString;
@@ -1092,188 +1689,19 @@
                 case 'pix': return 'PIX';
                 case 'cartao': return 'Cartão';
                 case 'dinheiro': return 'Dinheiro';
-                default: return forma;
+                default: return forma ? forma.toUpperCase() : '-';
             }
         }
 
-        // Função para preparar a edição de um pagamento
-        function prepararEdicao(pagamentoId) {
-            // Buscar o pagamento pelo ID
-            const pagamento = todosPagamentos.find(p => p.id === pagamentoId);
-
-            if (!pagamento) {
-                alert('Pagamento não encontrado!');
-                return;
+        function getIconeFormaPagamento(forma) {
+            switch (forma) {
+                case 'pix': return '<i class="fa-brands fa-pix mr-1"></i>';
+                case 'cartao': return '<i class="fa-solid fa-credit-card mr-1"></i>';
+                case 'dinheiro': return '<i class="fa-solid fa-money-bill-1-wave mr-1"></i>';
+                default: return '<i class="fa-solid fa-wallet mr-1"></i>';
             }
-
-            // Preencher o formulário com os dados do pagamento
-            $('#editPagamentoId').val(pagamentoId);
-            $('#editParticipanteId').val(pagamento.participanteId);
-            $('#editParticipanteNome').val(pagamento.participanteNome);
-            $('#editDataPagamento').val(formatarData(pagamento.dataPagamento));
-            $('#editValorPagamento').val(pagamento.valor.toFixed(2).replace('.', ','));
-            $('#editFormaPagamento').val(pagamento.formaPagamento);
-
-            // Abrir o modal
-            $('#editarPagamentoModal').modal('show');
-        }
-
-        // Adicione este event listener no document.ready
-        $(document).ready(function () {
-            // ... código existente ...
-
-            // Salvar edição de pagamento
-            $('#salvarEdicaoPagamento').on('click', function () {
-                const pagamentoId = $('#editPagamentoId').val();
-                const participanteId = $('#editParticipanteId').val();
-                const valorPagamento = parseFloat($('#editValorPagamento').val().replace(',', '.'));
-                const formaPagamento = $('#editFormaPagamento').val();
-
-                if (!valorPagamento || isNaN(valorPagamento) || valorPagamento <= 0) {
-                    alert('Por favor, informe um valor válido para o pagamento.');
-                    return;
-                }
-
-                // Atualizar o pagamento no Firestore
-                db.collection("Eventos").doc("filhasdoRei2026").collection("pagamentos").doc(pagamentoId)
-                    .update({
-                        valor: valorPagamento,
-                        formaPagamento: formaPagamento,
-                        dataEdicao: new Date().toISOString()
-                    })
-                    .then(() => {
-                        // Atualizar o participante com as novas informações
-                        return db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes").doc(participanteId)
-                            .update({
-                                formaPagamento: formaPagamento,
-                                valorPago: valorPagamento
-                            });
-                    })
-                    .then(() => {
-                        alert('Pagamento atualizado com sucesso!');
-                        $('#editarPagamentoModal').modal('hide');
-
-                        // Recarregar dados
-                        carregarDashboard();
-                        carregarUltimosPagamentos();
-                    })
-                    .catch((error) => {
-                        console.error("Erro ao atualizar pagamento: ", error);
-                        alert("Erro ao atualizar pagamento. Tente novamente.");
-                    });
-            });
-        });
-
-        // Adicione estas variáveis globais no início do seu script
-        let sortConfig = {
-            field: 'dataPagamento', // Campo padrão para ordenação (data de pagamento)
-            direction: 'desc'       // Direção padrão (decrescente)
-        };
-
-        // Adicione este event listener no document.ready
-        $(document).ready(function () {
-            // ... código existente ...
-
-            $(document).on('change', '#participante', function () {
-                const participanteId = $(this).val();
-                const selectedOption = $('#participante option:selected');
-                const totalPago = parseFloat(selectedOption.data('pago') || 0);
-                const limiteValor = parseFloat(selectedOption.data('limite') || 0);
-
-                const valorDevido = limiteValor - totalPago;
-
-                // Exibir o valor devido no campo de somente leitura
-                $('#valorDevido').val(valorDevido.toFixed(2).replace('.', ','));
-            });
-
-            // Adicionar evento de clique no botão de classificação
-            $('.sort-btn').on('click', function () {
-                const sortField = $(this).data('sort');
-
-                // Se clicar no mesmo campo, inverte a direção
-                if (sortField === sortConfig.field) {
-                    sortConfig.direction = sortConfig.direction === 'asc' ? 'desc' : 'asc';
-                } else {
-                    // Se clicar em um campo diferente, define o novo campo e direção padrão (asc)
-                    sortConfig.field = sortField;
-                    sortConfig.direction = 'asc';
-                }
-
-                // Atualizar ícone
-                updateSortIcon();
-
-                // Aplicar a ordenação
-                aplicarOrdenacao();
-
-            });
-        });
-
-        // Função para atualizar o ícone de ordenação
-        function updateSortIcon() {
-            // Remover classes de todos os ícones
-            $('.sort-btn').removeClass('sort-asc sort-desc');
-
-            // Adicionar classe ao ícone atual
-            $(`.sort-btn[data-sort="${sortConfig.field}"]`).addClass(
-                sortConfig.direction === 'asc' ? 'sort-asc' : 'sort-desc'
-            );
-        }
-
-        // Função para aplicar a ordenação
-        function aplicarOrdenacao() {
-            let pagamentosFiltrados = [...todosPagamentos];
-
-            // Aplicar filtros ativos
-            // ... código de filtragem existente ...
-
-            // Aplicar ordenação
-            pagamentosFiltrados.sort((a, b) => {
-                let valorA, valorB;
-
-                // Determinar os valores a comparar com base no campo de ordenação
-                switch (sortConfig.field) {
-                    case 'participante':
-                        valorA = a.participanteNome.toLowerCase();
-                        valorB = b.participanteNome.toLowerCase();
-                        break;
-                    case 'data':
-                        valorA = new Date(a.dataPagamento);
-                        valorB = new Date(b.dataPagamento);
-                        break;
-                    case 'valor':
-                        valorA = a.valor;
-                        valorB = b.valor;
-                        break;
-                    case 'forma':
-                        valorA = a.formaPagamento;
-                        valorB = b.formaPagamento;
-                        break;
-                    default:
-                        valorA = new Date(a.dataPagamento);
-                        valorB = new Date(b.dataPagamento);
-                }
-
-                // Comparar os valores na direção especificada
-                if (sortConfig.direction === 'asc') {
-                    return valorA > valorB ? 1 : -1;
-                } else {
-                    return valorA < valorB ? 1 : -1;
-                }
-            });
-
-            // Atualizar a tabela com os resultados ordenados
-            atualizarTabelaPagamentos(pagamentosFiltrados);
-        }
-
-        // Modificar a função aplicarFiltros para usar a nova função de ordenação
-        function aplicarFiltros() {
-            // ... código de filtragem existente ...
-
-            // Aplicar ordenação após a filtragem
-            aplicarOrdenacao();
         }
     </script>
 </body>
 
 </html>
-<link rel="stylesheet" href="../css/common.css">

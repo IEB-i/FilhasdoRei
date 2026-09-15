@@ -1,1205 +1,1637 @@
 <!DOCTYPE html>
-<html lang="pt-br"> <!-- Cards -->
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagamentos - FR 2026</title>
-    <link rel="shortcut icon" href="../assets/3.ico" type="image/x-icon">
+    <title>Gestão de Blusas - Filhas do Rei 2026</title>
 
+    <!-- Google Fonts: Montserrat & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 4.5.2 CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.bootstrap4.min.css">
+
+    <!-- Font Awesome 6.5.1 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
+        :root {
+            --primary: #7a2c6c;
+            --primary-dark: #5b184f;
+            --primary-light: #a92f85;
+            --primary-subtle: #f8edf4;
+            --secondary: #cf919e;
+            --accent-gold: #fbbf24;
+            --bg-page: #fbf7f2;
+            --bg-card: #ffffff;
+            --text-main: #2b232a;
+            --text-muted: #72626e;
+            --border-color: rgba(122, 44, 108, 0.12);
+            --border-light: #e5dbe1;
+            --success-bg: #e8f5e9;
+            --success-text: #2e7d32;
+            --warning-bg: #fff4e5;
+            --warning-text: #b76e00;
+            --danger-bg: #ffebee;
+            --danger-text: #c62828;
+            --shadow-sm: 0 2px 8px rgba(91, 24, 79, 0.05);
+            --shadow-md: 0 8px 24px rgba(91, 24, 79, 0.08);
+            --shadow-lg: 0 16px 36px rgba(91, 24, 79, 0.12);
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
         body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #f8f9fa;
-            color: #1d1d1d;
-            padding-top: 80px;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
             min-height: 100vh;
         }
 
+        h1, h2, h3, h4, h5, h6, .font-heading {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Top Header Bar */
         .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(135deg, #7a2c6c 0%, #a92f85 100%);
-            color: white;
-            padding: 15px;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .header-title {
-            text-align: center;
-            margin: 0;
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        @media (max-width: 768px) {
-            .header-title {
-                font-size: 1.2rem;
-            }
-        }
-
-        .dashboard-card {
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            margin-bottom: 20px;
-            height: 100%;
-            border: none;
-            background-color: white;
-        }
-
-        .dashboard-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-        }
-
-        .card-header {
-            border-radius: 12px 12px 0 0;
-            font-weight: 700;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-
-        .card-body {
-            padding: 25px;
-            text-align: center;
-        }
-
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .card-body h2 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .card-body h6 {
-            font-size: 0.9rem;
-            color: #6c757d;
-            font-weight: 500;
-        }
-
-        .card-body .icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-        }
-
-        .btn-export {
-            background: linear-gradient(45deg, #7a2c6c, #a92f85);
-            color: white;
-            border: none;
-            border-radius: 25px;
-            padding: 10px 20px;
-            font-weight: 600;
-            text-transform: uppercase;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(122, 44, 108, 0.3);
-        }
-
-        .btn-export:hover {
-            background: linear-gradient(45deg, #a92f85, #7a2c6c);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(122, 44, 108, 0.4);
-            color: white;
-        }
-
-        .total-card .icon {
-            color: #7a2c6c;
-        }
-
-        .pago-card .icon {
-            color: #a92f85;
-        }
-
-        .pendente-card .icon {
-            color: #cf919e;
-        }
-
-        .total-card {
-            background-color: white;
-            color: #333;
-            border-left: 5px solid #7a2c6c;
-        }
-
-        .pago-card {
-            background-color: white;
-            color: #333;
-            border-left: 5px solid #a92f85;
-        }
-
-        .pendente-card {
-            background-color: white;
-            color: #333;
-            border-left: 5px solid #cf919e;
-        }
-
-        .chart-container {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #430f39 100%);
+            color: #ffffff;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: relative;
-            height: 300px;
-            width: 100%;
-        }
-
-        .payment-action {
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .table-responsive {
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .badge-pago {
-            background-color: #a92f85;
-        }
-
-        .badge-pendente {
-            background-color: #cf919e;
-        }
-
-        .badge-warning {
-            background-color: #fd7e14;
-            color: white;
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .btn-voltar {
+            color: #ffffff;
+            font-size: 1.25rem;
+            text-decoration: none;
             position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            border-radius: 50%;
+            left: 24px;
             width: 40px;
             height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            transition: all 0.2s ease;
         }
 
         .btn-voltar:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transform: translateY(-50%) scale(1.05);
-            color: white;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
             text-decoration: none;
         }
 
-        .btn-voltar .material-icons {
-            font-size: 24px;
+        .header-title {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .btn-group .btn {
-            margin-right: 2px;
+        .header-title i {
+            color: var(--accent-gold);
         }
 
-        .btn-group .btn:last-child {
-            margin-right: 0;
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px 20px 48px 20px;
         }
 
-        .btn-info {
-            background-color: #7a2c6c;
-            color: white;
+        /* Page Banner */
+        .page-banner {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            border-radius: var(--radius-lg);
+            padding: 28px 32px;
+            color: #ffffff;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
         }
 
-        .btn-info:hover {
-            background-color: #a92f85;
+        .page-banner-title h1 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin: 0 0 6px 0;
+            color: #ffffff;
         }
 
-        .btn-success {
-            background: linear-gradient(45deg, #7a2c6c, #a92f85);
-            border: none;
-            border-radius: 25px;
-            padding: 10px 20px;
+        .page-banner-title p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.95rem;
+        }
+
+        .banner-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-banner-action {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 8px 16px;
             font-weight: 600;
-            text-transform: uppercase;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(122, 44, 108, 0.3);
-        }
-
-        .btn-success:hover {
-            background: linear-gradient(45deg, #a92f85, #7a2c6c);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(122, 44, 108, 0.4);
-        }
-
-        .sort-btn {
-            background: transparent;
-            border: none;
-            padding: 0;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             cursor: pointer;
             transition: all 0.2s;
+            text-decoration: none;
         }
 
-        .sort-btn:hover {
-            transform: scale(1.2);
+        .btn-banner-action:hover {
+            background: #ffffff;
+            color: var(--primary-dark);
+            text-decoration: none;
+            box-shadow: var(--shadow-sm);
         }
 
-        .sort-btn:focus {
+        /* Metric Summary Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 20px 24px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-card.total { border-left: 5px solid var(--primary); }
+        .stat-card.pagos { border-left: 5px solid #2e7d32; }
+        .stat-card.pendentes { border-left: 5px solid #e65100; }
+        .stat-card.valores { border-left: 5px solid var(--primary-light); }
+
+        .stat-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 1.65rem;
+            font-weight: 800;
+            color: var(--text-main);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.2;
+        }
+
+        .stat-sub {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+        }
+
+        .stat-card.total .stat-icon { background: var(--primary-subtle); color: var(--primary); }
+        .stat-card.pagos .stat-icon { background: var(--success-bg); color: var(--success-text); }
+        .stat-card.pendentes .stat-icon { background: var(--warning-bg); color: var(--warning-text); }
+        .stat-card.valores .stat-icon { background: #fdf2f7; color: var(--primary-light); }
+
+        /* Distribution & Size Grid Section */
+        .grade-section-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .grade-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .grade-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .grade-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .grade-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 992px) {
+            .grade-cards-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .grade-cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .grade-size-card {
+            background: #ffffff;
+            border-radius: var(--radius-md);
+            padding: 16px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .grade-size-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Cores dos Cards & Barras de acordo com a Linha de Distribuição */
+        /* PP - Violeta #8b5cf6 */
+        .grade-size-card[data-tamanho="PP"] {
+            background: #faf7ff;
+            border: 2px solid #ddd6fe;
+        }
+        .grade-size-card[data-tamanho="PP"]:hover {
+            border-color: #8b5cf6;
+            background: #ffffff;
+        }
+        .grade-size-card[data-tamanho="PP"].active {
+            border-color: #8b5cf6;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
+        }
+        .grade-size-card[data-tamanho="PP"] .grade-badge-tag {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        }
+        .grade-size-card[data-tamanho="PP"] .grade-mini-progress-fill {
+            background: linear-gradient(90deg, #a78bfa, #8b5cf6);
+        }
+        .grade-size-card[data-tamanho="PP"].active .grade-pct-pill {
+            background: #ede9fe;
+            color: #6d28d9;
+        }
+
+        /* P - Azul #3b82f6 */
+        .grade-size-card[data-tamanho="P"] {
+            background: #f5f9ff;
+            border: 2px solid #bfdbfe;
+        }
+        .grade-size-card[data-tamanho="P"]:hover {
+            border-color: #3b82f6;
+            background: #ffffff;
+        }
+        .grade-size-card[data-tamanho="P"].active {
+            border-color: #3b82f6;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+        }
+        .grade-size-card[data-tamanho="P"] .grade-badge-tag {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+        .grade-size-card[data-tamanho="P"] .grade-mini-progress-fill {
+            background: linear-gradient(90deg, #60a5fa, #3b82f6);
+        }
+        .grade-size-card[data-tamanho="P"].active .grade-pct-pill {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        /* M - Verde #10b981 */
+        .grade-size-card[data-tamanho="M"] {
+            background: #f4fbf7;
+            border: 2px solid #a7f3d0;
+        }
+        .grade-size-card[data-tamanho="M"]:hover {
+            border-color: #10b981;
+            background: #ffffff;
+        }
+        .grade-size-card[data-tamanho="M"].active {
+            border-color: #10b981;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+        }
+        .grade-size-card[data-tamanho="M"] .grade-badge-tag {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        .grade-size-card[data-tamanho="M"] .grade-mini-progress-fill {
+            background: linear-gradient(90deg, #34d399, #10b981);
+        }
+        .grade-size-card[data-tamanho="M"].active .grade-pct-pill {
+            background: #d1fae5;
+            color: #047857;
+        }
+
+        /* G - Âmbar/Laranja #f59e0b */
+        .grade-size-card[data-tamanho="G"] {
+            background: #fffbf2;
+            border: 2px solid #fde68a;
+        }
+        .grade-size-card[data-tamanho="G"]:hover {
+            border-color: #f59e0b;
+            background: #ffffff;
+        }
+        .grade-size-card[data-tamanho="G"].active {
+            border-color: #f59e0b;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25);
+        }
+        .grade-size-card[data-tamanho="G"] .grade-badge-tag {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+        .grade-size-card[data-tamanho="G"] .grade-mini-progress-fill {
+            background: linear-gradient(90deg, #fbbf24, #f59e0b);
+        }
+        .grade-size-card[data-tamanho="G"].active .grade-pct-pill {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        /* GG - Rosa #ec4899 */
+        .grade-size-card[data-tamanho="GG"] {
+            background: #fdf5f9;
+            border: 2px solid #fbcfe8;
+        }
+        .grade-size-card[data-tamanho="GG"]:hover {
+            border-color: #ec4899;
+            background: #ffffff;
+        }
+        .grade-size-card[data-tamanho="GG"].active {
+            border-color: #ec4899;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.25);
+        }
+        .grade-size-card[data-tamanho="GG"] .grade-badge-tag {
+            background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+        }
+        .grade-size-card[data-tamanho="GG"] .grade-mini-progress-fill {
+            background: linear-gradient(90deg, #f472b6, #ec4899);
+        }
+        .grade-size-card[data-tamanho="GG"].active .grade-pct-pill {
+            background: #fce7f3;
+            color: #be185d;
+        }
+
+        /* XG - Índigo #6366f1 */
+        .grade-size-card[data-tamanho="XG"] {
+            background: #f7f7ff;
+            border: 2px solid #c7d2fe;
+        }
+        .grade-size-card[data-tamanho="XG"]:hover {
+            border-color: #6366f1;
+            background: #ffffff;
+        }
+        .grade-size-card[data-tamanho="XG"].active {
+            border-color: #6366f1;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+        }
+        .grade-size-card[data-tamanho="XG"] .grade-badge-tag {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        }
+        .grade-size-card[data-tamanho="XG"] .grade-mini-progress-fill {
+            background: linear-gradient(90deg, #818cf8, #6366f1);
+        }
+        .grade-size-card[data-tamanho="XG"].active .grade-pct-pill {
+            background: #e0e7ff;
+            color: #4338ca;
+        }
+
+        .grade-badge-tag {
+            display: inline-block;
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 0.85rem;
+            padding: 3px 14px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .grade-qty-number {
+            font-size: 1.9rem;
+            font-weight: 800;
+            color: var(--text-main);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.1;
+            margin: 4px 0 2px 0;
+        }
+
+        .grade-unit-label {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .grade-pct-pill {
+            display: inline-block;
+            background: #f1f5f9;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-top: 6px;
+        }
+
+        .grade-mini-progress {
+            height: 5px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .grade-mini-progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.4s ease;
+        }
+
+        /* Stacked Full Progress Bar */
+        .grade-stacked-bar-container {
+            background: #f1f5f9;
+            border-radius: 8px;
+            padding: 12px 16px;
+            border: 1px solid var(--border-light);
+        }
+
+        .grade-stacked-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .grade-stacked-progress {
+            height: 14px;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            background: #e2e8f0;
+        }
+
+        .grade-seg-PP { background-color: #8b5cf6; }
+        .grade-seg-P { background-color: #3b82f6; }
+        .grade-seg-M { background-color: #10b981; }
+        .grade-seg-G { background-color: #f59e0b; }
+        .grade-seg-GG { background-color: #ec4899; }
+        .grade-seg-XG { background-color: #6366f1; }
+
+        /* Actions & Filters Panel */
+        .actions-panel {
+            background: var(--bg-card);
+            border-radius: 18px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .filters-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            align-items: flex-end;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .filter-input {
+            width: 100%;
+            height: 44px;
+            padding: 8px 14px;
+            border: 1.5px solid var(--border-light);
+            border-radius: 10px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text-main);
+            background-color: #faf7f8;
+            transition: all 0.2s ease;
+        }
+
+        .filter-input:focus {
+            background-color: #ffffff;
             outline: none;
-            box-shadow: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3.5px rgba(169, 47, 133, 0.15);
         }
 
-        .sort-asc .material-icons {
-            transform: rotate(180deg);
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-filter-clean {
+            background: #f1f5f9;
+            color: var(--text-muted);
+            border: 1.5px solid var(--border-light);
+            height: 44px;
+            padding: 0 18px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-filter-clean:hover {
+            background: #e2e8f0;
+            color: var(--text-main);
+        }
+
+        /* Table Card & Container (Exact format from pagamentos.html) */
+        .table-card {
+            background: white;
+            border-radius: 18px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .table-card-header {
+            padding: 18px 24px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            background: #ffffff;
+            border-bottom: 1px solid #f2e9ed;
+        }
+
+        .table-card-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge-counter {
+            background: var(--primary-subtle);
+            color: var(--primary);
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(122, 44, 108, 0.15);
+        }
+
+        /* Custom Search Box */
+        .search-box-wrap {
+            position: relative;
+            min-width: 280px;
+        }
+
+        .search-box-wrap i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a4919d;
+            font-size: 0.95rem;
+            pointer-events: none;
+        }
+
+        .search-input-custom {
+            height: 40px;
+            width: 100%;
+            border-radius: 20px;
+            border: 1.5px solid #e5dbe1;
+            padding: 8px 16px 8px 38px;
+            font-size: 0.88rem;
+            background: #faf7f8;
+            transition: all 0.2s ease;
+        }
+
+        .search-input-custom:focus {
+            background: #ffffff;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(169, 47, 133, 0.12);
+            outline: none;
+        }
+
+        /* Table Styling */
+        .table-responsive-custom {
+            width: 100%;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        #blusasTable {
+            width: 100% !important;
+            min-width: 960px;
+            table-layout: fixed !important;
+            margin-bottom: 0 !important;
+            border-collapse: collapse;
+        }
+
+        /* Column Widths */
+        #blusasTable th:nth-child(1), #blusasTable td:nth-child(1) { width: 28%; }
+        #blusasTable th:nth-child(2), #blusasTable td:nth-child(2) { width: 16%; }
+        #blusasTable th:nth-child(3), #blusasTable td:nth-child(3) { width: 12%; }
+        #blusasTable th:nth-child(4), #blusasTable td:nth-child(4) { width: 14%; }
+        #blusasTable th:nth-child(5), #blusasTable td:nth-child(5) { width: 12%; }
+        #blusasTable th:nth-child(6), #blusasTable td:nth-child(6) { width: 10%; }
+        #blusasTable th:nth-child(7), #blusasTable td:nth-child(7) { width: 8%; }
+
+        /* Table Header */
+        #blusasTable thead th {
+            background: linear-gradient(135deg, #5b184f 0%, #7a2c6c 100%) !important;
+            color: #ffffff !important;
+            font-weight: 700;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 14px 16px;
+            border: none;
+            white-space: nowrap;
+            vertical-align: middle;
+            box-sizing: border-box;
+        }
+
+        #blusasTable thead th:first-child {
+            padding-left: 24px;
+        }
+
+        .btn-sort-header {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: #ffffff;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-sort-header:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+        }
+
+        /* Table Body */
+        #blusasTable tbody tr {
+            transition: background-color 0.15s ease;
+            background-color: #ffffff;
+        }
+
+        #blusasTable tbody tr:nth-child(even) {
+            background-color: #fdfafc;
+        }
+
+        #blusasTable tbody tr:hover {
+            background-color: #f9edf5 !important;
+        }
+
+        #blusasTable tbody td {
+            padding: 14px 16px;
+            vertical-align: middle;
+            font-size: 0.88rem;
+            color: var(--text-main);
+            border-top: 1px solid #f3e9ef;
+            border-bottom: none;
+            white-space: nowrap;
+        }
+
+        #blusasTable tbody td:first-child {
+            padding-left: 24px;
+        }
+
+        /* Column Alignments */
+        #blusasTable thead th.text-center,
+        #blusasTable thead th:nth-child(2),
+        #blusasTable thead th:nth-child(3),
+        #blusasTable thead th:nth-child(4),
+        #blusasTable thead th:nth-child(5),
+        #blusasTable thead th:nth-child(6),
+        #blusasTable thead th:nth-child(7) {
+            text-align: center !important;
+        }
+
+        #blusasTable tbody td.text-center,
+        #blusasTable tbody td:nth-child(2),
+        #blusasTable tbody td:nth-child(3),
+        #blusasTable tbody td:nth-child(4),
+        #blusasTable tbody td:nth-child(5),
+        #blusasTable tbody td:nth-child(6),
+        #blusasTable tbody td:nth-child(7) {
+            text-align: center !important;
+        }
+
+        /* Participant Avatar & Info */
+        .participant-avatar-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar-initials {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 2px 5px rgba(122, 44, 108, 0.2);
+        }
+
+        .participant-name-text {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        /* WhatsApp Link */
+        .phone-link {
+            color: #2e7d32;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .phone-link:hover {
+            text-decoration: underline;
+            color: #1b5e20;
+        }
+
+        /* Size Badges Matching Grade Colors */
+        .badge-blusa {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 36px;
+            height: 30px;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 0.82rem;
+            padding: 2px 10px;
+            border: 1.5px solid transparent;
+        }
+        .badge-blusa-PP { background: #ede9fe; color: #6d28d9; border-color: #c4b5fd; }
+        .badge-blusa-P  { background: #dbeafe; color: #1d4ed8; border-color: #93c5fd; }
+        .badge-blusa-M  { background: #d1fae5; color: #047857; border-color: #6ee7b7; }
+        .badge-blusa-G  { background: #fef3c7; color: #b45309; border-color: #fcd34d; }
+        .badge-blusa-GG { background: #fce7f3; color: #be185d; border-color: #f472b6; }
+        .badge-blusa-XG { background: #e0e7ff; color: #4338ca; border-color: #a5b4fc; }
+
+        .badge-valor {
+            font-weight: 700;
+            color: var(--primary-dark);
+            font-size: 0.9rem;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-status-pago {
+            background-color: var(--success-bg);
+            color: var(--success-text);
+            border: 1px solid rgba(46, 125, 50, 0.2);
+        }
+
+        .badge-status-parcial {
+            background-color: var(--warning-bg);
+            color: var(--warning-text);
+            border: 1px solid rgba(183, 110, 0, 0.2);
+        }
+
+        .badge-status-pendente {
+            background-color: var(--danger-bg);
+            color: var(--danger-text);
+            border: 1px solid rgba(198, 40, 40, 0.2);
+        }
+
+        /* Action Buttons */
+        .action-btns {
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-action-edit {
+            background: #f0f4f8;
+            color: #1976d2;
+            border: 1px solid rgba(25, 118, 210, 0.2);
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action-edit:hover {
+            background: #1976d2;
+            color: #ffffff;
+            border-color: #1976d2;
+            transform: translateY(-1px);
+        }
+
+        .btn-action-whatsapp {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid rgba(46, 125, 50, 0.2);
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-action-whatsapp:hover {
+            background: #2e7d32;
+            color: #ffffff;
+            border-color: #2e7d32;
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
+        /* Custom Modal Styling */
+        .modal-content {
+            border-radius: var(--radius-lg);
+            border: none;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: #ffffff;
+            border-bottom: none;
+            padding: 18px 24px;
+        }
+
+        .modal-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-header .close {
+            color: #ffffff;
+            opacity: 0.8;
+            text-shadow: none;
+        }
+
+        .modal-header .close:hover {
+            opacity: 1;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-footer {
+            background-color: #f8fafc;
+            border-top: 1px solid var(--border-light);
+            padding: 14px 24px;
+        }
+
+        .btn-modal-save {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: #ffffff;
+            border: none;
+            padding: 9px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .btn-modal-save:hover {
+            opacity: 0.95;
+            color: #ffffff;
+        }
+
+        /* Print Container Hidden from View */
+        #printContainer {
+            display: none;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printContainer, #printContainer * {
+                visibility: visible;
+            }
+            #printContainer {
+                display: block;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: #ffffff;
+                padding: 20px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="header">
-        <a href="gestao.html" class="btn-voltar">
-            <i class="material-icons">arrow_back</i>
+    <!-- Top Header Bar -->
+    <header class="header">
+        <a href="gestao.html" class="btn-voltar" title="Voltar para a Gestão">
+            <i class="fa-solid fa-arrow-left"></i>
         </a>
-        <h2 class="header-title">BLUSAS - FR 2026</h2>
-    </div>
+        <h1 class="header-title">
+            <i class="fa-solid fa-crown"></i>
+            Filhas do Rei 2026
+        </h1>
+    </header>
 
-    <div class="container mt-5">
-        <!-- Dashboard Cards -->
-        <div class="row">
-            <!-- Card: Status de Pagamentos -->
-            <div class="col-md-6">
-                <div class="card dashboard-card">
-                    <div class="card-body">
-                        <i class="material-icons icon">payment</i>
-                        <h5 class="card-title">Status de Pagamentos</h5>
-                        <div class="row text-center">
-                            <div class="col-4">
-                                <h6 class="text-success">Pagos</h6>
-                                <h4 id="totalPagos">0</h4>
-                            </div>
-                            <div class="col-4">
-                                <h6 class="text-warning">Parciais</h6>
-                                <h4 id="totalParciais">0</h4>
-                            </div>
-                            <div class="col-4">
-                                <h6 class="text-danger">Pendentes</h6>
-                                <h4 id="totalPendentes">0</h4>
-                            </div>
-                        </div>
-                        <hr>
-                        <h6 class="text-center">Valor Total Recebido: R$ <span id="valorPago">0,00</span></h6>
-                    </div>
-                </div>
+    <div class="main-container">
+        <!-- Page Banner -->
+        <div class="page-banner">
+            <div class="page-banner-title">
+                <h1>Gestão de Blusas Oficiais</h1>
+                <p>Controle de pedidos, grade de tamanhos e produção da conferência</p>
             </div>
-
-            <!-- Card: Distribuição por Tamanho -->
-            <div class="col-md-6">
-                <div class="card dashboard-card">
-                    <div class="card-body">
-                        <i class="material-icons icon">checkroom</i>
-                        <h5 class="card-title">Distribuição por Tamanho</h5>
-                        <div class="row text-center">
-                            <div class="col-2">
-                                <h6>PP</h6>
-                                <h5 id="tamanhoPP">0</h5>
-                            </div>
-                            <div class="col-2">
-                                <h6>P</h6>
-                                <h5 id="tamanhoP">0</h5>
-                            </div>
-                            <div class="col-2">
-                                <h6>M</h6>
-                                <h5 id="tamanhoM">0</h5>
-                            </div>
-                            <div class="col-2">
-                                <h6>G</h6>
-                                <h5 id="tamanhoG">0</h5>
-                            </div>
-                            <div class="col-2">
-                                <h6>GG</h6>
-                                <h5 id="tamanhoGG">0</h5>
-                            </div>
-                            <div class="col-2">
-                                <h6>XG</h6>
-                                <h5 id="tamanhoXG">0</h5>
-                            </div>
-                        </div>
-                        <hr>
-                        <h6 class="text-center">Total de Blusas: <span id="totalBlusas">0</span></h6>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
-        <!-- Filtros -->
-        <div class="row mt-4">
-            <div class="col-md-12">
-                <div class="payment-action">
-                    <h5>Filtros</h5>
-                    <div class="row">
-                        <!-- Filtro por Nome -->
-                        <div class="form-group col-md-4">
-                            <label for="filtroNome">Nome do Participante</label>
-                            <input type="text" class="form-control" id="filtroNome"
-                                placeholder="Digite o nome para filtrar...">
-                        </div>
-                        <!-- Filtro por Tamanho da Blusa -->
-                        <div class="form-group col-md-3">
-                            <label for="filtroTamanho">Tamanho da Blusa</label>
-                            <select class="form-control" id="filtroTamanho">
-                                <option value="">Todos os tamanhos</option>
-                                <option value="PP">PP</option>
-                                <option value="P">P</option>
-                                <option value="M">M</option>
-                                <option value="G">G</option>
-                                <option value="GG">GG</option>
-                                <option value="XG">XG</option>
-                            </select>
-                        </div>
-                        <!-- Filtro por Status de Pagamento -->
-                        <div class="form-group col-md-3">
-                            <label for="filtroStatus">Status de Pagamento</label>
-                            <select class="form-control" id="filtroStatus">
-                                <option value="">Todos os status</option>
-                                <option value="pago">Pago</option>
-                                <option value="parcial">Parcial</option>
-                                <option value="pendente">Pendente</option>
-                            </select>
-                        </div>
-                        <!-- Botão de Limpar Filtros -->
-                        <div class="form-group col-md-2 d-flex align-items-end">
-                            <button type="button" class="btn btn-secondary w-100" onclick="limparFiltros()">Limpar
-                                Filtros</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row mt-3 mb-3">
-            <div class="col-md-8">
-                <h4>Lista de Participantes com Blusas</h4>
-            </div>
-            <div class="col-md-4 text-right">
-                <button class="btn btn-export" id="exportarPDF">
-                    <i class="material-icons align-middle">file_download</i> Exportar PDF
+            <div class="banner-actions">
+                <button type="button" class="btn-banner-action" id="btnImprimirRelatorio">
+                    <i class="fa-solid fa-print"></i> Relatório de Produção
                 </button>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card dashboard-card">
-                    <div class="card-header">
-                        Últimos Pagamentos
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped" id="pagamentosTable">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>
-                                            <div class="d-flex align-items-center">
-                                                Participante
-                                                <button class="btn btn-sm text-white ml-2 sort-btn"
-                                                    data-sort="participante">
-                                                    <i class="material-icons" id="sortIconParticipante">sort</i>
-                                                </button>
-                                            </div>
-                                        </th>
-                                        <th>Telefone</th>
-                                        <th>Data de Pagamento</th>
-                                        <th>Valor</th>
-                                        <th>Tamanho da Blusa</th>
-                                        <th>Blusa</th>
-                                        <th>Status Pagamento</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="pagamentosList">
-                                    <!-- Os dados serão carregados dinamicamente do Firebase -->
-                                </tbody>
-                            </table>
-                        </div>
+        <!-- Metric Summary Cards -->
+        <div class="stats-grid">
+            <div class="stat-card total">
+                <div class="stat-info">
+                    <div class="stat-label">Total de Blusas</div>
+                    <div class="stat-value" id="totalBlusas">0</div>
+                    <div class="stat-sub">Pedidos computados</div>
+                </div>
+                <div class="stat-icon"><i class="fa-solid fa-shirt"></i></div>
+            </div>
+
+            <div class="stat-card pagos">
+                <div class="stat-info">
+                    <div class="stat-label">Pagas / Confirmadas</div>
+                    <div class="stat-value" id="totalPagos">0</div>
+                    <div class="stat-sub">Prontas para produção</div>
+                </div>
+                <div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div>
+            </div>
+
+            <div class="stat-card pendentes">
+                <div class="stat-info">
+                    <div class="stat-label">Pendentes / Parciais</div>
+                    <div class="stat-value" id="totalPendentes">0</div>
+                    <div class="stat-sub">Aguardando quitação</div>
+                </div>
+                <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
+            </div>
+
+            <div class="stat-card valores">
+                <div class="stat-info">
+                    <div class="stat-label">Total Arrecadado</div>
+                    <div class="stat-value">R$ <span id="valorPago">0,00</span></div>
+                    <div class="stat-sub">Previsto: R$ <span id="valorTotalPrevisto">0,00</span></div>
+                </div>
+                <div class="stat-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+            </div>
+        </div>
+
+        <!-- Grade de Tamanhos Refinada & Interativa -->
+        <div class="grade-section-card">
+            <div class="grade-header">
+                <div>
+                    <h2 class="grade-title">
+                        <i class="fa-solid fa-layer-group"></i> Distribuição por Grade de Tamanhos
+                    </h2>
+                    <div class="grade-subtitle">Clique em um tamanho abaixo para filtrar a lista instantaneamente</div>
+                </div>
+                <span class="badge-counter" id="badgeTotalGrade" style="font-size: 0.9rem; padding: 6px 14px;">0 unidades</span>
+            </div>
+
+            <!-- Cards de Tamanho -->
+            <div class="grade-cards-grid">
+                <!-- PP -->
+                <div class="grade-size-card" data-tamanho="PP" title="Filtrar tamanho PP">
+                    <span class="grade-badge-tag">PP</span>
+                    <div class="grade-qty-number" id="tamanhoPP">0</div>
+                    <div class="grade-unit-label">Peças</div>
+                    <span class="grade-pct-pill" id="pctPP">0%</span>
+                    <div class="grade-mini-progress">
+                        <div class="grade-mini-progress-fill" id="fillPP" style="width: 0%;"></div>
                     </div>
                 </div>
+
+                <!-- P -->
+                <div class="grade-size-card" data-tamanho="P" title="Filtrar tamanho P">
+                    <span class="grade-badge-tag">P</span>
+                    <div class="grade-qty-number" id="tamanhoP">0</div>
+                    <div class="grade-unit-label">Peças</div>
+                    <span class="grade-pct-pill" id="pctP">0%</span>
+                    <div class="grade-mini-progress">
+                        <div class="grade-mini-progress-fill" id="fillP" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <!-- M -->
+                <div class="grade-size-card" data-tamanho="M" title="Filtrar tamanho M">
+                    <span class="grade-badge-tag">M</span>
+                    <div class="grade-qty-number" id="tamanhoM">0</div>
+                    <div class="grade-unit-label">Peças</div>
+                    <span class="grade-pct-pill" id="pctM">0%</span>
+                    <div class="grade-mini-progress">
+                        <div class="grade-mini-progress-fill" id="fillM" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <!-- G -->
+                <div class="grade-size-card" data-tamanho="G" title="Filtrar tamanho G">
+                    <span class="grade-badge-tag">G</span>
+                    <div class="grade-qty-number" id="tamanhoG">0</div>
+                    <div class="grade-unit-label">Peças</div>
+                    <span class="grade-pct-pill" id="pctG">0%</span>
+                    <div class="grade-mini-progress">
+                        <div class="grade-mini-progress-fill" id="fillG" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <!-- GG -->
+                <div class="grade-size-card" data-tamanho="GG" title="Filtrar tamanho GG">
+                    <span class="grade-badge-tag">GG</span>
+                    <div class="grade-qty-number" id="tamanhoGG">0</div>
+                    <div class="grade-unit-label">Peças</div>
+                    <span class="grade-pct-pill" id="pctGG">0%</span>
+                    <div class="grade-mini-progress">
+                        <div class="grade-mini-progress-fill" id="fillGG" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <!-- XG -->
+                <div class="grade-size-card" data-tamanho="XG" title="Filtrar tamanho XG">
+                    <span class="grade-badge-tag">XG</span>
+                    <div class="grade-qty-number" id="tamanhoXG">0</div>
+                    <div class="grade-unit-label">Peças</div>
+                    <span class="grade-pct-pill" id="pctXG">0%</span>
+                    <div class="grade-mini-progress">
+                        <div class="grade-mini-progress-fill" id="fillXG" style="width: 0%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Barra de Distribuição Geral Stacked -->
+            <div class="grade-stacked-bar-container">
+                <div class="grade-stacked-label">
+                    <span><i class="fa-solid fa-chart-bar mr-1"></i> Proporção na Produção</span>
+                    <span>PP • P • M • G • GG • XG</span>
+                </div>
+                <div class="grade-stacked-progress">
+                    <div class="grade-seg-PP" id="barPP" style="width: 0%;" title="PP"></div>
+                    <div class="grade-seg-P" id="barP" style="width: 0%;" title="P"></div>
+                    <div class="grade-seg-M" id="barM" style="width: 0%;" title="M"></div>
+                    <div class="grade-seg-G" id="barG" style="width: 0%;" title="G"></div>
+                    <div class="grade-seg-GG" id="barGG" style="width: 0%;" title="GG"></div>
+                    <div class="grade-seg-XG" id="barXG" style="width: 0%;" title="XG"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions and Filters Panel -->
+        <div class="actions-panel">
+            <div class="filters-row">
+                <div class="filter-group" style="flex: 2;">
+                    <label><i class="fa-solid fa-magnifying-glass mr-1"></i> Buscar Participante</label>
+                    <input type="text" id="filtroNome" class="filter-input" placeholder="Digite nome ou telefone...">
+                </div>
+
+                <div class="filter-group">
+                    <label><i class="fa-solid fa-shirt mr-1"></i> Tamanho</label>
+                    <select id="filtroTamanho" class="filter-input">
+                        <option value="">Todos os Tamanhos</option>
+                        <option value="PP">PP</option>
+                        <option value="P">P</option>
+                        <option value="M">M</option>
+                        <option value="G">G</option>
+                        <option value="GG">GG</option>
+                        <option value="XG">XG</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label><i class="fa-solid fa-filter mr-1"></i> Status do Pagamento</label>
+                    <select id="filtroStatus" class="filter-input">
+                        <option value="">Todos os Status</option>
+                        <option value="pago">Pago</option>
+                        <option value="parcial">Parcial</option>
+                        <option value="pendente">Pendente</option>
+                    </select>
+                </div>
+
+                <div class="filter-buttons">
+                    <button type="button" class="btn-filter-clean" id="limparFiltros" title="Limpar todos os filtros">
+                        <i class="fa-solid fa-rotate-left"></i> Limpar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Card (Format identical to pagamentos.html) -->
+        <div class="table-card">
+            <div class="table-card-header">
+                <div class="d-flex align-items-center gap-3">
+                    <h2 class="table-card-title">
+                        <i class="fa-solid fa-shirt text-primary"></i>
+                        Lista de Encomendas de Blusas
+                    </h2>
+                    <span class="badge-counter ml-2" id="tabelaContador">0 registros</span>
+                </div>
+                <div class="search-box-wrap">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="customTableSearch" class="search-input-custom" placeholder="Buscar por participante ou celular...">
+                </div>
+            </div>
+
+            <div class="table-responsive-custom">
+                <table id="blusasTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <span>Participante</span>
+                                    <button type="button" class="btn-sort-header sort-btn" data-sort="participante" title="Ordenar por participante">
+                                        <i class="fa-solid fa-sort" id="sortIconParticipante"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th class="text-center">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <span>WhatsApp</span>
+                                </div>
+                            </th>
+                            <th class="text-center">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <span>Tamanho</span>
+                                    <button type="button" class="btn-sort-header sort-btn ml-1" data-sort="tamanho" title="Ordenar por tamanho">
+                                        <i class="fa-solid fa-sort"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th class="text-center">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <span>Data Registro</span>
+                                    <button type="button" class="btn-sort-header sort-btn ml-1" data-sort="data" title="Ordenar por data">
+                                        <i class="fa-solid fa-sort"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th class="text-center">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <span>Valor</span>
+                                    <button type="button" class="btn-sort-header sort-btn ml-1" data-sort="valor" title="Ordenar por valor">
+                                        <i class="fa-solid fa-sort"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th class="text-center">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <span>Status</span>
+                                    <button type="button" class="btn-sort-header sort-btn ml-1" data-sort="status" title="Ordenar por status">
+                                        <i class="fa-solid fa-sort"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th class="text-center">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="blusasBody">
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">
+                                <i class="fa-solid fa-spinner fa-spin mr-2"></i>Carregando pedidos de blusas...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
-    <!-- Modal de Confirmação de Estorno -->
-    <div class="modal fade" id="estornoModal" tabindex="-1" role="dialog" aria-labelledby="estornoModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <!-- Modal para Edição de Blusa -->
+    <div class="modal fade" id="editarBlusaModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="estornoModalLabel">Confirmar Estorno</h5>
+                    <h5 class="modal-title">
+                        <i class="fa-solid fa-shirt"></i> Alterar Dados da Blusa
+                    </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                        <span aria-hidden="true">×</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Você tem certeza que deseja estornar <strong>TODOS OS PAGAMENTOS</strong> de <strong
-                            id="estornoNome"></strong>?</p>
-                    <p>Esta ação irá estornar todo o valor já pago pelo participante e marcar o status como pendente.
-                    </p>
-                    <p><strong>Atenção:</strong> Todos os pagamentos confirmados deste participante serão estornados.
-                    </p>
+                    <input type="hidden" id="editBlusaParticipanteId">
+                    
+                    <div class="form-group">
+                        <label class="font-weight-bold">Participante</label>
+                        <input type="text" id="editBlusaNome" class="form-control" readonly style="background-color: #f1f5f9;">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="font-weight-bold">Tamanho da Blusa</label>
+                        <select id="editBlusaTamanho" class="form-control">
+                            <option value="PP">PP</option>
+                            <option value="P">P</option>
+                            <option value="M">M</option>
+                            <option value="G">G</option>
+                            <option value="GG">GG</option>
+                            <option value="XG">XG</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="font-weight-bold">Status do Pagamento</label>
+                        <select id="editBlusaStatus" class="form-control">
+                            <option value="pago">Pago</option>
+                            <option value="parcial">Parcial</option>
+                            <option value="pendente">Pendente</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="confirmarEstorno">Confirmar Estorno</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Edição de Pagamento -->
-    <div class="modal fade" id="editarPagamentoModal" tabindex="-1" role="dialog"
-        aria-labelledby="editarPagamentoModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editarPagamentoModalLabel">Editar Pagamento</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                        <span aria-hidden="true">×</span>
+                    <button type="button" class="btn btn-modal-save" id="salvarEdicaoBlusa">
+                        <i class="fa-solid fa-floppy-disk mr-1"></i> Salvar Alterações
                     </button>
                 </div>
-                <div class="modal-body">
-                    <form id="editarPagamentoForm">
-                        <input type="hidden" id="editPagamentoId">
-                        <input type="hidden" id="editParticipanteId">
-
-                        <div class="form-group">
-                            <label for="editParticipanteNome">Participante</label>
-                            <input type="text" class="form-control" id="editParticipanteNome" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="editDataPagamento">Data de Pagamento</label>
-                            <input type="text" class="form-control" id="editDataPagamento" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="editValorPagamento">Valor</label>
-                            <input type="text" class="form-control" id="editValorPagamento" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="editFormaPagamento">Forma de Pagamento</label>
-                            <select class="form-control" id="editFormaPagamento" required>
-                                <option value="pix">PIX</option>
-                                <option value="cartao">Cartão</option>
-                                <option value="dinheiro">Dinheiro</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="salvarEdicaoPagamento">Salvar Alterações</button>
-                </div>
             </div>
         </div>
     </div>
 
+    <!-- Hidden Print Area for Report Generation -->
+    <div id="printContainer"></div>
+
+    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="../firebase/firebaseConfig.js"></script>
 
     <script>
-
-        // Variável global para o DataTable
-        let dataTableBlusas;
-
-        $(document).ready(function () {
-            // Inicializar DataTable
-            dataTableBlusas = $('#pagamentosTable').DataTable({
-                language: {
-                    url: 'https://cdn.datatables.net/plug-ins/1.11.5/i18n/pt-BR.json'
-                },
-                responsive: true,
-                dom: 'Bfrti',
-                paging: false,
-                scrollY: '350px',
-                scrollX: true,
-                scrollCollapse: true,
-                fixedHeader: true,
-                columnDefs: [
-                    { width: "30%", targets: 0 }, // Participante
-                    { width: "15%", targets: 1 }, // Telefone
-                    { width: "15%", targets: 2 }, // Data de Pagamento
-                    { width: "12%", targets: 3 }, // Valor
-                    { width: "12%", targets: 4 }, // Tamanho da Blusa
-                    { width: "8%", targets: 5 },  // Blusa
-                    { width: "8%", targets: 6 }   // Status Pagamento
-                ],
-                autoWidth: false,
-                buttons: [
-                    {
-                        extend: 'pdf',
-                        text: 'Exportar PDF',
-                        className: 'btn btn-export d-none',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6] // Colunas: Participante, Telefone, Data, Valor, Tamanho, Blusa, Status
-                        },
-                        filename: 'Blusas_FilhasdoRei_2026',
-                        title: 'Relatório de Blusas - Filhas do Rei 2026',
-                        orientation: 'landscape',
-                        pageSize: 'A4',
-                        customize: function (doc) {
-                            doc.defaultStyle.fontSize = 8;
-                            doc.styles.tableHeader.fontSize = 9;
-                            doc.styles.title.fontSize = 14;
-                            doc.styles.title.alignment = 'center';
-                        }
-                    }
-                ]
-            });
-
-            // Conectar o botão personalizado ao botão do DataTable
-            $('#exportarPDF').on('click', function () {
-                dataTableBlusas.button(0).trigger();
-            });
-
-            // Definir valor padrão de R$ 0,00
-            $('#valorPagamento').val('0,00');
-            $('#valorPagamento, #editValorPagamento').on('input', function () {
-                let valor = this.value.replace(/\D/g, '');
-                if (valor === '') {
-                    this.value = '';
-                    return;
-                }
-
-                // Converter para formato monetário
-                valor = (parseFloat(valor) / 100).toFixed(2);
-                valor = valor.replace('.', ',');
-
-                // Adicionar separadores de milhares se necessário
-                if (parseFloat(valor.replace(',', '.')) >= 1000) {
-                    valor = valor.replace(/(\d)(\d{3}),/g, '$1.$2,');
-                }
-                this.value = valor;
-
-            });
-
-            // Validar se o valor não está vazio ao sair do campo
-            $('#valorPagamento').on('blur', function () {
-                if (this.value === '' || this.value === '0,00') {
-                    this.value = '0,00';
-                }
-            });
-
-            // Carregar dados
-            carregarDashboard();
-            carregarUltimosPagamentos();
-
-            // Implementar filtros
-            let participantesOriginais = []; // Armazenar dados originais para filtros
-
-            // Event listeners para os filtros
-            $('#filtroNome').on('input', aplicarFiltros);
-            $('#filtroTamanho').on('change', aplicarFiltros);
-            $('#filtroStatus').on('change', aplicarFiltros);
-
-            // Confirmar estorno de pagamento
-            $('#confirmarEstorno').on('click', function () {
-                const participanteId = $(this).data('participante');
-
-                console.log("Iniciando estorno de todos os pagamentos do participante:", participanteId);
-
-                // Buscar todos os pagamentos confirmados do participante
-                db.collection("Eventos").doc("filhasdoRei2026").collection("pagamentos")
-                    .where("participanteId", "==", participanteId)
-                    .where("status", "==", "confirmado")
-                    .get()
-                    .then((pagamentosSnapshot) => {
-                        if (pagamentosSnapshot.empty) {
-                            alert('Nenhum pagamento confirmado encontrado para este participante.');
-                            return;
-                        }
-
-                        console.log(`Encontrados ${pagamentosSnapshot.size} pagamento(s) confirmado(s) para estornar`);
-
-                        const batch = db.batch();
-                        const pagamentosIds = [];
-
-                        // Estornar todos os pagamentos confirmados
-                        pagamentosSnapshot.forEach((doc) => {
-                            const pagamentoId = doc.id;
-                            pagamentosIds.push(pagamentoId);
-
-                            batch.update(doc.ref, {
-                                status: 'estornado',
-                                dataEstorno: new Date().toISOString()
-                            });
-                        });
-
-                        // Atualizar status do participante
-                        const participanteRef = db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes").doc(participanteId);
-                        batch.update(participanteRef, {
-                            statusPagamento: 'pendente',
-                            dataPagamento: null,
-                            formaPagamento: null,
-                            valorPago: null
-                        });
-
-                        return batch.commit().then(() => {
-                            console.log("Todos os pagamentos estornados com sucesso");
-                            return pagamentosIds;
-                        });
-                    })
-                    .then((pagamentosIds) => {
-                        if (!pagamentosIds || pagamentosIds.length === 0) {
-                            return Promise.resolve();
-                        }
-
-                        console.log("Buscando entradas correspondentes no caixa...");
-
-                        // Buscar todas as entradas no caixa relacionadas aos pagamentos estornados
-                        const promises = pagamentosIds.map(pagamentoId => {
-                            return db.collection("Eventos").doc("filhasdoRei2026").collection("caixa")
-                                .where("pagamentoId", "==", pagamentoId)
-                                .where("referenciaOrigem", "==", "pagamento")
-                                .get();
-                        });
-
-                        return Promise.all(promises).then((caixaSnapshots) => {
-                            const batch = db.batch();
-                            let totalEstornos = 0;
-
-                            caixaSnapshots.forEach((caixaSnapshot, index) => {
-                                const pagamentoId = pagamentosIds[index];
-
-                                caixaSnapshot.forEach((doc) => {
-                                    const transacaoCaixa = doc.data();
-                                    totalEstornos++;
-
-                                    // Criar transação de estorno
-                                    const novaRefEstorno = db.collection("Eventos").doc("filhasdoRei2026").collection("caixa").doc();
-
-                                    batch.set(novaRefEstorno, {
-                                        descricao: `ESTORNO TOTAL - ${transacaoCaixa.descricao}`,
-                                        data: new Date().toISOString().substring(0, 10),
-                                        valor: transacaoCaixa.valor,
-                                        tipo: 'saida',
-                                        categoria: transacaoCaixa.categoria,
-                                        metodo: transacaoCaixa.metodo,
-                                        observacao: `Estorno total do participante - Ref Original: ${pagamentoId}`,
-                                        referenciaOrigem: 'estorno_pagamento',
-                                        pagamentoId: pagamentoId,
-                                        participanteId: participanteId,
-                                        transacaoOriginalId: doc.id,
-                                        dataCriacao: new Date().toISOString()
-                                    });
-
-                                    // Marcar transação original como estornada
-                                    batch.update(doc.ref, {
-                                        status: 'estornado',
-                                        dataEstorno: new Date().toISOString(),
-                                        observacao: (transacaoCaixa.observacao || '') + ' [ESTORNADO TOTAL]'
-                                    });
-                                });
-                            });
-
-                            console.log(`Processando ${totalEstornos} entrada(s) no caixa`);
-                            return batch.commit();
-                        });
-                    })
-                    .then(() => {
-                        console.log("Estorno total processado com sucesso em todas as coleções");
-                        alert('Todos os pagamentos do participante foram estornados com sucesso!\nOs estornos foram registrados no controle de caixa.');
-                        $('#estornoModal').modal('hide');
-
-                        // Recarregar dados
-                        carregarDashboard();
-                        carregarUltimosPagamentos();
-                    })
-                    .catch((error) => {
-                        console.error("Erro ao estornar pagamentos: ", error);
-                        alert("Erro ao estornar pagamentos. Tente novamente.");
-                    });
-            });
-
-        });
-
-        function carregarDashboard() {
-            // Buscar todos os participantes que querem blusa
-            db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes")
-                .where("anoevento", "==", "2026")
-                .where("adquirirBlusa", "==", "sim")
-                .get()
-                .then((querySnapshot) => {
-                    const participantes = [];
-                    const promises = [];
-
-                    // Contadores para tamanhos
-                    const tamanhos = { PP: 0, P: 0, M: 0, G: 0, GG: 0, XG: 0 };
-                    let totalBlusas = 0;
-
-                    querySnapshot.forEach((doc) => {
-                        const participante = doc.data();
-                        const participanteId = doc.id;
-
-                        // Contar tamanhos
-                        const tamanho = participante.tamanhoBlusa;
-                        if (tamanho && tamanhos.hasOwnProperty(tamanho)) {
-                            tamanhos[tamanho]++;
-                        }
-                        // Sempre contar o total de blusas para participantes que querem blusa
-                        totalBlusas++;
-
-                        // Buscar pagamentos para cada participante
-                        const promise = db.collection("Eventos").doc("filhasdoRei2026").collection("pagamentos")
-                            .where("participanteId", "==", participanteId)
-                            .where("status", "==", "confirmado")
-                            .get()
-                            .then((pagamentosSnapshot) => {
-                                let totalPago = 0;
-                                pagamentosSnapshot.forEach((pagamentoDoc) => {
-                                    totalPago += pagamentoDoc.data().valor || 0;
-                                });
-
-                                // Determinar status do pagamento
-                                const limiteValor = 50.00;
-                                let statusPagamento;
-                                if (totalPago >= limiteValor) {
-                                    statusPagamento = 'pago';
-                                } else if (totalPago > 0) {
-                                    statusPagamento = 'parcial';
-                                } else {
-                                    statusPagamento = 'pendente';
-                                }
-
-                                participantes.push({
-                                    id: participanteId,
-                                    nome: participante.nome,
-                                    tamanho: participante.tamanhoBlusa,
-                                    totalPago: totalPago,
-                                    statusPagamento: statusPagamento
-                                });
-                            });
-
-                        promises.push(promise);
-                    });
-
-                    // Quando todas as promessas forem resolvidas
-                    Promise.all(promises).then(() => {
-                        // Contar status de pagamentos
-                        let totalPagos = 0;
-                        let totalParciais = 0;
-                        let totalPendentes = 0;
-                        let valorTotalRecebido = 0;
-
-                        participantes.forEach(participante => {
-                            switch (participante.statusPagamento) {
-                                case 'pago':
-                                    totalPagos++;
-                                    break;
-                                case 'parcial':
-                                    totalParciais++;
-                                    break;
-                                case 'pendente':
-                                    totalPendentes++;
-                                    break;
-                            }
-                            valorTotalRecebido += participante.totalPago;
-                        });
-
-                        // Atualizar card de status de pagamentos
-                        $('#totalPagos').text(totalPagos);
-                        $('#totalParciais').text(totalParciais);
-                        $('#totalPendentes').text(totalPendentes);
-                        $('#valorPago').text(valorTotalRecebido.toFixed(2).replace('.', ','));
-
-                        // Atualizar card de distribuição por tamanho
-                        $('#tamanhoPP').text(tamanhos.PP);
-                        $('#tamanhoP').text(tamanhos.P);
-                        $('#tamanhoM').text(tamanhos.M);
-                        $('#tamanhoG').text(tamanhos.G);
-                        $('#tamanhoGG').text(tamanhos.GG);
-                        $('#tamanhoXG').text(tamanhos.XG);
-                        $('#totalBlusas').text(totalBlusas);
-                    });
-                })
-                .catch((error) => {
-                    console.error("Erro ao carregar dashboard:", error);
-                });
-        }
-
-
-
-
-
-
-        function carregarUltimosPagamentos() {
-            // Limpar tabela de pagamentos
-            const tabelaPagamentos = $('#pagamentosList');
-            tabelaPagamentos.html('');
-
-            // Buscar todos os participantes que querem blusa
-            db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes")
-                .where("anoevento", "==", "2026")
-                .where("adquirirBlusa", "==", "sim")
-                .get()
-                .then((querySnapshot) => {
-                    todosPagamentos = [];
-                    const promises = [];
-
-                    querySnapshot.forEach((doc) => {
-                        const participante = doc.data();
-                        const participanteId = doc.id;
-
-                        // Buscar pagamentos deste participante
-                        const promise = db.collection("Eventos").doc("filhasdoRei2026").collection("pagamentos")
-                            .where("participanteId", "==", participanteId)
-                            .get()
-                            .then((pagamentosSnapshot) => {
-                                let totalPago = 0;
-                                let ultimoPagamento = null;
-                                let statusPagamento = 'pendente';
-
-                                // Calcular total pago e encontrar último pagamento confirmado
-                                pagamentosSnapshot.forEach((pagamentoDoc) => {
-                                    const pagamento = pagamentoDoc.data();
-                                    if (pagamento.status === 'confirmado') {
-                                        totalPago += pagamento.valor || 0;
-                                        if (!ultimoPagamento || new Date(pagamento.dataPagamento) > new Date(ultimoPagamento.dataPagamento)) {
-                                            ultimoPagamento = {
-                                                ...pagamento,
-                                                id: pagamentoDoc.id
-                                            };
-                                        }
-                                    }
-                                });
-
-                                // Determinar status de pagamento
-                                if (totalPago >= 50) {
-                                    statusPagamento = 'pago';
-                                } else if (totalPago > 0) {
-                                    statusPagamento = 'parcial';
-                                } else {
-                                    statusPagamento = 'pendente';
-                                }
-
-                                // Criar objeto para a tabela
-                                const itemTabela = {
-                                    participanteId: participanteId,
-                                    participanteNome: participante.nome,
-                                    telefone: participante.celular || 'N/A',
-                                    tamanhoBlusa: participante.tamanhoBlusa || 'N/A',
-                                    adquirirBlusa: participante.adquirirBlusa,
-                                    valorTotal: totalPago,
-                                    statusPagamento: statusPagamento,
-                                    dataPagamento: ultimoPagamento ? ultimoPagamento.dataPagamento : null,
-                                    formaPagamento: ultimoPagamento ? ultimoPagamento.formaPagamento : null,
-                                    id: ultimoPagamento ? ultimoPagamento.id : null
-                                };
-
-                                todosPagamentos.push(itemTabela);
-                            });
-
-                        promises.push(promise);
-                    });
-
-                    // Aguardar todas as consultas de pagamentos
-                    Promise.all(promises)
-                        .then(() => {
-                            // Armazenar dados originais para filtros
-                            participantesOriginais = [...todosPagamentos];
-
-                            // Inicializar a ordenação
-                            updateSortIcon();
-
-                            // Aplicar filtros e ordenação
-                            aplicarFiltros();
-                        })
-                        .catch((error) => {
-                            console.error("Erro ao carregar dados dos pagamentos: ", error);
-                        });
-                })
-                .catch((error) => {
-                    console.error("Erro ao carregar participantes: ", error);
-                });
-        }
-
-        function atualizarTabelaPagamentos(participantes) {
-            // Limpar DataTable
-            if (dataTableBlusas) {
-                dataTableBlusas.clear();
-            }
-
-            if (participantes.length === 0) {
-                if (dataTableBlusas) {
-                    dataTableBlusas.draw();
-                }
-                return;
-            }
-
-            // Ordenar por nome
-            const participantesOrdenados = participantes
-                .sort((a, b) => a.participanteNome.localeCompare(b.participanteNome));
-
-            participantesOrdenados.forEach(participante => {
-                const dataPagamento = participante.dataPagamento ? formatarData(participante.dataPagamento) : '-';
-                const valor = (participante.valorTotal || 0).toFixed(2).replace('.', ',');
-                const formaPagamento = participante.formaPagamento ? formatarFormaPagamento(participante.formaPagamento) : '-';
-
-                // Determinar classe do badge baseado no status
-                let badgeClass = 'badge-pendente';
-                let statusTexto = 'Pendente';
-
-                switch (participante.statusPagamento) {
-                    case 'pago':
-                        badgeClass = 'badge-pago';
-                        statusTexto = 'Pago';
-                        break;
-                    case 'parcial':
-                        badgeClass = 'badge-warning';
-                        statusTexto = 'Parcial';
-                        break;
-                    default:
-                        badgeClass = 'badge-pendente';
-                        statusTexto = 'Pendente';
-                }
-
-                // Preparar dados para o DataTable
-                const acoesBotoes = participante.statusPagamento === 'pago' || participante.statusPagamento === 'parcial' ?
-                    (participante.id ? `
-                        <div class="btn-group" role="group">
-                            <button class="btn btn-info btn-sm" onclick="prepararEdicao('${participante.id}')">
-                                <i class="material-icons">edit</i>
-                            </button>
-                            <button class="btn btn-danger btn-sm" onclick="prepararEstorno('${participante.id}', '${participante.participanteId}', '${participante.participanteNome}')">
-                                <i class="material-icons">cancel</i>
-                            </button>
-                        </div>
-                    ` : '') : '-';
-
-                // Adicionar linha ao DataTable
-                if (dataTableBlusas) {
-                    dataTableBlusas.row.add([
-                        participante.participanteNome,
-                        participante.telefone || 'N/A',
-                        dataPagamento,
-                        `R$ ${valor}`,
-                        participante.tamanhoBlusa || 'N/A',
-                        `<span class="badge badge-success">${participante.adquirirBlusa === 'sim' ? 'Sim' : 'Não'}</span>`,
-                        `<span class="badge ${badgeClass}">${statusTexto}</span>`
-                    ]);
-                }
-            });
-
-            // Redesenhar a tabela
-            if (dataTableBlusas) {
-                dataTableBlusas.draw();
-            }
-        }
-
-        function prepararEstorno(pagamentoId, participanteId, participanteNome) {
-            $('#estornoNome').text(participanteNome);
-            $('#confirmarEstorno').data('pagamento', pagamentoId);
-            $('#confirmarEstorno').data('participante', participanteId);
-            $('#estornoModal').modal('show');
-        }
-
-
-
-
-
-        function formatarData(dataString) {
-            if (!dataString) return '';
-
-            try {
-                const data = new Date(dataString);
-                return data.toLocaleDateString('pt-BR') + ' ' + data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            } catch (e) {
-                return dataString;
-            }
-        }
-
-        function formatarFormaPagamento(forma) {
-            switch (forma) {
-                case 'pix': return 'PIX';
-                case 'cartao': return 'Cartão';
-                case 'dinheiro': return 'Dinheiro';
-                default: return forma;
-            }
-        }
-
-        // Função para preparar a edição de um pagamento
-        function prepararEdicao(pagamentoId) {
-            // Buscar o pagamento pelo ID
-            const pagamento = todosPagamentos.find(p => p.id === pagamentoId);
-
-            if (!pagamento) {
-                alert('Pagamento não encontrado!');
-                return;
-            }
-
-            // Preencher o formulário com os dados do pagamento
-            $('#editPagamentoId').val(pagamentoId);
-            $('#editParticipanteId').val(pagamento.participanteId);
-            $('#editParticipanteNome').val(pagamento.participanteNome);
-            $('#editDataPagamento').val(formatarData(pagamento.dataPagamento));
-            $('#editValorPagamento').val(pagamento.valor.toFixed(2).replace('.', ','));
-            $('#editFormaPagamento').val(pagamento.formaPagamento);
-
-            // Abrir o modal
-            $('#editarPagamentoModal').modal('show');
-        }
-
-        // Adicione este event listener no document.ready
-        $(document).ready(function () {
-            // ... código existente ...
-
-            // Salvar edição de pagamento
-            $('#salvarEdicaoPagamento').on('click', function () {
-                const pagamentoId = $('#editPagamentoId').val();
-                const participanteId = $('#editParticipanteId').val();
-                const valorPagamento = parseFloat($('#editValorPagamento').val().replace(',', '.'));
-                const formaPagamento = $('#editFormaPagamento').val();
-
-                if (!valorPagamento || isNaN(valorPagamento) || valorPagamento <= 0) {
-                    alert('Por favor, informe um valor válido para o pagamento.');
-                    return;
-                }
-
-                // Atualizar o pagamento no Firestore
-                db.collection("Eventos").doc("filhasdoRei2026").collection("pagamentos").doc(pagamentoId)
-                    .update({
-                        valor: valorPagamento,
-                        formaPagamento: formaPagamento,
-                        dataEdicao: new Date().toISOString()
-                    })
-                    .then(() => {
-                        // Atualizar o participante com as novas informações
-                        return db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes").doc(participanteId)
-                            .update({
-                                formaPagamento: formaPagamento,
-                                valorPago: valorPagamento
-                            });
-                    })
-                    .then(() => {
-                        alert('Pagamento atualizado com sucesso!');
-                        $('#editarPagamentoModal').modal('hide');
-
-                        // Recarregar dados
-                        carregarDashboard();
-                        carregarUltimosPagamentos();
-                    })
-                    .catch((error) => {
-                        console.error("Erro ao atualizar pagamento: ", error);
-                        alert("Erro ao atualizar pagamento. Tente novamente.");
-                    });
-            });
-        });
-
-        // Adicione estas variáveis globais no início do seu script
-        let sortConfig = {
-            field: 'dataPagamento', // Campo padrão para ordenação (data de pagamento)
-            direction: 'desc'       // Direção padrão (decrescente)
+        var todosRegistrosBlusas = [];
+        var sortConfig = {
+            field: 'participante',
+            direction: 'asc'
         };
 
-        // Adicione este event listener no document.ready
+        var VALOR_BLUSA_PADRAO = 50.00;
+
         $(document).ready(function () {
-            // ... código existente ...
+            carregarDadosBlusas();
 
-            $(document).on('change', '#participante', function () {
-                const participanteId = $(this).val();
-                const selectedOption = $('#participante option:selected');
-                const totalPago = parseFloat(selectedOption.data('pago') || 0);
-                const limiteValor = parseFloat(selectedOption.data('limite') || 0);
-
-                const valorDevido = limiteValor - totalPago;
-
-                // Exibir o valor devido no campo de somente leitura
-                $('#valorDevido').val(valorDevido.toFixed(2).replace('.', ','));
+            // Sincronizar busca rápida e filtros
+            $('#filtroNome, #customTableSearch').on('input', function () {
+                var val = $(this).val();
+                if ($(this).attr('id') === 'filtroNome') {
+                    $('#customTableSearch').val(val);
+                } else {
+                    $('#filtroNome').val(val);
+                }
+                renderizarTabela();
             });
 
-            // Adicionar evento de clique no botão de classificação
-            $('.sort-btn').on('click', function () {
-                const sortField = $(this).data('sort');
+            $('#filtroTamanho').on('change', function () {
+                atualizarCardsTamanhoAtivo($(this).val());
+                renderizarTabela();
+            });
 
-                // Se clicar no mesmo campo, inverte a direção
+            $('#filtroStatus').on('change', function () {
+                renderizarTabela();
+            });
+
+            $('#limparFiltros').on('click', function () {
+                $('#filtroNome').val('');
+                $('#customTableSearch').val('');
+                $('#filtroTamanho').val('');
+                $('#filtroStatus').val('');
+                atualizarCardsTamanhoAtivo('');
+                renderizarTabela();
+            });
+
+            // Clique interativo nos Cards de Tamanho para Filtrar
+            $(document).on('click', '.grade-size-card', function () {
+                var tamanho = $(this).attr('data-tamanho');
+                var tamanhoAtual = $('#filtroTamanho').val();
+
+                if (tamanhoAtual === tamanho) {
+                    $('#filtroTamanho').val('');
+                    atualizarCardsTamanhoAtivo('');
+                } else {
+                    $('#filtroTamanho').val(tamanho);
+                    atualizarCardsTamanhoAtivo(tamanho);
+                }
+
+                renderizarTabela();
+            });
+
+            // Clique nos botões de ordenação do cabeçalho
+            $(document).on('click', '.sort-btn', function () {
+                var sortField = $(this).attr('data-sort');
+
                 if (sortField === sortConfig.field) {
                     sortConfig.direction = sortConfig.direction === 'asc' ? 'desc' : 'asc';
                 } else {
-                    // Se clicar em um campo diferente, define o novo campo e direção padrão (asc)
                     sortConfig.field = sortField;
                     sortConfig.direction = 'asc';
                 }
 
-                // Atualizar ícone
-                updateSortIcon();
+                renderizarTabela();
+            });
 
-                // Aplicar a ordenação
-                aplicarOrdenacao();
+            // Salvar edição no modal
+            $('#salvarEdicaoBlusa').on('click', function () {
+                var participanteId = $('#editBlusaParticipanteId').val();
+                var novoTamanho = $('#editBlusaTamanho').val();
+                var novoStatus = $('#editBlusaStatus').val();
 
+                if (!participanteId || !novoTamanho) {
+                    alert('Dados incompletos.');
+                    return;
+                }
+
+                db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes").doc(participanteId)
+                    .update({
+                        tamanhoBlusa: novoTamanho,
+                        statusPagamento: novoStatus
+                    })
+                    .then(function () {
+                        $('#editarBlusaModal').modal('hide');
+                        carregarDadosBlusas();
+                    })
+                    .catch(function (err) {
+                        console.error('Erro ao atualizar tamanho da blusa:', err);
+                        alert('Erro ao atualizar blusa. Tente novamente.');
+                    });
+            });
+
+            // Exportar relatório / Imprimir
+            $('#btnImprimirRelatorio').on('click', function () {
+                imprimirRelatorioDireto();
             });
         });
 
-        // Função para atualizar o ícone de ordenação
-        function updateSortIcon() {
-            // Remover classes de todos os ícones
-            $('.sort-btn').removeClass('sort-asc sort-desc');
-
-            // Adicionar classe ao ícone atual
-            $(`.sort-btn[data-sort="${sortConfig.field}"]`).addClass(
-                sortConfig.direction === 'asc' ? 'sort-asc' : 'sort-desc'
-            );
+        function atualizarCardsTamanhoAtivo(tamanhoSelecionado) {
+            $('.grade-size-card').removeClass('active');
+            if (tamanhoSelecionado) {
+                $('.grade-size-card[data-tamanho="' + tamanhoSelecionado + '"]').addClass('active');
+            }
         }
 
-        // Função para aplicar a ordenação
-        function aplicarOrdenacao(dadosFiltrados = null) {
-            let pagamentosFiltrados = dadosFiltrados ? [...dadosFiltrados] : [...todosPagamentos];
+        // Carregar dados de blusas do Firestore
+        function carregarDadosBlusas() {
+            var tbody = $('#blusasBody');
+            tbody.html('<tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Carregando dados das blusas...</td></tr>');
 
-            // Aplicar ordenação
-            pagamentosFiltrados.sort((a, b) => {
-                let valorA, valorB;
+            db.collection("Eventos").doc("filhasdoRei2026").collection("inscricoes")
+                .get()
+                .then(function (snapshot) {
+                    todosRegistrosBlusas = [];
 
-                // Determinar os valores a comparar com base no campo de ordenação
+                    var countBlusas = 0;
+                    var countPagos = 0;
+                    var countParciais = 0;
+                    var countPendentes = 0;
+                    var somaValorPago = 0;
+
+                    var tamanhos = {
+                        'PP': 0, 'P': 0, 'M': 0, 'G': 0, 'GG': 0, 'XG': 0
+                    };
+
+                    snapshot.forEach(function (doc) {
+                        var data = doc.data();
+                        
+                        // Verificar se solicitou blusa
+                        var querBlusa = data.adquirirBlusa === 'sim' || data.blusa === 'sim' || (data.tamanhoBlusa && data.tamanhoBlusa.trim() !== '');
+
+                        if (querBlusa) {
+                            countBlusas++;
+
+                            var tamanho = (data.tamanhoBlusa || data.tamanho || '-').toUpperCase().trim();
+                            if (tamanhos.hasOwnProperty(tamanho)) {
+                                tamanhos[tamanho]++;
+                            }
+
+                            var valorPago = parseFloat(data.valorPago || data.valor || 0);
+                            var status = (data.statusPagamento || data.status || 'pendente').toLowerCase().trim();
+
+                            if (status === 'pago' || status === 'confirmado' || status === 'aprovado') {
+                                countPagos++;
+                                somaValorPago += (valorPago > 0 ? valorPago : VALOR_BLUSA_PADRAO);
+                            } else if (status === 'parcial') {
+                                countParciais++;
+                                somaValorPago += valorPago;
+                            } else {
+                                countPendentes++;
+                            }
+
+                            todosRegistrosBlusas.push({
+                                id: doc.id,
+                                nome: data.nomeCompleto || data.nome || 'Não informado',
+                                celular: data.telefone || data.celular || '',
+                                tamanho: tamanho,
+                                dataRegistro: data.dataPagamento || data.dataInscricao || data.dataCadastro || null,
+                                valorPago: valorPago,
+                                status: (status === 'pago' || status === 'confirmado' || status === 'aprovado') ? 'pago' : status
+                            });
+                        }
+                    });
+
+                    // Atualizar cards de métricas gerais
+                    $('#totalBlusas').text(countBlusas);
+                    $('#totalPagos').text(countPagos);
+                    $('#totalPendentes').text(countPendentes + (countParciais > 0 ? ' (' + countParciais + ' parc.)' : ''));
+                    $('#valorPago').text(somaValorPago.toFixed(2).replace('.', ','));
+                    $('#valorTotalPrevisto').text((countBlusas * VALOR_BLUSA_PADRAO).toFixed(2).replace('.', ','));
+                    $('#badgeTotalGrade').text(countBlusas + (countBlusas === 1 ? ' unidade' : ' unidades'));
+
+                    // Atualizar números e barras da grade
+                    var totalParaCalculo = countBlusas > 0 ? countBlusas : 1;
+                    var listTamanhos = ['PP', 'P', 'M', 'G', 'GG', 'XG'];
+
+                    listTamanhos.forEach(function (tam) {
+                        var qtd = tamanhos[tam] || 0;
+                        var pct = Math.round((qtd / totalParaCalculo) * 100);
+
+                        $('#tamanho' + tam).text(qtd);
+                        $('#pct' + tam).text(pct + '%');
+                        $('#fill' + tam).css('width', pct + '%');
+                        $('#bar' + tam).css('width', pct + '%').attr('title', tam + ': ' + qtd + ' (' + pct + '%)');
+                    });
+
+                    renderizarTabela();
+                })
+                .catch(function (err) {
+                    console.error('Erro ao carregar blusas:', err);
+                    tbody.html('<tr><td colspan="7" class="text-center py-4 text-danger"><i class="fa-solid fa-circle-exclamation mr-2"></i>Erro ao carregar blusas.</td></tr>');
+                });
+        }
+
+        // Renderizar e filtrar tabela
+        function renderizarTabela() {
+            var filtroNome = ($('#filtroNome').val() || '').toLowerCase().trim();
+            var filtroTamanho = ($('#filtroTamanho').val() || '').toUpperCase().trim();
+            var filtroStatus = ($('#filtroStatus').val() || '').toLowerCase().trim();
+
+            var lista = todosRegistrosBlusas.filter(function (item) {
+                var matchNome = !filtroNome || item.nome.toLowerCase().indexOf(filtroNome) !== -1 || item.celular.indexOf(filtroNome) !== -1;
+                var matchTamanho = !filtroTamanho || item.tamanho === filtroTamanho;
+                var matchStatus = !filtroStatus || item.status === filtroStatus;
+                return matchNome && matchTamanho && matchStatus;
+            });
+
+            // Ordenação
+            lista.sort(function (a, b) {
+                var valorA, valorB;
                 switch (sortConfig.field) {
                     case 'participante':
-                        valorA = a.participanteNome.toLowerCase();
-                        valorB = b.participanteNome.toLowerCase();
+                        valorA = (a.nome || '').toLowerCase();
+                        valorB = (b.nome || '').toLowerCase();
+                        break;
+                    case 'tamanho':
+                        valorA = a.tamanho || '';
+                        valorB = b.tamanho || '';
                         break;
                     case 'data':
-                        valorA = new Date(a.dataPagamento);
-                        valorB = new Date(b.dataPagamento);
+                        valorA = new Date(a.dataRegistro || 0);
+                        valorB = new Date(b.dataRegistro || 0);
                         break;
                     case 'valor':
-                        valorA = a.valor;
-                        valorB = b.valor;
+                        valorA = a.valorPago || 0;
+                        valorB = b.valorPago || 0;
                         break;
-                    case 'forma':
-                        valorA = a.formaPagamento;
-                        valorB = b.formaPagamento;
+                    case 'status':
+                        valorA = a.status || '';
+                        valorB = b.status || '';
                         break;
                     default:
-                        valorA = new Date(a.dataPagamento);
-                        valorB = new Date(b.dataPagamento);
+                        valorA = (a.nome || '').toLowerCase();
+                        valorB = (b.nome || '').toLowerCase();
                 }
 
-                // Comparar os valores na direção especificada
                 if (sortConfig.direction === 'asc') {
                     return valorA > valorB ? 1 : -1;
                 } else {
@@ -1207,43 +1639,162 @@
                 }
             });
 
-            // Atualizar a tabela com os resultados ordenados
-            atualizarTabelaPagamentos(pagamentosFiltrados);
+            var tbody = $('#blusasBody');
+            tbody.empty();
+            $('#tabelaContador').text(lista.length + (lista.length === 1 ? ' registro' : ' registros'));
+
+            if (lista.length === 0) {
+                tbody.html('<tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa-regular fa-folder-open mr-2"></i>Nenhuma encomenda de blusa encontrada</td></tr>');
+                return;
+            }
+
+            lista.forEach(function (item) {
+                var iniciais = getIniciais(item.nome);
+                var waLink = getWaLink(item.celular);
+                var dataFormatada = formatarData(item.dataRegistro);
+                var valorFormatado = (item.valorPago || 0).toFixed(2).replace('.', ',');
+
+                var statusBadge = '';
+                if (item.status === 'pago') {
+                    statusBadge = '<span class="status-badge badge-status-pago"><i class="fa-solid fa-check"></i> Pago</span>';
+                } else if (item.status === 'parcial') {
+                    statusBadge = '<span class="status-badge badge-status-parcial"><i class="fa-solid fa-clock"></i> Parcial</span>';
+                } else {
+                    statusBadge = '<span class="status-badge badge-status-pendente"><i class="fa-solid fa-triangle-exclamation"></i> Pendente</span>';
+                }
+
+                var waCell = '<span class="text-muted">-</span>';
+                var waActionBtn = '';
+                if (waLink) {
+                    waCell = '<a href="' + waLink + '" target="_blank" class="phone-link" title="Conversar no WhatsApp"><i class="fa-brands fa-whatsapp"></i><span>' + item.celular + '</span></a>';
+                    waActionBtn = '<a href="' + waLink + '" target="_blank" class="btn-action-whatsapp" title="Enviar Mensagem no WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>';
+                }
+
+                var tr = $('<tr></tr>');
+                var tdNome = $('<td></td>').html('<span class="participant-name-text">' + $('<div>').text(item.nome).html() + '</span>');
+                var tdWa = $('<td class="text-center"></td>').html(waCell);
+                var tdTamanho = $('<td class="text-center"></td>').html('<span class="badge-blusa badge-blusa-' + item.tamanho + '">' + item.tamanho + '</span>');
+                var tdData = $('<td class="text-center"></td>').text(dataFormatada);
+                var tdValor = $('<td class="text-center"></td>').html('<span class="badge-valor">R$ ' + valorFormatado + '</span>');
+                var tdStatus = $('<td class="text-center"></td>').html(statusBadge);
+
+                var tdAcoes = $('<td class="text-center"></td>');
+                var divAcoes = $('<div class="action-btns"></div>');
+                var btnEdit = $('<button type="button" class="btn-action-edit" title="Alterar Tamanho / Status"><i class="fa-solid fa-pen"></i></button>');
+                btnEdit.on('click', function () {
+                    abrirModalEdicao(item.id);
+                });
+                divAcoes.append(btnEdit);
+                if (waActionBtn) {
+                    divAcoes.append($(waActionBtn));
+                }
+                tdAcoes.append(divAcoes);
+
+                tr.append(tdNome, tdWa, tdTamanho, tdData, tdValor, tdStatus, tdAcoes);
+                tbody.append(tr);
+            });
         }
 
-        // Função para aplicar filtros
-        function aplicarFiltros() {
-            const filtroNome = $('#filtroNome').val().toLowerCase().trim();
-            const filtroTamanho = $('#filtroTamanho').val();
-            const filtroStatus = $('#filtroStatus').val();
+        function abrirModalEdicao(id) {
+            var item = todosRegistrosBlusas.find(function (i) { return i.id === id; });
+            if (!item) return;
 
-            // Filtrar os dados originais
-            let participantesFiltrados = participantesOriginais.filter(participante => {
-                // Filtro por nome
-                const nomeMatch = !filtroNome || participante.participanteNome.toLowerCase().includes(filtroNome);
+            $('#editBlusaParticipanteId').val(item.id);
+            $('#editBlusaNome').val(item.nome);
+            $('#editBlusaTamanho').val(item.tamanho || 'M');
+            $('#editBlusaStatus').val(item.status || 'pendente');
+            $('#editarBlusaModal').modal('show');
+        }
 
-                // Filtro por tamanho da blusa
-                const tamanhoMatch = !filtroTamanho || participante.tamanhoBlusa === filtroTamanho;
+        function getIniciais(nome) {
+            if (!nome) return 'FR';
+            var partes = nome.trim().split(' ').filter(function (p) { return p.length > 0; });
+            if (partes.length === 1) return partes[0].substring(0, 2).toUpperCase();
+            return (partes[0][0] + partes[partes.length - 1][0]).toUpperCase();
+        }
 
-                // Filtro por status de pagamento
-                const statusMatch = !filtroStatus || participante.statusPagamento === filtroStatus;
+        function getWaLink(celular) {
+            if (!celular) return null;
+            var limpo = celular.replace(/\D/g, '');
+            if (limpo.length >= 10) {
+                var comDDI = limpo.indexOf('55') === 0 ? limpo : '55' + limpo;
+                return 'https://wa.me/' + comDDI;
+            }
+            return null;
+        }
 
-                return nomeMatch && tamanhoMatch && statusMatch;
+        function formatarData(dataString) {
+            if (!dataString) return '-';
+            try {
+                if (dataString.toDate) {
+                    return dataString.toDate().toLocaleDateString('pt-BR');
+                }
+                var d = new Date(dataString);
+                if (isNaN(d.getTime())) return dataString;
+                return d.toLocaleDateString('pt-BR');
+            } catch (e) {
+                return dataString;
+            }
+        }
+
+        function imprimirRelatorioDireto() {
+            var total = todosRegistrosBlusas.length;
+            var dataHoje = new Date().toLocaleDateString('pt-BR');
+            var horaHoje = new Date().toLocaleTimeString('pt-BR');
+
+            var grade = { 'PP': 0, 'P': 0, 'M': 0, 'G': 0, 'GG': 0, 'XG': 0 };
+            todosRegistrosBlusas.forEach(function (r) {
+                if (grade.hasOwnProperty(r.tamanho)) grade[r.tamanho]++;
             });
 
-            // Aplicar ordenação aos dados filtrados
-            aplicarOrdenacao(participantesFiltrados);
-        }
+            var linhasHtml = '';
+            todosRegistrosBlusas.forEach(function (item, idx) {
+                linhasHtml += '<tr>' +
+                    '<td style="padding: 6px 10px; border-bottom: 1px solid #ddd; text-align: center;">' + (idx + 1) + '</td>' +
+                    '<td style="padding: 6px 10px; border-bottom: 1px solid #ddd; font-weight: bold;">' + item.nome + '</td>' +
+                    '<td style="padding: 6px 10px; border-bottom: 1px solid #ddd; text-align: center;">' + (item.celular || '-') + '</td>' +
+                    '<td style="padding: 6px 10px; border-bottom: 1px solid #ddd; text-align: center; font-weight: bold;">' + item.tamanho + '</td>' +
+                    '<td style="padding: 6px 10px; border-bottom: 1px solid #ddd; text-align: center;">' + item.status.toUpperCase() + '</td>' +
+                    '<td style="padding: 6px 10px; border-bottom: 1px solid #ddd; width: 120px;"></td>' +
+                    '</tr>';
+            });
 
-        // Função para limpar todos os filtros
-        function limparFiltros() {
-            $('#filtroNome').val('');
-            $('#filtroTamanho').val('');
-            $('#filtroStatus').val('');
-            aplicarFiltros();
+            var printHtml = 
+                '<div style="font-family: Arial, sans-serif; font-size: 12px; color: #222; margin: 20px;">' +
+                    '<h1 style="color: #5b184f; font-size: 18px; margin: 0; text-align: center;">CONFERÊNCIA FILHAS DO REI 2026</h1>' +
+                    '<p style="color: #666; font-size: 11px; text-align: center; margin: 4px 0 16px 0;">Relatório Geral de Encomendas de Blusas & Grade • Gerado em ' + dataHoje + ' às ' + horaHoje + '</p>' +
+                    
+                    '<div style="display: flex; justify-content: space-around; background: #fdf6fa; border: 1px solid #e5cde0; padding: 10px; border-radius: 6px; margin-bottom: 16px;">' +
+                        '<div style="text-align: center; font-weight: bold;">PP: <span style="color: #7a2c6c; font-size: 14px;">' + grade['PP'] + '</span></div>' +
+                        '<div style="text-align: center; font-weight: bold;">P: <span style="color: #7a2c6c; font-size: 14px;">' + grade['P'] + '</span></div>' +
+                        '<div style="text-align: center; font-weight: bold;">M: <span style="color: #7a2c6c; font-size: 14px;">' + grade['M'] + '</span></div>' +
+                        '<div style="text-align: center; font-weight: bold;">G: <span style="color: #7a2c6c; font-size: 14px;">' + grade['G'] + '</span></div>' +
+                        '<div style="text-align: center; font-weight: bold;">GG: <span style="color: #7a2c6c; font-size: 14px;">' + grade['GG'] + '</span></div>' +
+                        '<div style="text-align: center; font-weight: bold;">XG: <span style="color: #7a2c6c; font-size: 14px;">' + grade['XG'] + '</span></div>' +
+                        '<div style="text-align: center; font-weight: bold; border-left: 2px solid #7a2c6c; padding-left: 14px;">TOTAL: <span style="color: #7a2c6c; font-size: 14px;">' + total + '</span></div>' +
+                    '</div>' +
+
+                    '<table style="width: 100%; border-collapse: collapse; margin-top: 10px;">' +
+                        '<thead>' +
+                            '<tr style="background: #5b184f; color: white;">' +
+                                '<th style="padding: 8px 10px; font-size: 11px; text-align: center; width: 40px;">#</th>' +
+                                '<th style="padding: 8px 10px; font-size: 11px; text-align: left;">Participante</th>' +
+                                '<th style="padding: 8px 10px; font-size: 11px; text-align: center;">Celular</th>' +
+                                '<th style="padding: 8px 10px; font-size: 11px; text-align: center;">Tamanho</th>' +
+                                '<th style="padding: 8px 10px; font-size: 11px; text-align: center;">Status</th>' +
+                                '<th style="padding: 8px 10px; font-size: 11px; text-align: left;">Assinatura / Entrega</th>' +
+                            '</tr>' +
+                        '</thead>' +
+                        '<tbody>' +
+                            linhasHtml +
+                        '</tbody>' +
+                    '</table>' +
+                '</div>';
+
+            $('#printContainer').html(printHtml);
+            window.print();
         }
     </script>
 </body>
 
 </html>
-<link rel="stylesheet" href="../css/common.css">
